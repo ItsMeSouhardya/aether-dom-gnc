@@ -4,7 +4,7 @@ Last updated: 11 November 2026 (Asia/Calcutta).
 
 ## Current phase
 
-**Task 01 — Studio shell is complete and verified.** The root studio has a project explorer, layer navigator, selectable layout blockout, read-only transform inspector, timeline placeholder and diagnostics tray. Task 00 overview is retained at /document. Selection is per-studio UI state; commands/persistence, full renderer, linter, auth and AI remain future work. Next: Task 02 — Commands and persistence. Afterlight v2 remains the selected, unchanged main landing design.
+**Task 02 — Commands and persistence is complete and verified.** Task 01 is merged to main. The active branch is feat/task-02-commands-persistence, based on a1e4526; changes are uncommitted. Shared typed transform/undo/redo commands, atomic SQLite snapshots/history, explicit drafts and recovery states are implemented. Final verification: 151 unit/API and 34 desktop/mobile browser tests, lint, types, production build, preservation and independent review passed. Next: Task 03 — Dependency graph and linter. Task 00 seed overview stays at /document. Selection/drafts remain separate from canonical server snapshots. Full renderer, auth and AI remain future work. Afterlight v2 remains the selected, unchanged main landing design.
 
 ## Active source and frozen references
 
@@ -37,7 +37,7 @@ From the workspace root (full Windows setup in README.md):
 - pnpm dev:api → FastAPI on http://127.0.0.1:8000/ using root .venv.
 - pnpm lint / pnpm typecheck / pnpm test → complete local source and contract checks.
 - pnpm build → Next production build; pnpm --filter web start serves it.
-- pnpm test:e2e → built-app desktop/mobile browser checks; starts/reuses local services.
+- pnpm test:e2e → built-app desktop/mobile checks; starts fresh isolated services on 3100/8100 and a unique ignored database.
 - pnpm verify:preserved → original source hashes and exact kit copies.
 - npm run landing:dev → http://localhost:4173/ (main landing source).
 - npm run check → retained landing JavaScript syntax checks.
@@ -69,6 +69,7 @@ The landing requires no dependency installation. Product setup requires pnpm dep
 - [x] Product Task 00 implementation: pnpm workspace, Next/FastAPI, shared contract and read-only fixture.
 - [x] Completed final browser/integration checks, independent review and handoff evidence.
 - [x] Product Task 01: studio shell, read-only selection/inspection, regression checks and independent review.
+- [x] Product Task 02: typed commands, durable SQLite snapshots/history, transform editing, undo/redo and recovery; complete verification and independent review.
 
 ## Task 00 verification and handoff
 
@@ -93,7 +94,7 @@ On 11 November 2026, the user requested connection to https://github.com/ItsMeSo
 
 ## Resume
 
-Read this file, PRODUCT.md and the selected design specification before changes. Task 01 is complete; next is the kit's Task 02. Read the ordered board and canonical-state architecture before implementing commands/persistence. Preserve the separation of the UI-only selection store and canonical snapshots. Keep landing refinements in landing-page/ and the frozen archive unchanged. Update this context at milestones and handoff.
+Read this file, PRODUCT.md and the selected design specification before changes. Task 02 is complete; next is the kit's Task 03. Read the ordered board and canonical-state architecture before implementing dependencies/linter. Preserve SQLite canonical ownership and the separation of selection/drafts from validated snapshots. The studio now edits transforms only; fixture and seed overview remain immutable references. Keep landing refinements in landing-page/ and the frozen archive unchanged. Update this context at milestones and handoff.
 
 ## Task 01 verification and handoff
 
@@ -105,3 +106,16 @@ Read this file, PRODUCT.md and the selected design specification before changes.
 - Independent review found distinct-shot accessible-name and long-title mobile-overflow issues. Parent visual pass found stage clipping with expanded diagnostics. All three were reproduced with failing browser tests, fixed in one correction batch, and verified with the complete suite. Navigator ordering now mirrors stage depth. No deferred minor findings remain. Full evidence/review scope: docs/tasks/task-01-verification.md; final desktop/mobile screenshots alongside it.
 - Production web preview retained on http://127.0.0.1:3000/ (session 59629), using the final corrected build. Existing FastAPI remains on http://127.0.0.1:8000/ (session 50033). Earlier web sessions 66671/94696 were stopped. CUA observed Kael selection and original transform values. No canonical document, API, source media, landing or archive changes.
 - Task 00 was committed by the user as c23fb3e before this task. Task 01 changes remain uncommitted on feat/task-01-studio-shell; no push/merge performed. Next: Task 02.
+
+## Task 02 verification and handoff
+
+- User requested Task 02 implementation and relevant docs/skills. Read root/kit instructions, current context, full master plan, ordered board, product/design, API/schema guidance and local Next guidance. Plan and execution ledger: docs/superpowers/plans/2026-11-11-task-02-commands-persistence.md. Root led shared contract/web integration; a delegated backend implementer worked against the fixed interface. A fresh read-only reviewer inspected the complete result.
+- Task 01 was committed by the user as a9b6d60 and merged through PR #1 into a1e4526 on main. The clean local checkout was fast-forwarded, then feat/task-02-commands-persistence created. Earlier Task 01/Git sections are historical. No Task 02 commit, push, PR or merge performed.
+- Added separate command schema/generated TS union for setLayerTransform, undo and redo. Stable IDs, expectedRevision, human actor and reason are required. SQLite/SQLAlchemy owns validated snapshots, immutable audit/forward/inverse data, persistent history stacks and monotonic revision metadata; Alembic startup migration/seed is idempotent. Exact command replay returns its original result; stale/concurrent writes conflict without partial changes.
+- Studio loads the persisted branch, edits five transform fields through explicit drafts, saves only validated responses, and offers persistent Undo/Redo and recent change history. Drafts retain their base revision; stale/unknown-outcome saves block writes until Reload latest. Zustand remains IDs/actions only. The seed overview/fixture stays revision 0; no optimistic canonical state, localStorage canon or general JSON patches.
+- Final verification: 151 unit/API tests (36 shared contract, 39 web, 76 Python), 34 production desktop/mobile browser tests, lint, strict TS/Python typing, generated-type drift, production build, dependency consistency, migration idempotence and preservation of 178 originals passed. Temporary dev on 3001 compiled and returned HTTP 200, then stopped. E2e uses fresh 3100/8100 services and a unique ignored database, without touching the regular project database.
+- Independent review found one P2 numeric-parity defect: oversized Python integers could persist numbers decoded as Infinity in JavaScript. API regression tests reproduced HTTP 200 before the finite-number guard correction; both signs now return 422 with no writes. Browser integration exposed valid same-origin saves rejected due to Next's internal localhost URL; regression tests pinned and verified Host/protocol-based checking without trusting forwarded headers. Reviewer confirmed both fixes with no remaining concrete source findings. Full browser suite passed afterward.
+- Desktop/mobile draft form and saved-history screenshots were inspected; no new visual defects or horizontal overflow. CUA confirmed preview load, Kael selection, five-field draft and Cancel without canonical mutation. Evidence: docs/tasks/task-02-verification.md and task-02-desktop.png, task-02-mobile.png, task-02-history.png.
+- Final preview retained at http://127.0.0.1:3000/ (web session 96750), API http://127.0.0.1:8000/ (session 19021). Both use reviewed sources. Regular database data/aether-dom.sqlite3 was seeded at revision 0; no test commands were sent to it. It and all e2e databases are ignored. Stop API before manual database backup; configure AETHER_DATABASE_PATH in the API terminal to select another file.
+- RTK and SQLAlchemy's compiled extension were blocked by Windows Application Control. Direct tooling and the pinned SQLAlchemy pure-Python build were used; API README documents the latter. Impeccable engine cache remains unavailable; selected design/Operate/craft guidance was read directly. An explicit Node build launcher resolves a package-manager CSS-worker startup failure. Approved verification completed outside restrictive worker limits. Temporary automatic approval usage-limit failure resolved on continuation; no unresolved blocker remains. CI has not run remotely.
+- Next: Task 03 — Dependency graph and linter. Full 2.5D media rendering is Task 04. Landing, archives, original kit/schema/fixture and initial source plans remain untouched.

@@ -1,13 +1,16 @@
+from pathlib import Path
+
 import pytest
 from fastapi.testclient import TestClient
 
+from app import main
 from app.contracts import validate_document
-from app.main import app
 
 
 @pytest.fixture
-def client():
-    with TestClient(app) as client:
+def client(tmp_path: Path):
+    assert hasattr(main, "create_app"), "Tests require an isolated app database"
+    with TestClient(main.create_app(tmp_path / "api.sqlite3")) as client:
         yield client
 
 

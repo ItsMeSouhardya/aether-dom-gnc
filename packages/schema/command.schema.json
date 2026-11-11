@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/aether-dom/command.schema.v0.1.0.json",
+  "title": "CdomCommand",
+  "type": "object",
+  "$defs": {
+    "envelope": {
+      "type": "object",
+      "required": ["commandId", "projectId", "branchId", "expectedRevision", "actor", "reason"],
+      "properties": {
+    "commandId": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "projectId": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "branchId": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "expectedRevision": { "type": "integer", "minimum": 0, "maximum": 9007199254740991 },
+    "actor": {
+      "type": "object", "additionalProperties": false, "required": ["kind", "id"],
+      "properties": { "kind": { "const": "human" }, "id": { "type": "string", "minLength": 1, "maxLength": 128 } }
+    },
+    "reason": { "type": "string", "minLength": 1, "maxLength": 500 }
+      }
+    },
+    "transform": {
+      "type": "object", "additionalProperties": false, "minProperties": 1,
+      "properties": {
+        "x": { "type": "number" }, "y": { "type": "number" }, "z": { "type": "number" },
+        "scale": { "type": "number", "exclusiveMinimum": 0 }, "rotationDeg": { "type": "number" }
+      }
+    }
+  },
+  "oneOf": [
+    {
+      "type": "object", "unevaluatedProperties": false,
+      "allOf": [
+        { "$ref": "#/$defs/envelope" },
+        {
+          "type": "object", "required": ["op", "targetId", "args"],
+          "properties": {
+            "op": { "const": "setLayerTransform" },
+            "targetId": { "type": "string", "minLength": 1, "maxLength": 128 },
+            "args": { "$ref": "#/$defs/transform" }
+          }
+        }
+      ]
+    },
+    {
+      "type": "object", "unevaluatedProperties": false,
+      "allOf": [
+        { "$ref": "#/$defs/envelope" },
+        { "type": "object", "required": ["op"], "properties": { "op": { "enum": ["undo", "redo"] } } }
+      ]
+    }
+  ]
+}

@@ -67,7 +67,7 @@ describe('studio UI selection', () => {
     const before = JSON.stringify(document);
     const first = createStudioStore(document);
     const second = createStudioStore(document);
-    first.getState().dispatch({ type: 'select-layer', id: 'layer_kael' });
+    first.getState().dispatch({ type: 'select-layer', id: 'layer_kael' }, document);
     expect(first.getState().selection.layerId).toBe('layer_kael');
     expect(second.getState().selection.layerId).toBeNull();
     expect(JSON.stringify(document)).toBe(before);

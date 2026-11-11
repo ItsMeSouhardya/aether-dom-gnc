@@ -1,3 +1,5 @@
 fastapi==0.162.4
 uvicorn==0.54.0
 jsonschema==4.26.0
+SQLAlchemy==2.1.8
+alembic==1.20.1

@@ -1,21 +1,16 @@
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
-from typing import Any, Literal
+from pathlib import Path
+from typing import Annotated, Any, Literal
 
-from fastapi import FastAPI, Response
+from fastapi import Body, FastAPI, Request, Response
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
+from app.commands import CommandError
 from app.contracts import SCHEMA_VERSION, load_fixture
-
-
-@asynccontextmanager
-async def lifespan(app: FastAPI) -> AsyncIterator[None]:
-    # Fail fast on an invalid checked-in fixture, before reporting healthy.
-    load_fixture()
-    yield
-
-
-app = FastAPI(title="AETHER-DOM API", version="0.1.0", lifespan=lifespan)
+from app.repository import Repository
 
 
 class Health(BaseModel):
@@ -24,13 +19,53 @@ class Health(BaseModel):
     schemaVersion: str = SCHEMA_VERSION
 
 
-@app.get("/api/v1/health", response_model=Health)
-def health(response: Response) -> Health:
-    response.headers["Cache-Control"] = "no-store"
-    return Health()
+def create_app(database_path: Path | None = None) -> FastAPI:
+    repository = Repository(database_path)
+
+    @asynccontextmanager
+    async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+        repository.initialize()
+        try:
+            yield
+        finally:
+            repository.close()
+
+    app = FastAPI(title="AETHER-DOM API", version="0.1.0", lifespan=lifespan)
+
+    @app.exception_handler(CommandError)
+    async def command_error(request: Request, error: CommandError) -> JSONResponse:
+        return JSONResponse(status_code=error.status, content={"detail": error.detail},
+                            headers={"Cache-Control": "no-store"})
+
+    @app.exception_handler(RequestValidationError)
+    async def invalid_request(request: Request, error: RequestValidationError) -> JSONResponse:
+        return JSONResponse(status_code=422, content={"detail": {
+            "code": "INVALID_COMMAND", "message": "A valid JSON command body is required",
+        }}, headers={"Cache-Control": "no-store"})
+
+    @app.get("/api/v1/health", response_model=Health)
+    def health(response: Response) -> Health:
+        response.headers["Cache-Control"] = "no-store"
+        return Health()
+
+    @app.get("/api/v1/fixtures/neon-shogun")
+    def fixture(response: Response) -> dict[str, Any]:
+        response.headers["Cache-Control"] = "no-store"
+        return load_fixture()
+
+    @app.get("/api/v1/projects/{project_id}/branches/{branch_id}/document")
+    def document(project_id: str, branch_id: str, response: Response) -> dict[str, Any]:
+        response.headers["Cache-Control"] = "no-store"
+        return repository.get(project_id, branch_id)
+
+    @app.post("/api/v1/projects/{project_id}/branches/{branch_id}/commands")
+    def execute(
+        project_id: str, branch_id: str, response: Response, payload: Annotated[Any, Body()],
+    ) -> dict[str, Any]:
+        response.headers["Cache-Control"] = "no-store"
+        return repository.execute(project_id, branch_id, payload)
+
+    return app
 
 
-@app.get("/api/v1/fixtures/neon-shogun")
-def fixture(response: Response) -> dict[str, Any]:
-    response.headers["Cache-Control"] = "no-store"
-    return load_fixture()
+app = create_app()
