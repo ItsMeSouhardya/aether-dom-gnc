@@ -15,10 +15,15 @@ SCHEMA_VERSION: str = SCHEMA["properties"]["schemaVersion"]["const"]
 
 
 def _non_finite_issues(value: object, path: str = "") -> list[dict[str, str]]:
-    # Python's decoder permits NaN/Infinity and overflows 1e400 to infinity;
-    # JSON and AJV require finite numbers. Do not rewrite them as null.
-    if isinstance(value, float) and not math.isfinite(value):
-        return [{"path": path or "/", "message": "Number must be finite"}]
+    # Python permits NaN/Infinity and arbitrary-size integers. Both must stay
+    # finite when decoded as JavaScript numbers; never repair them as null.
+    if isinstance(value, (int, float)):
+        try:
+            finite = math.isfinite(value)
+        except OverflowError:
+            finite = False
+        if not finite:
+            return [{"path": path or "/", "message": "Number must be finite"}]
     if isinstance(value, dict):
         return [
             issue

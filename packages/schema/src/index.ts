@@ -3,6 +3,8 @@ import schema from '../cdom.schema.json';
 import type { CdomDocument } from './cdom.generated';
 
 export type { CdomDocument } from './cdom.generated';
+export { validateCommand } from './commands';
+export type { CdomCommand } from './command.generated';
 export type ValidationIssue = { path: string; message: string };
 export type ValidationResult =
   | { valid: true; document: CdomDocument }

@@ -1,8 +1,8 @@
-# Studio surface — Task 01
+# Studio surface — Tasks 01–02
 
 Mode: **Operate**. This extends the selected Afterlight identity into the product; the landing design remains independent.
 
-The creator opens Neon Shogun, chooses a scene/shot in the project explorer, selects a layer from the node navigator or stage, and reads its original transform and references in the inspector. Selection is temporary UI state; the fixture remains canon and revision stays unchanged.
+The creator opens saved Neon Shogun, chooses a scene/shot, selects a layer and inspects its saved transform/references. **Edit transform** opens a separate draft with five numeric fields, its base revision, **Save transform** and **Cancel**. Only a successful validated server response updates the stage and saved outputs. Selection/drafts are temporary; SQLite snapshots are canon.
 
 Use Manrope at fixed rem sizes, charcoal ground #141513, panel #1c1f19, foreground #f1f0e9, muted #b6b9ae, divider #373b32 and sage #d7dfc7 for selection/focus. Apply fine dividers and quiet 4px controls. No marketing hero, atmospheric imagery, ornamental motion or fabricated success counters. Authored SVG is for icons and exact interface geometry.
 
@@ -10,6 +10,6 @@ Desktop composition: compact project/branch header; left project explorer and sh
 
 The stage displays labeled layout rectangles, grounded in authored x/y/scale/rotation and sorted by z. It is explicitly a blockout: source SVG/audio files are not supplied yet. The background grid is a stage measurement aid, not decoration. Names, layer kinds, depth and selection identify the planes; selection has a visible border and text, not color alone. The navigator remains the accessible route to fully obscured/off-frame layers.
 
-The inspector uses semantic read-only outputs (X/Y/Z/scale/rotation), source IDs, asset URI, pose and character context. Do not show editable transform inputs, save/export/play buttons, or a successful linter count. Timeline tracks show the selected shot's authored duration only; diagnostics says continuity checks are not implemented and can disclose the existing fixture note as a document note.
+The inspector retains semantic saved-value outputs (X/Y/Z/scale/rotation), source IDs, asset URI, pose and character context alongside the explicit draft form. Draft inputs validate finite numbers and positive scale. Save uses restrained sage emphasis, disabled/busy states and clear validation copy; Cancel discards the draft. Header Undo/Redo is enabled from persisted history only. A quiet feedback strip reports saving, saved revision, errors or the need to reload. Change history discloses the latest 20 persisted receipts; it is separate from Diagnostics. Do not show export/play controls or successful linter counts. Timeline shows authored duration only; diagnostics discloses that continuity checks are not implemented.
 
-Empty scenes/projects, unselected layer, unavailable references, API failure and initial loading all have explicit guidance. Reload restores the seed and initial UI selection. The Task 00 overview remains at `/document`. No localStorage persistence or document mutations.
+Empty scenes/projects, unselected layer, unavailable references, API failure and initial loading have explicit guidance. Reload reads the saved branch and resets selection/drafts. A stale draft or uncertain save blocks writes until **Reload latest**; never silently rebase a draft or claim a failed response saved successfully. Undo restores authored values while creating a new revision. The Task 00 overview remains an immutable seed reference at `/document`. No localStorage canon, optimistic canonical mutation, linter or full media renderer.

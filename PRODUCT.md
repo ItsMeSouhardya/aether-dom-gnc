@@ -8,7 +8,7 @@ web
 
 ## Stack
 
-Task 00 implements a pnpm workspace with Next.js 16 / TypeScript in `apps/web`, FastAPI in `apps/api`, and a shared versioned JSON Schema in `packages/schema`. Task 01 adds the studio shell: explorer, layer navigator, selectable layout blockout, read-only inspector, timeline placeholder and diagnostics tray. Zustand holds UI selection separately from canon. The original overview remains at `/document`. The selected landing page remains in `landing-page/` using buildless HTML/CSS/JavaScript and a Node 22 local server. The user chose direct browser building on 11 November 2026 and selected Afterlight v2. Product and marketing surfaces stay separate.
+The pnpm workspace uses Next.js 16 / TypeScript in `apps/web`, FastAPI in `apps/api`, and shared versioned JSON Schemas in `packages/schema`. The studio has an explorer, layer navigator, selectable layout blockout, transform inspector/editor, timeline placeholder and diagnostics tray. Task 02 adds SQLAlchemy/SQLite snapshots, Alembic migrations, revision-checked commands, undo/redo and recent change history. Zustand holds UI selection separately from canon; drafts remain temporary. The original seed overview remains at `/document`. The selected landing page remains in `landing-page/` using buildless HTML/CSS/JavaScript and a Node 22 local server. The user chose direct browser building on 11 November 2026 and selected Afterlight v2. Product and marketing surfaces stay separate.
 
 ## Users
 
@@ -28,7 +28,7 @@ Local-first creative desktop workflow, seeded with the Neon Shogun scenario: Kae
 
 ## Capabilities and Constraints
 
-The local scaffold serves the supplied Neon Shogun document through read-only endpoints, with structural validation in TypeScript and Python. The studio selects scenes, shots and layers and inspects authored transforms without mutating canon. Its blockout uses labeled layout geometry because referenced source media is absent. Timeline/diagnostics surfaces disclose their placeholder status. Editing, persistence, full rendering, linter and playback remain future work, along with the complete six planned modules (Core, Lore, Stage, Audio, Director, Publish). Canonical changes must go through validated typed commands. UI/derived state and unapproved AI proposals never directly modify canon. Installed seeded fixtures load without cloud keys. Follow the starter kit for engineering scope and deferred functionality.
+The local API seeds Neon Shogun once and persists canonical snapshots and command history in SQLite. The studio selects scenes, shots and layers, edits layer transforms through explicit drafts, and saves only validated human commands against an expected revision. Undo/redo survives refresh and API restart; stale or uncertain saves require reloading the saved branch. The fixture reference stays immutable. Structural validation runs in TypeScript and Python. Its blockout uses labeled layout geometry because referenced source media is absent. Timeline/diagnostics surfaces disclose their placeholder status. Full rendering, linter and playback remain future work, along with the complete six planned modules (Core, Lore, Stage, Audio, Director, Publish). UI/derived state and unapproved AI proposals never directly modify canon. Installed seeded fixtures load without cloud keys. Follow the starter kit for engineering scope and deferred functionality.
 
 ## Brand Commitments
 
@@ -38,7 +38,7 @@ On 11 November 2026, the user selected **Afterlight v2 as the main design**, inc
 
 ## Evidence on Hand
 
-`aether_dom_codex_kit/AETHER_DOM_MASTER_PLAN.md`, `CODEX_TASKS.md`, schema and sample fixture; `initial_first_plan_provided/aether_dom_plan.md` and `5.1.png`; planning conversation 6af337a3-3148-83ec-be6c-37ac69e4be74. Tasks 00/01 have local verification evidence in `docs/tasks/`; the studio currently supports selection and inspection. No customers, testimonials, measured performance, pricing, release date, complete editable IDE, or signup service are established. Do not invent them.
+`aether_dom_codex_kit/AETHER_DOM_MASTER_PLAN.md`, `CODEX_TASKS.md`, schema and sample fixture; `initial_first_plan_provided/aether_dom_plan.md` and `5.1.png`; planning conversation 6af337a3-3148-83ec-be6c-37ac69e4be74. Task verification evidence lives in `docs/tasks/`; the studio supports selection, transform editing, local save and undo/redo. No customers, testimonials, measured performance, pricing, release date, complete editable IDE, or signup service are established. Do not invent them.
 
 ## Product Principles
 

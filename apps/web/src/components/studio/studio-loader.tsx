@@ -1,27 +1,56 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import type { CdomDocument } from '@aether-dom/schema';
-import { loadSnapshot } from '@/lib/snapshot';
+import { useEffect, useRef, useState } from 'react';
+import { loadProject, submitCommand, ProjectApiError, type ProjectSnapshot } from '@/lib/project-api';
+import { makeCommand, type CommandOperation } from '@/features/commands/draft';
 import { StudioShell } from './studio-shell';
 import { Icon } from './icons';
 
-type State = { kind: 'loading' } | { kind: 'error'; message: string } | { kind: 'ready'; document: CdomDocument };
+type State = { kind: 'loading' } | { kind: 'error'; message: string } | { kind: 'ready'; snapshot: ProjectSnapshot };
 
 export default function StudioLoader() {
   const [state, setState] = useState<State>({ kind: 'loading' });
   const [attempt, setAttempt] = useState(0);
+  const [busy, setBusy] = useState(false);
+  const [requiresReload, setRequiresReload] = useState(false);
+  const [feedback, setFeedback] = useState<{ error: boolean; message: string } | null>(null);
+  const writing = useRef(false);
+  const mounted = useRef(true);
+  useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
   useEffect(() => {
     let active = true;
-    loadSnapshot().then(
-      document => { if (active) setState({ kind: 'ready', document }); },
+    loadProject().then(
+      snapshot => { if (active) setState({ kind: 'ready', snapshot }); },
       (error: unknown) => { if (active) setState({ kind: 'error', message: error instanceof Error ? error.message : 'Unable to load the studio. Try again.' }); },
     );
     return () => { active = false; };
   }, [attempt]);
 
-  function reload() { setState({ kind: 'loading' }); setAttempt(value => value + 1); }
-  if (state.kind === 'ready') return <StudioShell document={state.document} reload={reload} />;
+  function reload() {
+    if (writing.current) return;
+    setRequiresReload(false); setFeedback(null); setState({ kind: 'loading' }); setAttempt(value => value + 1);
+  }
+  async function run(operation: CommandOperation, reason: string, expectedRevision?: number): Promise<boolean> {
+    if (writing.current || requiresReload || state.kind !== 'ready') return false;
+    writing.current = true; setBusy(true); setFeedback({ error: false, message: 'Saving…' });
+    let sent = false;
+    try {
+      const command = makeCommand(state.snapshot.document, operation, reason, expectedRevision);
+      sent = true;
+      const result = await submitCommand(command);
+      if (!mounted.current) return false;
+      setState({ kind: 'ready', snapshot: { document: result.document, history: result.history } });
+      setFeedback({ error: false, message: `Saved locally · Revision ${result.document.project.revision}` });
+      return true;
+    } catch (error) {
+      if (!mounted.current) return false;
+      const reloadNeeded = error instanceof ProjectApiError ? error.requiresReload : sent;
+      setRequiresReload(reloadNeeded);
+      setFeedback({ error: true, message: error instanceof Error ? error.message : 'Unable to save. Reload latest and try again.' });
+      return false;
+    } finally { writing.current = false; if (mounted.current) setBusy(false); }
+  }
+  if (state.kind === 'ready') return <StudioShell document={state.snapshot.document} history={state.snapshot.history} reload={reload} busy={busy} requiresReload={requiresReload} feedback={feedback} run={run} />;
   return <main id="studio" className="studio studio-connection">
     <header className="studio-header"><div className="studio-wordmark"><Icon name="brand" /><span>AETHER-DOM</span></div><span>Local studio</span></header>
     <section className="studio-connection-message" aria-busy={state.kind === 'loading'}><h1>{state.kind === 'loading' ? 'Opening studio…' : 'Studio unavailable'}</h1><p role={state.kind === 'error' ? 'alert' : 'status'}>{state.kind === 'loading' ? 'Loading the local document and checking its contract.' : state.message}</p><button className="studio-button" disabled={state.kind === 'loading'} onClick={reload}>{state.kind === 'loading' ? 'Loading document…' : 'Try again'}</button></section>

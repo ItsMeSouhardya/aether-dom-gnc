@@ -4,13 +4,14 @@ import { initialSelection, reduceSelection, type SelectionAction, type StudioSel
 
 type StudioUiState = {
   selection: StudioSelection;
-  dispatch: (action: SelectionAction) => void;
+  dispatch: (action: SelectionAction, document: CdomDocument) => void;
 };
 
 // Created per mounted document: selection is ephemeral and never serialized.
 export function createStudioStore(document: CdomDocument) {
+  const selection = initialSelection(document);
   return createStore<StudioUiState>()(set => ({
-    selection: initialSelection(document),
-    dispatch: action => set(state => ({ selection: reduceSelection(document, state.selection, action) })),
+    selection,
+    dispatch: (action, currentDocument) => set(state => ({ selection: reduceSelection(currentDocument, state.selection, action) })),
   }));
 }

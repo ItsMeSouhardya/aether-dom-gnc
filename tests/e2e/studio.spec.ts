@@ -1,6 +1,9 @@
 import { expect, test } from '@playwright/test';
 import sample from '../../packages/schema/fixtures/sample.cdom.json' with { type: 'json' };
 
+const documentRoute = '**/api/v1/projects/proj_neon_shogun/branches/branch_main/document';
+const snapshot = (document: unknown) => ({ document, history: { canUndo: false, canRedo: false, entries: [] } });
+
 test('selects layers through the navigator and stage and inspects exact canon values', async ({ page, request }, testInfo) => {
   const errors: string[] = [];
   page.on('pageerror', error => errors.push(error.message));
@@ -45,13 +48,13 @@ test('selects an empty scene and returns to a shot with no stale inspector', asy
 });
 
 test('retains failure/retry and empty project states in the studio', async ({ page }) => {
-  await page.route('**/api/v1/health', route => route.fulfill({ status: 503, json: { error: 'offline' } }));
+  await page.route(documentRoute, route => route.fulfill({ status: 503, json: { error: 'offline' } }));
   await page.goto('/');
   await expect(page.getByRole('main').getByRole('alert')).toContainText('unavailable');
-  await page.unroute('**/api/v1/health');
+  await page.unroute(documentRoute);
   await page.getByRole('button', { name: 'Try again' }).click();
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(sample.project.title);
-  await page.route('**/api/v1/fixtures/neon-shogun', route => route.fulfill({ json: { ...sample, scenes: [], shots: [], characters: [] } }));
+  await page.route(documentRoute, route => route.fulfill({ json: snapshot({ ...sample, scenes: [], shots: [], characters: [] }) }));
   await page.getByRole('button', { name: 'Reload document' }).click();
   await expect(page.getByText('No scenes in this document.')).toBeVisible();
   await expect(page.getByRole('region', { name: 'Layered stage' })).toContainText('No shot selected');
@@ -92,7 +95,7 @@ test('distinguishes multiple shots in the same scene by accessible name', async 
   const document = structuredClone(sample);
   document.shots.push({ ...structuredClone(document.shots[0]), id: 'shot_second', layerIds: [] });
   document.scenes[1].shotIds.push('shot_second');
-  await page.route('**/api/v1/fixtures/neon-shogun', route => route.fulfill({ json: document }));
+  await page.route(documentRoute, route => route.fulfill({ json: snapshot(document) }));
   await page.goto('/');
   const first = page.getByRole('button', { name: 'Select shot Rooftop Confrontation (shot_rooftop)', exact: true });
   const second = page.getByRole('button', { name: 'Select shot Rooftop Confrontation (shot_second)', exact: true });
@@ -110,7 +113,7 @@ test('wraps long document titles and branch names on narrow screens', async ({ p
   document.project.title = 'X'.repeat(300);
   document.branches[0].name = 'Y'.repeat(180);
   document.scenes[1].title = 'Z'.repeat(200);
-  await page.route('**/api/v1/fixtures/neon-shogun', route => route.fulfill({ json: document }));
+  await page.route(documentRoute, route => route.fulfill({ json: snapshot(document) }));
   await page.setViewportSize({ width: 360, height: 900 });
   await page.goto('/');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(document.project.title);

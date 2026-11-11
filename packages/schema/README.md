@@ -16,4 +16,12 @@ This preliminary schema checks **structure**. It does not resolve IDs, enforce b
 
 The schema's `$id` is an identifier, not a hosted endpoint or runtime network dependency. Validators load the checked-in file. The fixture includes asset URI metadata; actual SVG/audio assets are not supplied by this task.
 
-For a future contract change: preserve originals, assign a new schema version, document compatibility, introduce an explicit migration, regenerate types, and add success/failure fixtures in both languages. Task 00 performs no migration and creates no command or persistence API.
+For a future document-contract change: preserve originals, assign a new schema version, document compatibility, introduce an explicit migration, regenerate types, and add success/failure fixtures in both languages. Task 02 leaves the supplied document schema and fixture unchanged.
+
+## Commands — Task 02
+
+`command.schema.json` separately defines command version **0.1.0**. Import generated `CdomCommand` and `validateCommand(value)` from this package. It returns `{valid:true, command}` or `{valid:false, issues}`. Both TypeScript and Python read this same schema; generation/drift checks cover both contracts.
+
+Every command requires `commandId`, `projectId`, `branchId`, `expectedRevision` (nonnegative safe integer), a human actor `{kind:'human',id:string}`, `op` and `reason`. `setLayerTransform` also requires stable `targetId` and nonempty partial `args` drawn from `x`, `y`, `z`, `scale` and `rotationDeg`. Values must be finite; scale must be positive. `undo` and `redo` have no target/args. Unknown fields and agent actors are rejected. This envelope is a local attribution record, not authentication.
+
+The API checks branch/target identity and revision, validates the resulting `.cdom`, then atomically persists a new snapshot, immutable audit/forward/inverse records and undo/redo stacks. Conflicts return 409 without writing. Exact replay of a command ID/payload returns its original result; a different payload under that ID conflicts. Undo restores authored values exactly while revision metadata advances. New edits clear redo without erasing the audit. General reference integrity and dependency invalidation remain Task 03.
