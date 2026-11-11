@@ -1,0 +1,189 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-11T09:00:00.682Z",
+  "title": "Design System: AETHER-DOM — Afterlight v2",
+  "extensions": {
+    "colorMeta": {
+      "afterlight-accent": {
+        "role": "primary",
+        "displayName": "Afterlight sage"
+      },
+      "afterlight-bg": {
+        "role": "neutral",
+        "displayName": "Afterlight charcoal"
+      }
+    },
+    "typographyMeta": {
+      "afterlight-display": {
+        "displayName": "Afterlight hero",
+        "purpose": "Manrope hero H1; mobile clamp differs."
+      },
+      "studio-file": {
+        "displayName": "Studio filename",
+        "purpose": "Monospace is explicitly applied to the file label, not all Signal data."
+      }
+    },
+    "shadows": [
+      {
+        "name": "mobile-navigation",
+        "value": "0 12px 25px rgba(0,0,0,.2)",
+        "purpose": "Disclosed mobile navigation at 760px and below."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease",
+        "value": "cubic-bezier(.16,1,.3,1)",
+        "purpose": "Hero arrival and primary-action lift."
+      },
+      {
+        "name": "hero-arrive",
+        "value": "1.2s var(--ease) both",
+        "purpose": "Afterlight hero copy arrival."
+      },
+      {
+        "name": "primary-action",
+        "value": "background .2s, color .2s, transform .3s var(--ease)",
+        "purpose": "Hover moves up 3px; reduced motion removes transition and lift."
+      },
+      {
+        "name": "linked-arrow",
+        "value": "translateX(4px)",
+        "purpose": "Text-link hover response."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "animation: none !important; transition: none !important",
+        "purpose": "Applied to all elements and pseudo-elements for prefers-reduced-motion: reduce."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "wide-section",
+        "value": "1600px",
+        "query": "min-width",
+        "purpose": "Center 1440px section content region."
+      },
+      {
+        "name": "compact-desktop",
+        "value": "1150px",
+        "query": "max-width",
+        "purpose": "Compact navigation, studio columns and gaps."
+      },
+      {
+        "name": "tablet",
+        "value": "960px",
+        "query": "max-width",
+        "purpose": "Hide header CTA and studio scene tree; split heroes remain split."
+      },
+      {
+        "name": "mobile",
+        "value": "760px",
+        "query": "max-width",
+        "purpose": "Menu disclosure; stacked layouts; 24px gutters and 76px section spacing."
+      }
+    ],
+    "focus": {
+      "outlineWidth": "2px",
+      "outlineOffset": "6px",
+      "note": "Resolve color by candidate and surface using exploration.candidates.*.focus; studio and dark-header overrides are deliberate."
+    },
+    "selection": {
+      "id": "afterlight-v2",
+      "status": "selected",
+      "selectedOn": "2026-11-11",
+      "sourceSpec": "design_specifications/design.md",
+      "implementation": [
+        "landing-page/app.js",
+        "landing-page/styles.css",
+        "landing-page/cdom-section.js"
+      ],
+      "documentModel": {
+        "sectionId": "creative-document",
+        "before": "explore",
+        "topPlane": "colors.afterlight-model-plane",
+        "planes": [
+          "Narrative",
+          "Stage",
+          "Audio"
+        ],
+        "pauseResume": true,
+        "offscreenPause": true,
+        "hiddenDocumentPause": true,
+        "reducedMotion": "static",
+        "implementation": "landing-page/cdom-section.js",
+        "layout": {
+          "columnAlignment": "start",
+          "maxFigureWidth": "560px",
+          "svgViewBox": "0 68 660 502",
+          "stageLabel": {
+            "x": 558,
+            "y": 320,
+            "leader": "M510 290l40 40h72"
+          }
+        },
+        "footerLabel": {
+          "x": 320,
+          "y": 546,
+          "textAnchor": "middle"
+        }
+      },
+      "archives": {
+        "root": "design_archive/",
+        "frozen": true,
+        "designs": [
+          "afterlight-v1",
+          "signal"
+        ],
+        "instructions": "Keep archived files untouched unless the user explicitly requests archive changes."
+      }
+    }
+  },
+  "components": [
+    {
+      "name": "Afterlight primary action",
+      "kind": "button",
+      "refersTo": "afterlight-button",
+      "description": "Afterlight anchor CTA; style specimen without its decorative arrow.",
+      "html": "<a class=\"ds-afterlight-action\" href=\"#idea\">Discover AETHER-DOM</a>",
+      "css": ".ds-afterlight-action{display:inline-flex;align-items:center;justify-content:space-between;gap:30px;background:#d7dfc7;color:#141513;padding:18px 24px;min-height:56px;border:0;border-radius:4px;font:600 14px Manrope,sans-serif;text-decoration:none;transition:background .2s,color .2s,transform .3s cubic-bezier(.16,1,.3,1)}.ds-afterlight-action:hover{transform:translateY(-3px);background:#eff4e7}.ds-afterlight-action:focus-visible{outline:2px solid #d7dfc7;outline-offset:6px}@media(max-width:760px){.ds-afterlight-action{padding:16px 19px;font-size:12px;min-height:51px;gap:20px}}@media(prefers-reduced-motion:reduce){.ds-afterlight-action{transition:none}.ds-afterlight-action:hover{transform:none}}"
+    },
+    {
+      "name": "Studio tension range",
+      "kind": "input",
+      "description": "Native range control from the dark illustrative studio; app.js updates dependent labels.",
+      "html": "<label class=\"ds-tension\">Story tension <input type=\"range\" min=\"0\" max=\"100\" value=\"35\" aria-label=\"Story tension\"></label>",
+      "css": ".ds-tension{display:block;background:#161a16;color:#cdd9bf;padding:22px;font:400 10px Manrope,sans-serif}.ds-tension input{width:100%;accent-color:#c8d8ac;cursor:pointer;height:24px;margin:9px 0 0}.ds-tension input:focus-visible{outline:2px solid #d7dfc7;outline-offset:6px}"
+    },
+    {
+      "name": "Illustrative-preview badge",
+      "kind": "chip",
+      "description": "Non-interactive studio status label, not a selectable filter chip.",
+      "html": "<span class=\"ds-preview-badge\">Illustrative preview</span>",
+      "css": ".ds-preview-badge{display:inline-block;background:#161a16;color:#c9d3bd;border:1px solid #57624c;border-radius:3px;padding:4px 7px;white-space:nowrap;font:400 9px Manrope,sans-serif}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Immersive cinematic storytelling with calm charcoal/sage editorial craft.",
+    "overview": "Afterlight v2 is the selected main landing design. Refine it as required; original Afterlight v1 and Signal remain frozen independent references.",
+    "keyCharacteristics": [
+      "Cinematic world artwork",
+      "Charcoal and sage",
+      "Manrope typography",
+      "Layered semantic document model",
+      "Creator control and honest development status"
+    ],
+    "rules": [],
+    "dos": [
+      "Edit the active landing-page source",
+      "Preserve the frozen design_archive references",
+      "Respect reduced motion and keyboard operation",
+      "Keep current context and selected design documentation current"
+    ],
+    "donts": [
+      "Do not reintroduce comparison controls",
+      "Do not present the illustrative scene as a working IDE",
+      "Do not modify archived designs during main-page refinements"
+    ]
+  }
+}

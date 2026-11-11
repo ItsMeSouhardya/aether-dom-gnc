@@ -1,0 +1,32 @@
+[
+  {
+    "figureWidth": 560,
+    "headingGap": 144,
+    "modelBelowHeading": 20.8,
+    "noOverflow": true,
+    "precedingGap": 144.8,
+    "stageInsideCanvas": true,
+    "stageOutsideLayer": 40.7,
+    "width": 1920
+  },
+  {
+    "figureWidth": 560,
+    "headingGap": 138.2,
+    "modelBelowHeading": 21.4,
+    "noOverflow": true,
+    "precedingGap": 139,
+    "stageInsideCanvas": true,
+    "stageOutsideLayer": 40.7,
+    "width": 1536
+  },
+  {
+    "figureWidth": 334.4,
+    "headingGap": 76,
+    "modelBelowHeading": 567.1,
+    "noOverflow": true,
+    "precedingGap": 76.8,
+    "stageInsideCanvas": true,
+    "stageOutsideLayer": 24.3,
+    "width": 390
+  }
+]

@@ -1,0 +1,13 @@
+[
+  { "name": "unsupported version", "path": ["schemaVersion"], "value": "9.0.0" },
+  { "name": "missing project", "path": ["project"], "remove": true },
+  { "name": "negative revision", "path": ["project", "revision"], "value": -1 },
+  { "name": "string revision", "path": ["project", "revision"], "value": "0" },
+  { "name": "unknown root field", "path": ["uiSelection"], "value": "layer_kael" },
+  { "name": "trait above one", "path": ["characters", 0, "traits", "paranoia"], "value": 1.01 },
+  { "name": "invalid asset kind", "path": ["assets", 0, "kind"], "value": "executable" },
+  { "name": "zero scale", "path": ["layers", 0, "transform", "scale"], "value": 0 },
+  { "name": "unknown nested field", "path": ["layers", 0, "transform", "uiDrag"], "value": true },
+  { "name": "duplicate layer reference", "path": ["shots", 0, "layerIds"], "value": ["layer_kael", "layer_kael"] },
+  { "name": "zero shot duration", "path": ["shots", 0, "durationMs"], "value": 0 }
+]

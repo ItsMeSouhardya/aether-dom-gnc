@@ -1,0 +1,314 @@
+{
+  "schemaVersion": "0.1.0",
+  "project": {
+    "id": "proj_neon_shogun",
+    "title": "Neon Shogun — Rooftop",
+    "description": "Offline demo story; all characters fictional",
+    "revision": 0,
+    "activeBranchId": "branch_main"
+  },
+  "branches": [
+    {
+      "id": "branch_main",
+      "name": "Main Canon",
+      "parentId": null,
+      "baseRevision": 0,
+      "headRevision": 0
+    }
+  ],
+  "characters": [
+    {
+      "id": "char_kael",
+      "name": "Kael",
+      "traits": {
+        "paranoia": 0.75,
+        "loyalty": 0.2,
+        "aggression": 0.55
+      },
+      "dialect": {
+        "style": "Low-Sector Cyber-Cant",
+        "forbiddenTerms": [
+          "kindly",
+          "your excellency"
+        ]
+      },
+      "constraints": [
+        {
+          "id": "constraint_kael_left_arm",
+          "type": "limb_injury",
+          "limb": "left_arm",
+          "effectiveFromEventId": "event_injury",
+          "resolvedByEventId": null
+        }
+      ]
+    },
+    {
+      "id": "char_vance",
+      "name": "Vance",
+      "traits": {
+        "paranoia": 0.32,
+        "loyalty": 0.1,
+        "aggression": 0.35
+      },
+      "dialect": {
+        "style": "Formal-Corporate",
+        "forbiddenTerms": []
+      },
+      "constraints": []
+    }
+  ],
+  "events": [
+    {
+      "id": "event_injury",
+      "sceneId": "scene_prologue",
+      "order": 0,
+      "kind": "physical_change",
+      "description": "Kael injures his left arm during the escape."
+    },
+    {
+      "id": "event_betrayal",
+      "sceneId": "scene_rooftop",
+      "order": 1,
+      "kind": "revelation",
+      "description": "Kael learns Vance betrayed the syndicate."
+    }
+  ],
+  "scenes": [
+    {
+      "id": "scene_prologue",
+      "title": "The Escape",
+      "eventIds": [
+        "event_injury"
+      ],
+      "shotIds": []
+    },
+    {
+      "id": "scene_rooftop",
+      "title": "Rooftop Confrontation",
+      "eventIds": [
+        "event_betrayal"
+      ],
+      "shotIds": [
+        "shot_rooftop"
+      ]
+    }
+  ],
+  "shots": [
+    {
+      "id": "shot_rooftop",
+      "sceneId": "scene_rooftop",
+      "durationMs": 16000,
+      "camera": {
+        "aspectRatio": "16:9",
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 5
+        },
+        "fovDeg": 45
+      },
+      "layerIds": [
+        "layer_rooftops",
+        "layer_kael",
+        "layer_vance",
+        "layer_sign"
+      ],
+      "audioTrackIds": [
+        "track_ambient",
+        "track_tension",
+        "track_sign_foley"
+      ],
+      "layoutOverrides": {
+        "9:16": {
+          "layerTransforms": {
+            "layer_kael": {
+              "x": -0.22,
+              "y": 0.0,
+              "z": 0.0,
+              "scale": 0.85,
+              "rotationDeg": 0
+            },
+            "layer_vance": {
+              "x": 0.22,
+              "y": 0.0,
+              "z": 0.0,
+              "scale": 0.85,
+              "rotationDeg": 0
+            }
+          }
+        }
+      }
+    }
+  ],
+  "assets": [
+    {
+      "id": "asset_rooftops",
+      "kind": "svg",
+      "uri": "assets/fixtures/rooftops.svg",
+      "rights": "project_original"
+    },
+    {
+      "id": "asset_kael",
+      "kind": "svg",
+      "uri": "assets/fixtures/kael.svg",
+      "rights": "project_original"
+    },
+    {
+      "id": "asset_vance",
+      "kind": "svg",
+      "uri": "assets/fixtures/vance.svg",
+      "rights": "project_original"
+    },
+    {
+      "id": "asset_sign",
+      "kind": "svg",
+      "uri": "assets/fixtures/neon_sign.svg",
+      "rights": "project_original"
+    },
+    {
+      "id": "asset_ambient",
+      "kind": "audio",
+      "uri": "assets/fixtures/ambient.wav",
+      "rights": "project_original"
+    },
+    {
+      "id": "asset_tension",
+      "kind": "audio",
+      "uri": "assets/fixtures/tension.wav",
+      "rights": "project_original"
+    },
+    {
+      "id": "asset_foley",
+      "kind": "audio",
+      "uri": "assets/fixtures/buzz.wav",
+      "rights": "project_original"
+    }
+  ],
+  "layers": [
+    {
+      "id": "layer_rooftops",
+      "shotId": "shot_rooftop",
+      "kind": "svg_plane",
+      "assetId": "asset_rooftops",
+      "characterId": null,
+      "pose": null,
+      "transform": {
+        "x": 0,
+        "y": 0,
+        "z": -2,
+        "scale": 1,
+        "rotationDeg": 0
+      }
+    },
+    {
+      "id": "layer_kael",
+      "shotId": "shot_rooftop",
+      "kind": "character_sprite",
+      "assetId": "asset_kael",
+      "characterId": "char_kael",
+      "pose": "lifting_with_left_arm",
+      "transform": {
+        "x": -0.65,
+        "y": -0.1,
+        "z": 0,
+        "scale": 1,
+        "rotationDeg": 0
+      }
+    },
+    {
+      "id": "layer_vance",
+      "shotId": "shot_rooftop",
+      "kind": "character_sprite",
+      "assetId": "asset_vance",
+      "characterId": "char_vance",
+      "pose": "standing",
+      "transform": {
+        "x": 0.65,
+        "y": -0.1,
+        "z": 0,
+        "scale": 1,
+        "rotationDeg": 0
+      }
+    },
+    {
+      "id": "layer_sign",
+      "shotId": "shot_rooftop",
+      "kind": "svg_plane",
+      "assetId": "asset_sign",
+      "characterId": null,
+      "pose": null,
+      "transform": {
+        "x": 0.85,
+        "y": 0.5,
+        "z": -0.5,
+        "scale": 0.55,
+        "rotationDeg": 0
+      }
+    }
+  ],
+  "audioTracks": [
+    {
+      "id": "track_ambient",
+      "shotId": "shot_rooftop",
+      "kind": "music",
+      "assetId": "asset_ambient",
+      "gainDb": -4,
+      "boundLayerId": null
+    },
+    {
+      "id": "track_tension",
+      "shotId": "shot_rooftop",
+      "kind": "music",
+      "assetId": "asset_tension",
+      "gainDb": -16,
+      "boundLayerId": null
+    },
+    {
+      "id": "track_sign_foley",
+      "shotId": "shot_rooftop",
+      "kind": "foley",
+      "assetId": "asset_foley",
+      "gainDb": -8,
+      "boundLayerId": "layer_sign"
+    }
+  ],
+  "bindings": [
+    {
+      "id": "binding_paranoia_to_tension",
+      "source": {
+        "entityId": "char_kael",
+        "path": "traits.paranoia"
+      },
+      "target": {
+        "entityId": "track_tension",
+        "path": "gainDb"
+      },
+      "mapping": {
+        "kind": "linear",
+        "inputMin": 0,
+        "inputMax": 1,
+        "outputMin": -24,
+        "outputMax": -2
+      }
+    },
+    {
+      "id": "binding_sign_position",
+      "source": {
+        "entityId": "layer_sign",
+        "path": "transform.x"
+      },
+      "target": {
+        "entityId": "track_sign_foley",
+        "path": "spatial.x"
+      },
+      "mapping": {
+        "kind": "identity"
+      }
+    }
+  ],
+  "provenance": {
+    "createdBy": "fixture",
+    "generatedAssets": false,
+    "notes": "Intentional continuity issue: Kael has an injured left arm but the pose lifts with it."
+  }
+}

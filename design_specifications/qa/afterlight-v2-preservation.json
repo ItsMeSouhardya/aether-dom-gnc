@@ -1,0 +1,19 @@
+{
+  "originalAfterlightUnchanged": true,
+  "signalUnchanged": true,
+  "v2OnlyAddsModelSection": true,
+  "unchangedExistingCssRules": 374,
+  "missingOrChangedExistingRules": 0,
+  "motionStates": [
+    "paused",
+    "running",
+    "paused",
+    "paused",
+    "reduced"
+  ],
+  "reducedMotionDisablesControl": true,
+  "cleanup": {
+    "remainingListeners": 0,
+    "observerDisconnected": true
+  }
+}

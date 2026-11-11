@@ -1,0 +1,35 @@
+{
+  "name": "aether-dom",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Local-first creative IDE — Task 00 contracts and scaffold.",
+  "packageManager": "pnpm@11.25.0",
+  "scripts": {
+    "dev": "pnpm --filter web dev",
+    "dev:web": "pnpm --filter web dev",
+    "dev:api": "node tools/api.mjs dev",
+    "landing:dev": "node tools/serve.mjs",
+    "preview": "node tools/serve.mjs --production",
+    "build": "pnpm --filter web build",
+    "landing:build": "node tools/build.mjs",
+    "landing:preview": "node tools/serve.mjs --production",
+    "lint": "eslint . --max-warnings 0 && node tools/api.mjs lint && pnpm check",
+    "typecheck": "pnpm --filter @aether-dom/schema types:check && pnpm -r --if-present typecheck && node tools/api.mjs typecheck",
+    "test": "pnpm -r --if-present test",
+    "test:e2e": "playwright test",
+    "verify:preserved": "node tools/verify-preserved.mjs",
+    "check": "node --check landing-page/app.js && node --check landing-page/cdom-section.js && node --check tools/serve.mjs && node --check tools/build.mjs && node --check design_archive/serve.mjs",
+    "archive:afterlight": "node design_archive/serve.mjs afterlight-v1",
+    "archive:signal": "node design_archive/serve.mjs signal"
+  },
+  "engines": { "node": ">=22.13.0" },
+  "devDependencies": {
+    "@eslint/js": "9.39.5",
+    "@playwright/test": "^1.58.0",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.4.6",
+    "typescript-eslint": "^8.48.0",
+    "typescript": "~5.9.3"
+  }
+}

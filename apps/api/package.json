@@ -1,0 +1,7 @@
+{
+  "name": "api", "version": "0.1.0", "private": true,
+  "scripts": {
+    "dev": "node ../../tools/api.mjs dev",
+    "test": "node ../../tools/api.mjs test"
+  }
+}

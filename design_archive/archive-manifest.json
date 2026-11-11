@@ -1,0 +1,191 @@
+{
+  "frozenOn": "2026-11-11",
+  "purpose": "Untouched Afterlight v1 and Signal reference snapshots",
+  "files": [
+    {
+      "path": "afterlight-v1/app.js",
+      "bytes": 2192,
+      "sha256": "90681a731d3c5ee20422d6a60e87e74d61d03269e088f836d06d2df0dda7860d"
+    },
+    {
+      "path": "afterlight-v1/assets/afterlight-world.png",
+      "bytes": 2490368,
+      "sha256": "ce3e9289a54443b0b53318650f8b72b013f221b45d037f03c3518a438f738258"
+    },
+    {
+      "path": "afterlight-v1/assets/folio-world.png",
+      "bytes": 2184451,
+      "sha256": "bda998d4358e2c2159796510f7fdd686433cf611de039409d6b9989ea425c2b2"
+    },
+    {
+      "path": "afterlight-v1/assets/fonts/instrument-serif-italic.woff2",
+      "bytes": 22128,
+      "sha256": "5a51946dfffa82972bc98745359c46761515641fda557c25116459a9f83da4a7"
+    },
+    {
+      "path": "afterlight-v1/assets/fonts/instrument-serif-OFL.txt",
+      "bytes": 4405,
+      "sha256": "129ed7618959716959f2941fdd5b49e0ad6e6c1d78726761786a00253d865521"
+    },
+    {
+      "path": "afterlight-v1/assets/fonts/instrument-serif-source.css",
+      "bytes": 1793,
+      "sha256": "c061e89d821921757e34ed39effac7dbd0e3e7d164c059d0ca97501d669f25c3"
+    },
+    {
+      "path": "afterlight-v1/assets/fonts/instrument-serif.woff2",
+      "bytes": 21032,
+      "sha256": "5eb09b5ac0e28b67c2f041c8ba6d244604ca0c0980d65912ab2d47fed84ddc31"
+    },
+    {
+      "path": "afterlight-v1/assets/fonts/manrope-OFL.txt",
+      "bytes": 4387,
+      "sha256": "58172e0c0fac2cda8a37b348164bb55e44b0e69051e557e92b1d3f6910141f7b"
+    },
+    {
+      "path": "afterlight-v1/assets/fonts/manrope-source.css",
+      "bytes": 10720,
+      "sha256": "6f1e62288b398e425429dd7e6d289c66a9685876f8d4879a04740a52fa46eb7b"
+    },
+    {
+      "path": "afterlight-v1/assets/fonts/manrope.woff2",
+      "bytes": 24532,
+      "sha256": "8c2def024c1bf31aacf3624ae3c4d701269b4ec3dc765c04830839f0d36b2d9e"
+    },
+    {
+      "path": "afterlight-v1/assets/fonts/space-grotesk-OFL.txt",
+      "bytes": 4495,
+      "sha256": "564ce565c371c5e5bbf286006565a7c9aa55a9f56e7ca58d56e05d649dd61a72"
+    },
+    {
+      "path": "afterlight-v1/assets/fonts/space-grotesk-source.css",
+      "bytes": 5152,
+      "sha256": "276d2250c36ee5189950dcf7426d9a95f66294f077dc40900aec8ec8097858d9"
+    },
+    {
+      "path": "afterlight-v1/assets/fonts/space-grotesk.woff2",
+      "bytes": 22288,
+      "sha256": "0640890476fc1198ab4de571fb658de443c4d85b66466ec09534a8737ab1ce9d"
+    },
+    {
+      "path": "afterlight-v1/assets/mark.svg",
+      "bytes": 262,
+      "sha256": "2acf59e7359500f091874c4cd82757828995b329dd1b2a0f13793eaca1346a3b"
+    },
+    {
+      "path": "afterlight-v1/index.html",
+      "bytes": 16375,
+      "sha256": "e8ace704ebd1d946651627d5dec30a3cb981ecd0560a8a5e9c136a43a39414af"
+    },
+    {
+      "path": "afterlight-v1/styles.css",
+      "bytes": 27712,
+      "sha256": "bcc17916a8408259f17c7b351e52ec6c5f0f6f24053bab9bdf0054e37c5e0245"
+    },
+    {
+      "path": "AGENTS.md",
+      "bytes": 253,
+      "sha256": "8f89ece46877cabc2e499ba16d719c64620d7d7d0ceec08cea2ff90e7dbdd024"
+    },
+    {
+      "path": "ASSET-SOURCES.md",
+      "bytes": 4019,
+      "sha256": "bd5c3e1cef03cd01f408cd31de17f83cf2305124aa2c1b085141aac665419dd7"
+    },
+    {
+      "path": "DESIGN-AT-SELECTION.md",
+      "bytes": 11149,
+      "sha256": "7855587efeba9e48a1af788b41addfa4614437357d6084979896d1853865fa6c"
+    },
+    {
+      "path": "README.md",
+      "bytes": 964,
+      "sha256": "e54e5843af155170a245f6f8aa3be08db7e39fcb4e6598a01a8a0ff503856e73"
+    },
+    {
+      "path": "serve.mjs",
+      "bytes": 1478,
+      "sha256": "0934c5c18e36f892c6257da936672f3fb047c80ae398a0fab1a91a88f019df07"
+    },
+    {
+      "path": "signal/app.js",
+      "bytes": 2192,
+      "sha256": "90681a731d3c5ee20422d6a60e87e74d61d03269e088f836d06d2df0dda7860d"
+    },
+    {
+      "path": "signal/assets/afterlight-world.png",
+      "bytes": 2490368,
+      "sha256": "ce3e9289a54443b0b53318650f8b72b013f221b45d037f03c3518a438f738258"
+    },
+    {
+      "path": "signal/assets/folio-world.png",
+      "bytes": 2184451,
+      "sha256": "bda998d4358e2c2159796510f7fdd686433cf611de039409d6b9989ea425c2b2"
+    },
+    {
+      "path": "signal/assets/fonts/instrument-serif-italic.woff2",
+      "bytes": 22128,
+      "sha256": "5a51946dfffa82972bc98745359c46761515641fda557c25116459a9f83da4a7"
+    },
+    {
+      "path": "signal/assets/fonts/instrument-serif-OFL.txt",
+      "bytes": 4405,
+      "sha256": "129ed7618959716959f2941fdd5b49e0ad6e6c1d78726761786a00253d865521"
+    },
+    {
+      "path": "signal/assets/fonts/instrument-serif-source.css",
+      "bytes": 1793,
+      "sha256": "c061e89d821921757e34ed39effac7dbd0e3e7d164c059d0ca97501d669f25c3"
+    },
+    {
+      "path": "signal/assets/fonts/instrument-serif.woff2",
+      "bytes": 21032,
+      "sha256": "5eb09b5ac0e28b67c2f041c8ba6d244604ca0c0980d65912ab2d47fed84ddc31"
+    },
+    {
+      "path": "signal/assets/fonts/manrope-OFL.txt",
+      "bytes": 4387,
+      "sha256": "58172e0c0fac2cda8a37b348164bb55e44b0e69051e557e92b1d3f6910141f7b"
+    },
+    {
+      "path": "signal/assets/fonts/manrope-source.css",
+      "bytes": 10720,
+      "sha256": "6f1e62288b398e425429dd7e6d289c66a9685876f8d4879a04740a52fa46eb7b"
+    },
+    {
+      "path": "signal/assets/fonts/manrope.woff2",
+      "bytes": 24532,
+      "sha256": "8c2def024c1bf31aacf3624ae3c4d701269b4ec3dc765c04830839f0d36b2d9e"
+    },
+    {
+      "path": "signal/assets/fonts/space-grotesk-OFL.txt",
+      "bytes": 4495,
+      "sha256": "564ce565c371c5e5bbf286006565a7c9aa55a9f56e7ca58d56e05d649dd61a72"
+    },
+    {
+      "path": "signal/assets/fonts/space-grotesk-source.css",
+      "bytes": 5152,
+      "sha256": "276d2250c36ee5189950dcf7426d9a95f66294f077dc40900aec8ec8097858d9"
+    },
+    {
+      "path": "signal/assets/fonts/space-grotesk.woff2",
+      "bytes": 22288,
+      "sha256": "0640890476fc1198ab4de571fb658de443c4d85b66466ec09534a8737ab1ce9d"
+    },
+    {
+      "path": "signal/assets/mark.svg",
+      "bytes": 262,
+      "sha256": "2acf59e7359500f091874c4cd82757828995b329dd1b2a0f13793eaca1346a3b"
+    },
+    {
+      "path": "signal/index.html",
+      "bytes": 18387,
+      "sha256": "0e90d960249f82985010873eb5e62db00b6136cea7a9273280b4d7d5fd5da73b"
+    },
+    {
+      "path": "signal/styles.css",
+      "bytes": 27712,
+      "sha256": "bcc17916a8408259f17c7b351e52ec6c5f0f6f24053bab9bdf0054e37c5e0245"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+[
+  {
+    "variant": "afterlight-v1",
+    "port": 4181,
+    "statuses": [
+      {
+        "path": "/",
+        "status": 200
+      },
+      {
+        "path": "/styles.css",
+        "status": 200
+      },
+      {
+        "path": "/app.js",
+        "status": 200
+      },
+      {
+        "path": "/assets/fonts/manrope.woff2",
+        "status": 200
+      },
+      {
+        "path": "/assets/afterlight-world.png",
+        "status": 200
+      }
+    ]
+  },
+  {
+    "variant": "signal",
+    "port": 4182,
+    "statuses": [
+      {
+        "path": "/",
+        "status": 200
+      },
+      {
+        "path": "/styles.css",
+        "status": 200
+      },
+      {
+        "path": "/app.js",
+        "status": 200
+      },
+      {
+        "path": "/assets/fonts/manrope.woff2",
+        "status": 200
+      },
+      {
+        "path": "/assets/afterlight-world.png",
+        "status": 200
+      }
+    ]
+  },
+  {
+    "variant": "main",
+    "status": 200
+  }
+]

@@ -1,0 +1,24 @@
+{
+  "selectedDesign": "afterlight-v2",
+  "selectedMarkupSha256": "0778b207e1a59731500dce9106ef120617b5ec7347fce0242f5a633502334070",
+  "promotedMarkupIdentical": true,
+  "archiveSnapshots": [
+    {
+      "directory": "afterlight-v1",
+      "displayName": "Afterlight v1",
+      "renderSha256": "04c1610148cb4d11eeab0e841bcb47b334570ca90622afb5d8c5bc5826f1f87d"
+    },
+    {
+      "directory": "signal",
+      "displayName": "Signal",
+      "renderSha256": "cd2a573b4ddbf197c80eb58c99ff9d5c41c41d0ae7c801db1a78461ad2b8624e"
+    }
+  ],
+  "removedChrome": [
+    "variant buttons",
+    "previous/next controls",
+    "global Left/Right switching",
+    "review-only body padding",
+    "review-only hero caption offset"
+  ]
+}
