@@ -5,7 +5,7 @@ test('loads the validated local fixture, reloads, and exposes read-only JSON', a
   const errors: string[] = [];
   page.on('pageerror', error => errors.push(error.message));
   page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
-  await page.goto('/');
+  await page.goto('/document');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Neon Shogun — Rooftop');
   await expect(page.getByRole('status')).toContainText('Local API connected');
   await expect(page.getByRole('heading', { name: 'Kael', exact: true })).toBeVisible();
@@ -25,7 +25,7 @@ test('loads the validated local fixture, reloads, and exposes read-only JSON', a
 
 test('shows a service failure and recovers on retry', async ({ page }) => {
   await page.route('**/api/v1/health', route => route.fulfill({ status: 503, json: { error: 'offline' } }));
-  await page.goto('/');
+  await page.goto('/document');
   await expect(page.getByRole('main').getByRole('alert')).toContainText('unavailable');
   await expect(page.getByRole('heading', { name: 'Document unavailable' })).toBeVisible();
   await page.unroute('**/api/v1/health');
@@ -35,20 +35,20 @@ test('shows a service failure and recovers on retry', async ({ page }) => {
 
 test('does not present an invalid document as connected', async ({ page }) => {
   await page.route('**/api/v1/fixtures/neon-shogun', route => route.fulfill({ json: { ...sample, schemaVersion: '9.0.0' } }));
-  await page.goto('/');
+  await page.goto('/document');
   await expect(page.getByRole('main').getByRole('alert')).toContainText('document contract');
   await expect(page.getByText('Local API connected')).toHaveCount(0);
 });
 
 test('shows honest empty states for a structurally valid empty project', async ({ page }) => {
   await page.route('**/api/v1/fixtures/neon-shogun', route => route.fulfill({ json: { ...sample, scenes: [], characters: [] } }));
-  await page.goto('/');
+  await page.goto('/document');
   await expect(page.getByText('No scenes in this document.')).toBeVisible();
   await expect(page.getByText('No characters in this document.')).toBeVisible();
 });
 
 test('supports keyboard navigation and narrow reflow', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/document');
   await expect(page.getByRole('status')).toContainText('Document validated');
   await page.keyboard.press('Tab');
   await expect(page.getByRole('link', { name: 'Skip to document' })).toBeFocused();

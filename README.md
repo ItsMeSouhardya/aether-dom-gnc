@@ -1,6 +1,6 @@
 # AETHER-DOM
 
-A local-first creative IDE for semantic, cross-modal storytelling. **Task 00 — Scaffold Contracts** provides a Next.js 16 web app, a read-only FastAPI service, and the shared `.cdom` schema. The selected Afterlight v2 landing page remains separate and unchanged.
+A local-first creative IDE for semantic, cross-modal storytelling. **Task 01 — Studio shell** adds shot/layer selection, a project explorer, layout stage, transform inspector, timeline placeholder and diagnostics tray to the Task 00 Next.js/FastAPI foundation. The selected Afterlight v2 landing page remains separate and unchanged.
 
 ## Local setup — Windows PowerShell
 
@@ -24,7 +24,9 @@ pnpm dev:api
 pnpm dev
 ```
 
-Open [the local workspace](http://127.0.0.1:3000/). It reads and validates the supplied Neon Shogun fixture, displaying scenes, cast, branch and revision. Stop each service with Ctrl+C. If the API is stopped, the page explains the failure and offers **Try again**, without silently substituting a fixture.
+Open [the local studio](http://127.0.0.1:3000/). It reads and validates the supplied Neon Shogun fixture. Choose a scene/shot in **Project**, then select Kael, Vance or another layer in **Layers** or on the stage. The inspector shows its exact authored X/Y/Z, scale, rotation, pose and source reference. **Diagnostics** discloses validation availability and the document's existing note. Reload resets temporary selection; it never edits canon. The original [document overview](http://127.0.0.1:3000/document) remains available from the header.
+
+The desktop shell uses side panels and a bottom timeline. Narrow screens stack the panels; all selection controls remain accessible. The stage is a labeled layout blockout because source media is not bundled. Its clamped presentation does not rewrite authored transforms. Timeline tracks are placeholders, and continuity checks are not run yet. Stop each service with Ctrl+C. If the API is stopped, the page explains the failure and offers **Try again**, without silently substituting a fixture.
 
 On macOS/Linux use `python3 -m venv .venv` and `.venv/bin/python -m pip install -r apps/api/requirements-dev.txt`; pnpm commands are identical.
 
@@ -40,7 +42,7 @@ pnpm exec playwright install chromium
 pnpm test:e2e
 ```
 
-`lint` runs ESLint, Ruff and the existing landing syntax checks. `typecheck` checks generated-contract drift, TypeScript and strict Python typing. `test` runs Vitest and Pytest. `verify:preserved` checks 178 original files and exact kit/schema/fixture copies. Browser tests cover real fixture loading, failure/retry, invalid/empty data, keyboard use and narrow reflow at desktop/mobile sizes. Build first; tests start services on default ports if free and reuse running services otherwise. CI uses fresh services.
+`lint` runs ESLint, Ruff and the existing landing syntax checks. `typecheck` checks generated-contract drift, TypeScript and strict Python typing. `test` runs Vitest and Pytest, including pure selection/projection and store-isolation tests. `verify:preserved` checks 178 original files and exact kit/schema/fixture copies. Browser tests cover studio selection/inspector synchronization, empty scenes, multiple shots, keyboard use, failure/retry, long-title reflow and the retained document overview. Build first; tests start services on default ports if free and reuse running services otherwise. CI uses fresh services.
 
 Production preview: start `pnpm dev:api`, then `pnpm --filter web start`. Stop the web development server first. If Windows application control blocks mypy's compiled extension, see [the pure-Python workaround](apps/api/README.md).
 
@@ -54,7 +56,7 @@ The web server forwards these two GET paths, keeping browser requests same-origi
 
 `packages/schema/cdom.schema.json` is canonical JSON Schema 2020-12, version **0.1.0**. AJV and Python jsonschema consume the same schema and negative fixtures. TypeScript types are generated from it; see [the contract guide](packages/schema/README.md).
 
-Validation checks structural shape. Reference integrity, continuity diagnostics, commands, persistence, undo/redo, rendering, playback, AI, auth and collaboration are later tasks. Asset paths are metadata; their files are not supplied here. Kael's injured-arm contradiction is intentionally preserved. There is no authoring surface or write API yet.
+Validation checks structural shape. Reference integrity, continuity diagnostics, commands, persistence, undo/redo, media rendering, playback, AI, auth and collaboration are later tasks. Asset paths are metadata; their files are not supplied here. Kael's injured-arm contradiction is intentionally preserved. The shell stores selection IDs in a per-instance Zustand store; the validated document remains separate. There is no authoring or write API yet.
 
 ## Selected landing and frozen references
 
@@ -73,7 +75,7 @@ Open [Afterlight v2](http://localhost:4173/). Stop its dev server before preview
 
 ## Project map
 
-- `apps/web/` — Next.js 16 App Router; read-only document overview, Afterlight palette and self-hosted Manrope.
+- `apps/web/` — Next.js 16 App Router; studio at `/`, document overview at `/document`, Afterlight palette and self-hosted Manrope. `src/components/studio/` contains panels; `src/features/studio/` contains pure selection/projection and UI-only store.
 - `apps/api/` — FastAPI, shared schema boundary and fixture service.
 - `packages/schema/` — canonical contract, generated types, fixture and invalid cases.
 - `tests/e2e/` and `.github/workflows/ci.yml` — integration checks and complete verification workflow.
@@ -83,4 +85,4 @@ Open [Afterlight v2](http://localhost:4173/). Stop its dev server before preview
 - `design_archive/`, `design_specifications/vendor/` — preserved references.
 - `aether_dom_codex_kit/`, `initial_first_plan_provided/`, `design_inspirations/` — preserved original specifications and source material.
 
-Next: **Task 01 — Studio shell**, following the ordered kit board and canonical-state boundaries. Task 00 does not implement the editor.
+Next: **Task 02 — Commands and persistence**, following the ordered kit board and canonical-state boundaries. Task 03 adds linter/dependencies; Task 04 adds the full 2.5D stage. Task 01 provides selection and inspection only.
