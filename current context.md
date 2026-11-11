@@ -4,7 +4,7 @@ Last updated: 11 November 2026 (Asia/Calcutta).
 
 ## Current phase
 
-**Task 00 — Scaffold Contracts is complete and verified.** Next.js 16 read-only document overview, FastAPI health/fixture endpoints, canonical schema, generated types and both validators are in place. There is no IDE shell, editing/persistence engine, auth or AI integration. Next product task: Task 01 — Studio shell. Afterlight v2 remains the selected, unchanged main landing design; product engineering is separate.
+**Task 01 — Studio shell is complete and verified.** The root studio has a project explorer, layer navigator, selectable layout blockout, read-only transform inspector, timeline placeholder and diagnostics tray. Task 00 overview is retained at /document. Selection is per-studio UI state; commands/persistence, full renderer, linter, auth and AI remain future work. Next: Task 02 — Commands and persistence. Afterlight v2 remains the selected, unchanged main landing design.
 
 ## Active source and frozen references
 
@@ -68,6 +68,7 @@ The landing requires no dependency installation. Product setup requires pnpm dep
 - [x] Checked main behavior, build and archive integrity.
 - [x] Product Task 00 implementation: pnpm workspace, Next/FastAPI, shared contract and read-only fixture.
 - [x] Completed final browser/integration checks, independent review and handoff evidence.
+- [x] Product Task 01: studio shell, read-only selection/inspection, regression checks and independent review.
 
 ## Task 00 verification and handoff
 
@@ -92,4 +93,15 @@ On 11 November 2026, the user requested connection to https://github.com/ItsMeSo
 
 ## Resume
 
-Read this file, PRODUCT.md and the selected design specification before changes. For Task 01, consult the kit's ordered board and canonical-state architecture. Do not implement commands/persistence or a second state owner implicitly. Keep landing refinements in landing-page/ and the frozen archive unchanged. Update this context at meaningful milestones and handoff.
+Read this file, PRODUCT.md and the selected design specification before changes. Task 01 is complete; next is the kit's Task 02. Read the ordered board and canonical-state architecture before implementing commands/persistence. Preserve the separation of the UI-only selection store and canonical snapshots. Keep landing refinements in landing-page/ and the frozen archive unchanged. Update this context at milestones and handoff.
+
+## Task 01 verification and handoff
+
+- User requested Task 01 implementation. Read task board, full master plan, current context, product/selected design, web instructions, Task 00 contract/evidence and relevant installed skill/local Next guidance. Plan: docs/superpowers/plans/2026-11-11-task-01-studio-shell.md; Operate surface brief: docs/design/studio.md.
+- Initial checkout was clean on main at c23fb3e. Created feat/task-01-studio-shell in the existing checkout. No commits or pushes performed.
+- Added per-mounted-studio Zustand selection store (IDs/actions only), pure document projections and blockout placement. Source schema/fixture/API remain unchanged. No asset files are fetched or invented; stage geometry explicitly represents layout placeholders.
+- 12 new selection/projection tests passed after a missing-feature red run. Final unit/API suite: 70 passed (20 schema, 18 web, 32 Python/API). Zero-warning lint, strict TS/Python checks, final production build, peer check and preservation of all 178 original files passed.
+- Final browser suite: 24 desktop/mobile tests passed. Covers selection and exact inspector values, stage/nav synchronization, empty scenes/projects, keyboard/Escape, reload, failure/retry, multiple shots, narrow layouts, long text and original /document behavior. Initial missing-navigator acceptance test failed on the old root before implementation.
+- Independent review found distinct-shot accessible-name and long-title mobile-overflow issues. Parent visual pass found stage clipping with expanded diagnostics. All three were reproduced with failing browser tests, fixed in one correction batch, and verified with the complete suite. Navigator ordering now mirrors stage depth. No deferred minor findings remain. Full evidence/review scope: docs/tasks/task-01-verification.md; final desktop/mobile screenshots alongside it.
+- Production web preview retained on http://127.0.0.1:3000/ (session 59629), using the final corrected build. Existing FastAPI remains on http://127.0.0.1:8000/ (session 50033). Earlier web sessions 66671/94696 were stopped. CUA observed Kael selection and original transform values. No canonical document, API, source media, landing or archive changes.
+- Task 00 was committed by the user as c23fb3e before this task. Task 01 changes remain uncommitted on feat/task-01-studio-shell; no push/merge performed. Next: Task 02.
