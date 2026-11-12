@@ -1,6 +1,6 @@
 # AETHER-DOM
 
-A local-first creative IDE for semantic, cross-modal storytelling. **Task05 — Audio reactive** connects local music/Foley, editorial tension, prop panning and analyser-driven glow to the editable stage. The selected Afterlight v2 landing page remains separate and unchanged.
+A local-first creative IDE for semantic, cross-modal storytelling. **Task06 — AI proposals** adds scoped, offline mock proposals with inspectable diffs and explicit approval through the saved command history. The selected Afterlight v2 landing page remains separate and unchanged.
 
 ## Local setup — Windows PowerShell
 
@@ -46,6 +46,10 @@ While playing, choose **Layout**, select the sign and drag it left/right to audi
 
 The three8-second WAVs are original project-owned synthesis, not provider-generated stems. Their stdlib generator and byte-check instructions are in [the fixture guide](assets/fixtures/README.md). This task provides the seeded mixer, not arbitrary audio import, speech generation, reverb design or a DAW.
 
+Select a layer, then choose **Proposals** in the header. Choose the selected layer or shot, a mock scenario and explicit operation permissions, then **Generate proposal**. The offline mock offers right-arm pose repair, X movement by +0.25 or shot tension of0.8. It does not interpret the request message or call a language model. The review shows the captured revision, exact authored field diff, permitted scope, read context and provider provenance. Pose changes metadata; it does not redraw a sprite.
+
+Generating or rejecting a proposal leaves canon and undo history unchanged. **Approve proposal** applies only the stored, revalidated operations in one revision and one undo entry. A stale proposal cannot overwrite newer work; reload and generate a fresh proposal. Saved proposal decisions survive reload/restart, and Undo restores canon while retaining the historical approval. Proposal records live in a separate SQLite table added by migration0002; existing documents are not upgraded. Provider JSON, context and records are bounded and validated, with no import, raw restore, recovery or arbitrary batch permission.
+
 On macOS/Linux use `python3 -m venv .venv` and `.venv/bin/python -m pip install -r apps/api/requirements-dev.txt`; pnpm commands are identical.
 
 ## Shared checks
@@ -64,7 +68,7 @@ pnpm test:e2e
 
 Production preview: start `pnpm dev:api`, then `pnpm --filter web start`. Stop the web development server first. If Windows application control blocks mypy's compiled extension, see [the pure-Python workaround](apps/api/README.md).
 
-On this Windows host the bundled Playwright Chromium failed to launch. Local browser checks use the installed Edge channel: set `$env:AETHER_E2E_CHANNEL='msedge'` before `pnpm test:e2e`; omit it for standard Chromium/CI. To exercise development effect replay, also set `$env:AETHER_E2E_DEV='1'` and run `pnpm exec playwright test --project desktop --grep 'effect replay|explicit audio gesture'`.
+On this Windows host the bundled Playwright Chromium failed to launch. Local browser checks use the installed Edge channel: set `$env:AETHER_E2E_CHANNEL='msedge'` before `pnpm test:e2e`; omit it for standard Chromium/CI. To exercise development effect replay, audio and proposals, also set `$env:AETHER_E2E_DEV='1'` and run `pnpm exec playwright test --project desktop --grep 'effect replay|explicit audio gesture|scoped mock preview'`.
 
 ## Local endpoints and contracts
 
@@ -75,13 +79,15 @@ On this Windows host the bundled Playwright Chromium failed to launch. Local bro
 - `POST /api/v1/projects/{projectId}/branches/{branchId}/commands`: validated transform/pose/recovery, camera, appearance, SVG import/edit, keyframe and undo/redo commands; requires `expectedRevision`, command ID, stable identities, human actor and reason.
 - `GET /api/v1/projects/{projectId}/branches/{branchId}/assets/{assetId}?revision=N`: validated SVG tree for an asset referenced by that immutable saved revision; no arbitrary file access.
 - `GET /api/v1/projects/{projectId}/branches/{branchId}/audio/{assetId}?revision=N`: bounded PCM16 WAV bytes for a referenced audio asset at that saved revision. Traversal, network paths, redirected links and invalid/oversized files are rejected.
+- `GET/POST /api/v1/projects/{projectId}/branches/{branchId}/agent-proposals`: list the latest20 review records or generate a scoped proposal against `expectedRevision`.
+- `POST /api/v1/projects/{projectId}/branches/{branchId}/agent-proposals/{proposalId}/reject`: persist rejection with an empty JSON object; approval uses the existing commands endpoint.
 - [Local OpenAPI docs](http://127.0.0.1:8000/docs).
 
 The web server forwards only these fixed resources and preserves conflict/error status. Browser writes require same-origin JSON requests. Server-only `AETHER_API_ORIGIN` defaults to `http://127.0.0.1:8000`; copy `.env.example` to `apps/web/.env.local` only if changing it. Never use a `NEXT_PUBLIC_` variable for server configuration or secrets. Keep the API bound to loopback; this local task does not add authentication or a public service.
 
 `packages/schema/cdom.schema.json` and the original fixture remain version **0.1.0**. Version0.2 adds stage metadata; version0.3 adds optional `shot.audio.tension`. All three remain readable. `setShotTension` upgrades its copied snapshot losslessly; undo restores exact prior authored fields/version. Stage commands preserve existing0.3 metadata. Startup performs no document upgrade. AJV and Python consume the same schemas; see [the contract guide](packages/schema/README.md).
 
-`command.schema.json` defines command version **0.4.0**, including `setShotTension` with `{tension:0..1}` targeting a shot; derived analysis remains **0.1.0**. SQLite owns canonical state; React accepts only validated, revision-matched responses. Selection, drafts, playback and analyser values stay temporary. Semantic dialogue analysis, advanced rigs, AI, auth and collaboration remain later tasks. The original fixture’s contradiction stays preserved, while saved branch repairs change its current diagnostic.
+`command.schema.json` defines command version **0.5.0**, including human-only `approveProposal` targeting a stored proposal with empty args; derived analysis remains **0.1.0**. SQLite owns canonical state; React accepts only validated, revision-matched responses. Selection, drafts, playback and analyser values stay temporary. Real AI providers, semantic dialogue analysis, advanced rigs, auth and collaboration remain later work. The original fixture’s contradiction stays preserved, while saved branch repairs change its current diagnostic.
 
 ## Selected landing and frozen references
 

@@ -30,3 +30,14 @@ commands = Table(
     Column("receipt", JSON, nullable=False),
     Column("result", JSON, nullable=False),
 )
+
+# Review records are separate from canonical documents and immutable command history.
+agent_proposals = Table(
+    "agent_proposals", metadata,
+    Column("proposal_id", String, primary_key=True),
+    Column("project_id", String, nullable=False),
+    Column("branch_id", String, nullable=False),
+    Column("request_id", String, nullable=False, unique=True),
+    Column("request", JSON, nullable=False),
+    Column("record", JSON, nullable=False),
+)

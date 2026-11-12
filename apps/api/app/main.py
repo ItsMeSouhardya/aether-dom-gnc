@@ -12,6 +12,7 @@ from app.asset_inventory import inspect_assets
 from app.commands import CommandError
 from app.contracts import SCHEMA_VERSION, SUPPORTED_SCHEMA_VERSIONS, load_fixture
 from app.linter import analyze_document
+from app.proposal_provider import ProposalProvider
 from app.repository import Repository
 from app.svg_assets import SvgAssetError
 
@@ -23,8 +24,11 @@ class Health(BaseModel):
     supportedSchemaVersions: list[str] = SUPPORTED_SCHEMA_VERSIONS
 
 
-def create_app(database_path: Path | None = None, asset_root: Path | None = None) -> FastAPI:
-    repository = Repository(database_path, asset_root)
+def create_app(
+    database_path: Path | None = None, asset_root: Path | None = None,
+    proposal_provider: ProposalProvider | None = None,
+) -> FastAPI:
+    repository = Repository(database_path, asset_root, proposal_provider)
 
     def decorate(result: dict[str, Any]) -> dict[str, Any]:
         # Derived analysis never enters snapshots or immutable command results.
@@ -112,6 +116,30 @@ def create_app(database_path: Path | None = None, asset_root: Path | None = None
     ) -> dict[str, Any]:
         response.headers["Cache-Control"] = "no-store"
         return decorate(repository.execute(project_id, branch_id, payload))
+
+    @app.get("/api/v1/projects/{project_id}/branches/{branch_id}/agent-proposals")
+    def proposals(project_id: str, branch_id: str, response: Response) -> dict[str, Any]:
+        response.headers["Cache-Control"] = "no-store"
+        return {"proposals": repository.list_proposals(project_id, branch_id)}
+
+    @app.post("/api/v1/projects/{project_id}/branches/{branch_id}/agent-proposals")
+    def propose(
+        project_id: str, branch_id: str, response: Response, payload: Annotated[Any, Body()],
+    ) -> dict[str, Any]:
+        response.headers["Cache-Control"] = "no-store"
+        return repository.create_proposal(project_id, branch_id, payload)
+
+    @app.post("/api/v1/projects/{project_id}/branches/{branch_id}/agent-proposals/{proposal_id}/reject")
+    def reject_proposal(
+        project_id: str, branch_id: str, proposal_id: str, response: Response,
+        payload: Annotated[Any, Body()],
+    ) -> dict[str, Any]:
+        response.headers["Cache-Control"] = "no-store"
+        if not isinstance(payload, dict) or payload:
+            raise CommandError(
+                422, "INVALID_PROPOSAL_DECISION", "Reject requires an empty JSON object",
+            )
+        return repository.reject_proposal(project_id, branch_id, proposal_id)
 
     return app
 
