@@ -101,6 +101,14 @@ export type CdomCommand =
         keyframeId: string;
       };
       [k: string]: unknown;
+    })
+  | (Envelope & {
+      op: 'setShotTension';
+      targetId: string;
+      args: {
+        tension: number;
+      };
+      [k: string]: unknown;
     });
 
 export interface Envelope {

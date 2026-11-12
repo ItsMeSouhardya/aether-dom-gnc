@@ -8,7 +8,7 @@ web
 
 ## Stack
 
-The pnpm workspace uses Next.js 16 / TypeScript in `apps/web`, FastAPI in `apps/api`, and shared versioned JSON Schemas in `packages/schema`. The studio has an explorer, navigator, selectable layout blockout, transform/pose editing, timeline placeholder, evidence-linked diagnostics and dependency impact. SQLAlchemy/SQLite snapshots, Alembic migrations, revision-checked commands and persistent undo/redo own canonical edits. Task 03 adds pure graph/rule analysis and explicit recovery events. Zustand holds selection separately from canon; drafts remain temporary. The original seed overview remains at `/document`. The selected landing stays in `landing-page/` using buildless HTML/CSS/JavaScript. The user selected Afterlight v2 on 11 November 2026. Product and marketing surfaces stay separate.
+The pnpm workspace uses Next.js16/TypeScript, FastAPI and shared versioned JSON Schemas. The studio includes a Three.js/SVG stage, transform/pose/source editing, camera/keyframe playback, evidence-linked diagnostics and a native Web Audio mixer. SQLite snapshots, revision-checked commands and persistent undo/redo own canonical edits. Task05 adds local original stems/Foley, editorial tension, coordinate-bound pan and runtime analyser glow. Selection, drafts and derived audio remain separate from canon. The seed overview remains at `/document`. The selected Afterlight v2 landing stays separate in `landing-page/` with buildless HTML/CSS/JavaScript.
 
 ## Users
 
@@ -28,7 +28,7 @@ Local-first creative desktop workflow, seeded with the Neon Shogun scenario: Kae
 
 ## Capabilities and Constraints
 
-The local API seeds Neon Shogun once and persists snapshots/history in SQLite. Human commands edit transforms/poses or explicitly record recovery events against an expected revision. Undo/redo survives refresh and API restart; stale or uncertain saves require reload. The fixture reference stays immutable. TypeScript and Python share structural contracts; pure rules report injury/pose conflicts, timing ambiguity, missing references/files and invalid bindings with evidence. Indexed graph traversal reports affected dependents and cycle-blocked evaluation; analysis remains derived and never rewrites authored values. A clearly labeled unsaved text tool checks character-specific forbidden terms because this document version has no attributed dialogue field. The stage remains a layout blockout and timeline is a placeholder. Full rendering/playback, complete Lore authoring, AI and the remaining planned modules are future work. UI/derived state and unapproved AI proposals never directly modify canon. Installed seeded fixtures load without cloud keys.
+The local API seeds Neon Shogun once and persists snapshots/history. Human commands edit transforms, poses, recovery, SVG sources, camera, keyframes and shot tension against an expected revision. Undo/redo survives refresh/restart; stale or uncertain saves require reload. Original schemas/fixture remain preserved and versions0.1–0.3 stay readable. Pure rules report continuity and reference issues; indexed dependencies remain derived. The unsaved dialect tool has no attributed dialogue canon. Rendering uses a single compositor with native fallback. Audio requires a creator gesture; local gain/pan evaluation follows supported bindings and preview time without writing samples into canon. Arbitrary audio import, complete Lore authoring, advanced rigs, AI and publication remain future work. Installed seeded fixtures need no cloud keys.
 
 ## Brand Commitments
 

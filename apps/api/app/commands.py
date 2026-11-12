@@ -95,6 +95,9 @@ def apply_operation(
               "setLayerKeyframe", "deleteLayerKeyframe"}:
         from app.stage_commands import apply_stage_operation
         return apply_stage_operation(document, operation, asset_store)
+    if op == "setShotTension":
+        from app.audio_commands import apply_audio_operation
+        return apply_audio_operation(document, operation)
     if op == "setLayerTransform":
         result, forward, inverse = apply_transform(document, operation)
         return result, forward, inverse, [operation["targetId"]]

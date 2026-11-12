@@ -11,14 +11,16 @@ import type { CommandOperation } from '@/features/commands/draft';
 import { GpuStage } from '../stage/gpu-stage';
 import { SvgContent } from '../stage/svg-content';
 import { CameraEditor, SvgImport } from '../stage/stage-editors';
+import type { AudioPreview } from '@/features/audio/types';
+import { AudioGlow } from '../audio/audio-glow';
 
 export type StageMode = 'layout' | 'animation' | 'svg';
 type Props = { document: CdomDocument; selection: StudioSelection; dispatch: (action: SelectionAction) => void; assets: Record<string, AssetState>;
   playback: Playback; mode: StageMode; setMode: (mode: StageMode) => void; selectedElement: string | null; selectElement: (id: string) => void;
-  busy: boolean; blocked: boolean; run: (operation: CommandOperation, reason: string, revision?: number) => Promise<boolean> };
+  busy: boolean; blocked: boolean; run: (operation: CommandOperation, reason: string, revision?: number) => Promise<boolean>; audio: AudioPreview; reactiveGlow: boolean };
 type Drag = { id: string; pointerId: number; startX: number; startY: number; transform: Transform; revision: number; draft: Transform };
 
-export function LayerStage({ document, selection, dispatch, assets, playback, mode, setMode, selectedElement, selectElement, busy, blocked, run }: Props) {
+export function LayerStage({ document, selection, dispatch, assets, playback, mode, setMode, selectedElement, selectElement, busy, blocked, run, audio, reactiveGlow }: Props) {
   const shot = document.shots.find(shot => shot.id === selection.shotId);
   const scene = document.scenes.find(scene => scene.id === selection.sceneId);
   const layers = getShotLayers(document, shot?.id ?? null);
@@ -30,14 +32,14 @@ export function LayerStage({ document, selection, dispatch, assets, playback, mo
   const [renderer, setRenderer] = useState<'webgl2' | 'svg'>('svg');
   const [editor, setEditor] = useState<'camera' | 'import' | null>(null);
   const preview = useSyncExternalStore(playback.subscribe, playback.getSnapshot, playback.getSnapshot);
-  const locked = busy || blocked || mode !== 'layout' || preview.playing;
+  const locked = busy || blocked || mode !== 'layout';
   useEffect(() => {
     const element = canvas.current;
     if (!element) return;
     const observer = new ResizeObserver(([entry]) => setSize({ width: entry.contentRect.width, height: entry.contentRect.height }));
     observer.observe(element); return () => observer.disconnect();
   }, [shot?.id]);
-  const cancelDrag = () => { drag.current = null; setDraft(null); };
+  const cancelDrag = () => { if (drag.current) audio.setLayerDraft(drag.current.id, null); drag.current = null; setDraft(null); };
   const renderLayers = layers.map(layer => {
     const asset = document.assets.find(asset => asset.id === layer.assetId);
     return { ...layer, transform: draft?.id === layer.id ? draft.transform : layer.transform, svg: asset ? assets[assetKey(asset)]?.svg ?? null : null };
@@ -52,7 +54,7 @@ export function LayerStage({ document, selection, dispatch, assets, playback, mo
   }}>
     <div className="stage-toolbar"><div><h2>{scene?.title ?? 'Stage'}</h2><span>2.5D · {renderer === 'webgl2' ? 'WebGL2' : 'SVG fallback'}</span></div>
       {shot ? <div className="stage-tools">
-        <button className="studio-button" aria-label="Layout mode" aria-pressed={mode === 'layout'} onClick={() => { cancelDrag(); playback.pause(); setMode('layout'); }}>Layout</button>
+        <button className="studio-button" aria-label="Layout mode" aria-pressed={mode === 'layout'} onClick={() => { cancelDrag(); setMode('layout'); }}>Layout</button>
         <button className="studio-button" aria-label="Animation mode" aria-pressed={mode === 'animation'} onClick={() => { cancelDrag(); setMode('animation'); }}>Animate</button>
         <button className="studio-button" disabled={busy || blocked} onClick={() => { cancelDrag(); playback.pause(); setEditor('camera'); }}>Camera</button>
         <button className="studio-button" disabled={busy || blocked} onClick={() => { cancelDrag(); playback.pause(); setEditor('import'); }}>Import SVG</button>
@@ -81,7 +83,7 @@ export function LayerStage({ document, selection, dispatch, assets, playback, mo
                 const active = drag.current;
                 if (!active || active.id !== layer.id || active.pointerId !== event.pointerId) return;
                 const delta = unprojectDelta(event.clientX - active.startX, event.clientY - active.startY, active.transform.z, shot.camera, size);
-                if (delta) { active.draft = { ...active.transform, x: active.transform.x + delta.x, y: active.transform.y + delta.y }; setDraft({ id: active.id, transform: active.draft }); }
+                if (delta) { active.draft = { ...active.transform, x: active.transform.x + delta.x, y: active.transform.y + delta.y }; setDraft({ id: active.id, transform: active.draft }); audio.setLayerDraft(active.id, active.draft); }
               }} onPointerUp={event => {
                 const active = drag.current;
                 if (!active || active.pointerId !== event.pointerId) return;
@@ -102,6 +104,7 @@ export function LayerStage({ document, selection, dispatch, assets, playback, mo
               {(renderer === 'svg' || isolated) && layer.svg ? <svg x={-p.width / 2} y={-p.height / 2} width={p.width} height={p.height} viewBox={`${layer.svg.viewBox.x} ${layer.svg.viewBox.y} ${layer.svg.viewBox.width} ${layer.svg.viewBox.height}`} opacity={layer.opacity ?? 1} pointerEvents={isolated ? 'auto' : 'none'}>
                 <SvgContent node={layer.svg.root} scopeId={layer.id} selectedId={isolated ? selectedElement : null} onSelect={isolated ? selectElement : undefined} />
               </svg> : null}
+              {layer.svg && document.audioTracks.some(track => track.shotId === shot.id && track.kind === 'foley' && track.boundLayerId === layer.id) ? <AudioGlow runtime={audio} svg={layer.svg} layerId={layer.id} enabled={reactiveGlow} width={p.width} height={p.height} /> : null}
               {!layer.svg ? <text className="stage-missing-label" textAnchor="middle">{name} · source unavailable</text> : null}
               {isSelected ? <rect className="stage-selection" x={-p.width / 2} y={-p.height / 2} width={p.width} height={p.height} fill="none" pointerEvents="none" /> : null}
             </g>;
