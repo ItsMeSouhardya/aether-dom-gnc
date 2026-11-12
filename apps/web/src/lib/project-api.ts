@@ -14,7 +14,7 @@ const record = (value: unknown): value is Record<string, unknown> => typeof valu
 function receipt(value: unknown): value is CommandReceipt {
   return record(value) && typeof value.commandId === 'string' && value.commandId.length > 0
     && typeof value.revision === 'number' && Number.isSafeInteger(value.revision) && value.revision > 0
-    && ['setLayerTransform', 'setLayerPose', 'recordConstraintRecovery', 'setShotCamera', 'setLayerAppearance', 'importSvgLayer', 'editSvgElement', 'setLayerKeyframe', 'deleteLayerKeyframe', 'undo', 'redo'].includes(String(value.op)) && (value.targetId === null || typeof value.targetId === 'string')
+    && ['setLayerTransform', 'setLayerPose', 'recordConstraintRecovery', 'setShotCamera', 'setShotTension', 'setLayerAppearance', 'importSvgLayer', 'editSvgElement', 'setLayerKeyframe', 'deleteLayerKeyframe', 'undo', 'redo'].includes(String(value.op)) && (value.targetId === null || typeof value.targetId === 'string')
     && typeof value.reason === 'string' && typeof value.createdAt === 'string' && Number.isFinite(Date.parse(value.createdAt))
     && Array.isArray(value.changedEntityIds) && value.changedEntityIds.every(id => typeof id === 'string');
 }

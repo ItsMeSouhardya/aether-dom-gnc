@@ -4,6 +4,7 @@ import { compile } from 'json-schema-to-typescript';
 for (const [source, target, title] of [
   ['cdom.schema.json', 'cdom.generated.ts', 'CdomDocument'],
   ['cdom.v0.2.schema.json', 'cdom-v2.generated.ts', 'CdomDocumentV2'],
+  ['cdom.v0.3.schema.json', 'cdom-v3.generated.ts', 'CdomDocumentV3'],
   ['svg.schema.json', 'svg.generated.ts', 'SvgAsset'],
   ['command.schema.json', 'command.generated.ts', 'CdomCommand'],
   ['analysis.schema.json', 'analysis.generated.ts', 'DocumentAnalysis'],

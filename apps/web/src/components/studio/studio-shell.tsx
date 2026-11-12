@@ -20,6 +20,8 @@ import { DependencyImpact } from './dependency-impact';
 import { createPlayback } from '@/features/stage/playback';
 import { useSvgAssets } from '@/features/stage/use-svg-assets';
 import type { StageMode } from './layer-stage';
+import { useAudioPreview, useAudioSettings } from '@/features/audio/use-audio-preview';
+import { AudioPanel } from '../audio/audio-panel';
 
 type Props = { document: CdomDocument; history: ProjectSnapshot['history']; analysis: ProjectSnapshot['analysis']; reload: () => void; busy: boolean; requiresReload: boolean;
   feedback: { error: boolean; message: string } | null; run: (operation: CommandOperation, reason: string, expectedRevision?: number) => Promise<boolean> };
@@ -29,6 +31,8 @@ export function StudioShell({ document, history, analysis, reload, busy, require
   const toggle = (name: NonNullable<typeof drawer>) => setDrawer(value => value === name ? null : name);
   const selection = useStore(store, state => state.selection);
   const [mode, setMode] = useState<StageMode>('layout');
+  const [audioOpen, setAudioOpen] = useState(false);
+  const [audioSettings, changeAudioSettings] = useAudioSettings();
   const [selectedElement, selectElement] = useState<string | null>(null);
   const shot = document.shots.find(shot => shot.id === selection.shotId);
   const playback = useMemo(() => createPlayback(shot?.durationMs ?? 0), [shot?.durationMs]);
@@ -37,6 +41,8 @@ export function StudioShell({ document, history, analysis, reload, busy, require
   useEffect(() => { playback.pause(); }, [playback, document.project.revision]);
   useEffect(() => { playback.pause(); playback.seek(0); }, [playback, shot?.id]);
   const assets = useSvgAssets(document);
+  const runtimeSettings = useMemo(() => ({ ...audioSettings, document, shotId: shot?.id ?? null, animate: mode === 'animation' }), [audioSettings, document, shot?.id, mode]);
+  const audio = useAudioPreview(playback, runtimeSettings);
   const dispatch = (action: SelectionAction) => store.getState().dispatch(action, document);
   const branch = document.branches.find(branch => branch.id === document.project.activeBranchId);
   const selectedLayer = getShotLayers(document, selection.shotId).find(layer => layer.id === selection.layerId);
@@ -55,11 +61,11 @@ export function StudioShell({ document, history, analysis, reload, busy, require
     </header>
     <div className="studio-workbench">
       <ProjectNavigator document={document} selection={selection} dispatch={dispatch} />
-      <LayerStage key={selection.shotId} document={document} selection={selection} dispatch={dispatch} assets={assets} playback={playback} mode={mode} setMode={setMode} selectedElement={selectedElement} selectElement={selectElement} busy={busy} blocked={requiresReload} run={run} />
-      <LayerInspector key={selection.layerId ?? 'none'} document={document} selection={selection} clear={() => dispatch({ type: 'clear-layer' })} busy={busy} blocked={requiresReload} run={run}
+      <LayerStage key={selection.shotId} document={document} selection={selection} dispatch={dispatch} assets={assets} playback={playback} mode={mode} setMode={setMode} selectedElement={selectedElement} selectElement={selectElement} busy={busy} blocked={requiresReload} run={run} audio={audio} reactiveGlow={audioSettings.reactiveGlow} />
+      {audioOpen ? <aside className="studio-inspector" aria-label="Audio inspector"><AudioPanel document={document} shotId={selection.shotId} runtime={audio} settings={audioSettings} onSettingsChange={changeAudioSettings} busy={busy} blocked={requiresReload} run={run} onClose={() => setAudioOpen(false)} /></aside> : <LayerInspector key={selection.layerId ?? 'none'} document={document} selection={selection} clear={() => dispatch({ type: 'clear-layer' })} busy={busy} blocked={requiresReload} run={run}
         assets={assets} mode={mode} selectedElement={selectedElement} selectElement={selectElement} playback={playback}
-        save={(targetId, transform, revision) => run({ op: 'setLayerTransform', targetId, args: transform }, `Move ${layerName(document, document.layers.find(layer => layer.id === targetId)!)}`, revision)} />
-      <Timeline document={document} shotId={selection.shotId} playback={playback} mode={mode} setMode={setMode} />
+        save={(targetId, transform, revision) => run({ op: 'setLayerTransform', targetId, args: transform }, `Move ${layerName(document, document.layers.find(layer => layer.id === targetId)!)}`, revision)} />}
+      <Timeline document={document} shotId={selection.shotId} playback={playback} mode={mode} setMode={setMode} openAudio={() => setAudioOpen(value => !value)} audioOpen={audioOpen} />
       <div className="studio-drawers">
         {feedback ? <div className={`command-feedback ${feedback.error ? 'command-feedback-error' : ''}`}><p role={feedback.error ? 'alert' : 'status'} aria-label="Save status">{feedback.message}</p>{requiresReload ? <button className="studio-button" onClick={reload}>Reload latest</button> : null}</div> : null}
         <Diagnostics document={document} analysis={analysis} open={drawer === 'diagnostics'} toggle={() => toggle('diagnostics')} selectEntity={selectEntity} />

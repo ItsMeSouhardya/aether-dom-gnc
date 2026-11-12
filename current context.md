@@ -2,9 +2,21 @@
 
 Last updated: 12 November 2026 (Asia/Calcutta).
 
+## Current phase
+
+**Task 05 — Audio reactive is complete and verified** on `feat/task-05-audio-reactive`, based on the user's Task 04 commit `f4eee75`. The user requested this local branch rename from `codex/task-05-audio-reactive`; no remote change was performed. Native Web Audio plays original local stems/Foley after explicit enable, evaluates tension/panning, follows precise seeks and drives bounded imperative glow. Optional document 0.3 `shot.audio.tension` and command 0.4 preserve old versions and exact undo. Safe revision-bound WAV route/proxy and inspector mixer are implemented. No new runtime dependency, lockfile change, SQL migration or startup document upgrade.
+
+Final checks: **505 unit/API tests passed**, 1 legacy host-limited file-symlink skip; **76 production desktop/mobile browser cases passed**, then all14 audio cases passed again after the final marker/state correction; **2 development lifecycle cases passed**. Lint/types/generated drift/build/preservation clean. Fresh review's three P2 findings fixed with regressions (live Layout drag, authored gain fading, native shot-end scheduling). Plan: docs/superpowers/plans/2026-11-12-task-05-audio-reactive.md; evidence: docs/tasks/task-05-verification.md; captures: docs/tasks/task-05-desktop.png and task-05-mobile.png.
+
+User project before/after: revision **6**, history **6**, schema **0.1.0**, sorted-JSON SHA256 `3a7fc9d7954c5b284c9d6215bf33daace4cef3ea9149b6f405e3bf4d740229ab`. No project commands were sent to it; all mutations used isolated test data. All changes remain **uncommitted**, with no push/merge/PR. User handles integration. Next ordered task: **Task 06 — AI proposals**.
+
+Final preview: web http://127.0.0.1:3000/ session **48527**, API http://127.0.0.1:8000/ session **38567**; browser tab retained with audio off. Use Audio → Enable audio → Play. Choose Layout while playing to audition a dragged sign's pan; Escape cancels. Save tension persists the editorial override; volume/mute/output/glow stay temporary. The native source stop does not depend on RAF. Original local PCM fixtures and generator are checked in; original schemas/types, kit, landing and archives preserved.
+
+Task05 resumed after a usage-limit interruption. Bundled Playwright Chromium failed with spawn UNKNOWN; installed Edge works via AETHER_E2E_CHANNEL=msedge. CI defaults to Chromium and now also checks development audio/effect replay. Existing .venv-task04 and .env.api.local runtime override remain in use. No unresolved blocker or review finding remains; subjective speaker/headphone listening is not claimed.
+
 Fullscreen sizing follow-up complete: at1536×730 the frame grew from309px to720px wide (2.3×). Layout defaults to compact timeline controls; Show tracks expands rows, Animate opens them automatically, and desktop drawer controls share one horizontal row. Removed the900px frame cap and desktop760px page minimum. Mobile timeline controls wrap into two readable rows. New regression covers scaled fullscreen,1920px desktop, toggle/animation and aspect/containment. Final follow-up checks:62 browser tests,94 frontend tests, lint/types/build/preservation clean. Web preview now session54072 on3000; API8000 remains running. Read-only preview observed the user's newer revision6; no project commands were issued for this layout fix. All changes remain uncommitted.
 
-## Current phase
+## Previous phase — Task 04
 
 **Task04 — 2.5D stage is complete and verified** on feat/task-04-2-5d-stage, based on merged Task03 c56eec4 (user commit89b85e2). Drag/reorder, local SVG rendering/import/source-ID editing, camera, appearance, linear keyframes and independent playback are implemented through revision-checked commands. Final checks:420 unit/API tests passed,1 legacy host skip,60 desktop/mobile browser tests passed plus1 development StrictMode regression; lint/types/build/preservation clean. Independent review findings fixed. Plan: docs/superpowers/plans/2026-11-12-task-04-stage.md; evidence: docs/tasks/task-04-verification.md. No Task04 commit/push/merge; user handles integration. Original0.1 schema/fixture, kit, landing and archives preserved. Next: Task05 — Audio graph.
 
@@ -101,7 +113,7 @@ On 11 November 2026, the user requested connection to https://github.com/ItsMeSo
 
 ## Resume
 
-Read this file, PRODUCT.md and the selected design specification before changes. Task 03 is complete; next is the kit's Task 04. Read the ordered board and canonical-state architecture before implementing the 2.5D stage. Preserve SQLite canonical ownership, revision-bound derived analysis and separate selection/drafts. The studio edits transforms/poses and records explicit recovery events; fixture and seed overview stay immutable. Dialogue checking is an unsaved draft tool because this document version has no attributed lines. Keep landing refinements in landing-page/ and the frozen archive unchanged. Update this context at milestones and handoff.
+Read this file, PRODUCT.md and the selected design specification before changes. Task 05 is complete; next is the kit's Task 06. Read the ordered board and canonical-state architecture before implementing scoped AI proposals. Preserve SQLite ownership, revision-bound analysis and separate selection/drafts/playback/audio. AI output must remain proposals until explicit review; no unreviewed writes. Fixture and seed overview stay immutable. Dialogue checking remains an unsaved draft tool because this document version has no attributed lines. Keep landing refinements in landing-page/ and the frozen archive unchanged. Update this context at milestones and handoff.
 
 ## Task 01 verification and handoff
 

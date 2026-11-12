@@ -1,6 +1,6 @@
 # AETHER-DOM
 
-A local-first creative IDE for semantic, cross-modal storytelling. **Task 04 — 2.5D stage** adds editable local SVG planes and sprites, camera controls and interpolated keyframes to the studio. The selected Afterlight v2 landing page remains separate and unchanged.
+A local-first creative IDE for semantic, cross-modal storytelling. **Task05 — Audio reactive** connects local music/Foley, editorial tension, prop panning and analyser-driven glow to the editable stage. The selected Afterlight v2 landing page remains separate and unchanged.
 
 ## Local setup — Windows PowerShell
 
@@ -36,9 +36,15 @@ The database defaults to `data/aether-dom.sqlite3` and is excluded from Git. Sta
 
 The desktop shell uses side panels and a bottom timeline. Narrow screens stack the panels. **Layout** renders the four original local SVG fixtures through Three.js WebGL2, with native SVG fallback. Drag a layer to submit one transform command; Escape cancels. Arrow keys nudge focused layers; the inspector edits exact values, including offscreen layers. **Bring forward / Send backward** changes only the selected layer’s Z. **Camera** edits pan, dolly, FOV and aspect, with a16:9 reset. No canonical transform clamping occurs.
 
-**Import SVG** accepts bounded static UTF-8 SVG shapes/groups/text and records source rights. Scripts, links, styles, external references and unsupported content are rejected. Supplied element IDs and the asset ID survive **Edit SVG** changes; the dropdown and native overlay select source elements. Save edits geometry/presentation attributes; all instances sharing that asset use the new immutable version. Safe original files and edited versions live in ignored `assets/originals/` and `assets/imported/`; back these up together with the database. The three absent audio files belong to Task05.
+**Import SVG** accepts bounded static UTF-8 SVG shapes/groups/text and records source rights. Scripts, links, styles, external references and unsupported content are rejected. Supplied element IDs and the asset ID survive **Edit SVG** changes; the dropdown and native overlay select source elements. Save edits geometry/presentation attributes; all instances sharing that asset use the new immutable version. Safe original files and edited versions live in ignored `assets/originals/` and `assets/imported/`; back these up together with the database.
 
 **Animate** enables keyframe authoring in the inspector. Seek in milliseconds, add/update/delete a frame and save explicitly. Playback linearly interpolates X/Y/Z, scale and rotation without changing base transforms or writing preview frames. Layout always edits the base transform. GPU denial/context loss preserves native editing. On desktop, opening a drawer collapses the timeline body to preserve stage space. Stop services with Ctrl+C; an unavailable API offers **Try again**.
+
+Choose **Audio** in the timeline to open the mixer, then **Enable audio** and **Play**. The checked-in ambient/tension/Foley clips work locally; playback stays silent until that explicit enable gesture. Raise **Tension** to preview supported gain bindings and the ambient fade. **Save tension** persists an editorial shot override through a revision-checked command; **Cancel tension** restores the saved mix. Without an override, supported narrative bindings supply the tension signal. Volume, mute, output mode and glow are temporary preview controls.
+
+While playing, choose **Layout**, select the sign and drag it left/right to audition its pan. Escape cancels; releasing submits one transform command and the accepted save pauses preview. Headphones mode uses stereo pan; Spatial uses an equal-power panner with stereo fallback. **Reactive glow** follows the mix analyser on linked Foley props through direct presentation updates; reduced motion disables it unless explicitly enabled. Seeking restarts tracks together at the same clip-relative offset; sources also stop at shot end independently of rendering frames. No audio samples or glow values enter canon or React sample-rate state.
+
+The three8-second WAVs are original project-owned synthesis, not provider-generated stems. Their stdlib generator and byte-check instructions are in [the fixture guide](assets/fixtures/README.md). This task provides the seeded mixer, not arbitrary audio import, speech generation, reverb design or a DAW.
 
 On macOS/Linux use `python3 -m venv .venv` and `.venv/bin/python -m pip install -r apps/api/requirements-dev.txt`; pnpm commands are identical.
 
@@ -58,6 +64,8 @@ pnpm test:e2e
 
 Production preview: start `pnpm dev:api`, then `pnpm --filter web start`. Stop the web development server first. If Windows application control blocks mypy's compiled extension, see [the pure-Python workaround](apps/api/README.md).
 
+On this Windows host the bundled Playwright Chromium failed to launch. Local browser checks use the installed Edge channel: set `$env:AETHER_E2E_CHANNEL='msedge'` before `pnpm test:e2e`; omit it for standard Chromium/CI. To exercise development effect replay, also set `$env:AETHER_E2E_DEV='1'` and run `pnpm exec playwright test --project desktop --grep 'effect replay|explicit audio gesture'`.
+
 ## Local endpoints and contracts
 
 - [GET /api/v1/health](http://127.0.0.1:8000/api/v1/health): service and schema version.
@@ -66,13 +74,14 @@ Production preview: start `pnpm dev:api`, then `pnpm --filter web start`. Stop t
 - `GET /api/v1/projects/{projectId}/branches/{branchId}/diagnostics`: derived issues, graph and invalidation metadata.
 - `POST /api/v1/projects/{projectId}/branches/{branchId}/commands`: validated transform/pose/recovery, camera, appearance, SVG import/edit, keyframe and undo/redo commands; requires `expectedRevision`, command ID, stable identities, human actor and reason.
 - `GET /api/v1/projects/{projectId}/branches/{branchId}/assets/{assetId}?revision=N`: validated SVG tree for an asset referenced by that immutable saved revision; no arbitrary file access.
+- `GET /api/v1/projects/{projectId}/branches/{branchId}/audio/{assetId}?revision=N`: bounded PCM16 WAV bytes for a referenced audio asset at that saved revision. Traversal, network paths, redirected links and invalid/oversized files are rejected.
 - [Local OpenAPI docs](http://127.0.0.1:8000/docs).
 
 The web server forwards only these fixed resources and preserves conflict/error status. Browser writes require same-origin JSON requests. Server-only `AETHER_API_ORIGIN` defaults to `http://127.0.0.1:8000`; copy `.env.example` to `apps/web/.env.local` only if changing it. Never use a `NEXT_PUBLIC_` variable for server configuration or secrets. Keep the API bound to loopback; this local task does not add authentication or a public service.
 
-`packages/schema/cdom.schema.json` and the original fixture remain version **0.1.0**. `cdom.v0.2.schema.json` adds optional layer appearance/keyframes and source metadata. Both versions remain readable; the first new stage command upgrades losslessly, and undo restores the exact prior authored version and field presence. Startup performs no document upgrade. AJV and Python consume the same schemas; see [the contract guide](packages/schema/README.md).
+`packages/schema/cdom.schema.json` and the original fixture remain version **0.1.0**. Version0.2 adds stage metadata; version0.3 adds optional `shot.audio.tension`. All three remain readable. `setShotTension` upgrades its copied snapshot losslessly; undo restores exact prior authored fields/version. Stage commands preserve existing0.3 metadata. Startup performs no document upgrade. AJV and Python consume the same schemas; see [the contract guide](packages/schema/README.md).
 
-`command.schema.json` defines command version **0.3.0**; derived analysis remains **0.1.0**. SQLite owns canonical state; React accepts only validated, revision-matched responses. Selection, drafts and the playback clock stay temporary. Semantic dialogue analysis, audio, advanced rigs, AI, auth and collaboration remain later tasks. The original fixture’s contradiction stays preserved, while saved branch repairs change its current diagnostic.
+`command.schema.json` defines command version **0.4.0**, including `setShotTension` with `{tension:0..1}` targeting a shot; derived analysis remains **0.1.0**. SQLite owns canonical state; React accepts only validated, revision-matched responses. Selection, drafts, playback and analyser values stay temporary. Semantic dialogue analysis, advanced rigs, AI, auth and collaboration remain later tasks. The original fixture’s contradiction stays preserved, while saved branch repairs change its current diagnostic.
 
 ## Selected landing and frozen references
 
@@ -101,4 +110,4 @@ Open [Afterlight v2](http://localhost:4173/). Stop its dev server before preview
 - `design_archive/`, `design_specifications/vendor/` — preserved references.
 - `aether_dom_codex_kit/`, `initial_first_plan_provided/`, `design_inspirations/` — preserved original specifications and source material.
 
-Next: **Task 05 — Audio graph**, following the ordered kit board and canonical-state boundaries. WebGPU and advanced rigs/Bezier editing remain deferred.
+Next: **Task06 — AI proposals**, following the ordered kit board and canonical-state boundaries. WebGPU and advanced rigs/Bezier editing remain deferred.

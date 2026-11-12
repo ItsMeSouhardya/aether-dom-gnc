@@ -1,8 +1,10 @@
 export type PlaybackSnapshot = { timeMs: number; playing: boolean };
+export type TransportEvent = PlaybackSnapshot & { type: 'play' | 'pause' | 'seek' | 'end' };
 export type PlaybackClock = { now: () => number; request: (callback: (time: number) => void) => number; cancel: (id: number) => void };
 export type Playback = {
   getSnapshot: () => PlaybackSnapshot;
   subscribe: (listener: () => void) => () => void;
+  subscribeTransport: (listener: (event: TransportEvent) => void) => () => void;
   seek: (timeMs: number) => void;
   play: () => void;
   pause: () => void;
@@ -19,6 +21,11 @@ export function createPlayback(durationMs: number, clock: PlaybackClock = {
   let anchorPosition = 0;
   let disposed = false;
   const listeners = new Set<() => void>();
+  const transportListeners = new Set<(event: TransportEvent) => void>();
+  function transport(type: TransportEvent['type']) {
+    const event = { type, ...snapshot };
+    for (const listener of [...transportListeners]) listener(event);
+  }
   function publish(timeMs: number, playing: boolean) {
     if (snapshot.timeMs === timeMs && snapshot.playing === playing) return;
     snapshot = { timeMs, playing };
@@ -30,11 +37,13 @@ export function createPlayback(durationMs: number, clock: PlaybackClock = {
     if (disposed || !snapshot.playing) return;
     const position = Math.min(duration, anchorPosition + Math.max(0, time - anchorTime));
     publish(position, position < duration);
+    if (position >= duration) transport('end');
     if (!disposed && snapshot.playing && frame === null) frame = clock.request(tick);
   }
   return {
     getSnapshot: () => snapshot,
     subscribe(listener) { if (!disposed) listeners.add(listener); return () => { listeners.delete(listener); }; },
+    subscribeTransport(listener) { if (!disposed) transportListeners.add(listener); return () => { transportListeners.delete(listener); }; },
     seek(timeMs) {
       if (disposed) return;
       const position = Number.isNaN(timeMs) ? 0 : Math.min(duration, Math.max(0, timeMs));
@@ -42,12 +51,14 @@ export function createPlayback(durationMs: number, clock: PlaybackClock = {
       const playing = snapshot.playing && position < duration;
       if (!playing) stopFrame();
       publish(position, playing);
+      transport('seek');
     },
     play() {
       if (disposed || snapshot.playing || duration === 0) return;
       anchorPosition = snapshot.timeMs >= duration ? 0 : snapshot.timeMs;
       anchorTime = clock.now();
       publish(anchorPosition, true);
+      transport('play');
       if (!disposed && snapshot.playing && frame === null) frame = clock.request(tick);
     },
     pause() {
@@ -55,7 +66,8 @@ export function createPlayback(durationMs: number, clock: PlaybackClock = {
       stopFrame();
       const position = Math.min(duration, anchorPosition + Math.max(0, clock.now() - anchorTime));
       publish(position, false);
+      transport('pause');
     },
-    dispose() { if (disposed) return; stopFrame(); disposed = true; publish(snapshot.timeMs, false); listeners.clear(); },
+    dispose() { if (disposed) return; stopFrame(); disposed = true; publish(snapshot.timeMs, false); transport('pause'); listeners.clear(); transportListeners.clear(); },
   };
 }

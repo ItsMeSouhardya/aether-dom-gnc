@@ -14,7 +14,7 @@ export default defineConfig({
   workers: 1,
   timeout: 30000,
   reporter: [['list']],
-  use: { baseURL: 'http://127.0.0.1:3100', trace: 'retain-on-failure' },
+  use: { baseURL: 'http://127.0.0.1:3100', trace: 'retain-on-failure', ...(process.env.AETHER_E2E_CHANNEL === 'msedge' ? { channel: 'msedge' } : {}) },
   projects: [
     { name: 'desktop', use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 1000 } } },
     { name: 'mobile', use: { ...devices['iPhone 13'], defaultBrowserType: 'chromium' } },

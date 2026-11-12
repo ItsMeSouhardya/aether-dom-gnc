@@ -17,7 +17,7 @@ test('explains the injured-arm conflict with evidence and inspectable dependenci
   await page.getByRole('button', { name: 'Diagnostics', exact: true }).click();
   await expect(conflict(page)).toContainText('event_injury');
   await expect(conflict(page)).toContainText('constraint_kael_left_arm');
-  await expect(page.getByRole('region', { name: 'Diagnostics tray' })).toContainText('asset files');
+  await expect(page.getByRole('region', { name: 'Diagnostics tray' }).getByText(/asset files need attention/)).toHaveCount(0);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   await page.screenshot({ path: testInfo.outputPath('linter.png'), fullPage: true, scale: 'css' });
   await page.getByRole('navigation', { name: 'Layer navigator' }).getByRole('button', { name: 'Select layer Vance', exact: true }).click();

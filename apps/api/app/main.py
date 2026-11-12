@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Annotated, Any, Literal, cast
 
-from fastapi import Body, FastAPI, Request, Response
+from fastapi import Body, FastAPI, Query, Request, Response
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
@@ -95,6 +95,16 @@ def create_app(database_path: Path | None = None, asset_root: Path | None = None
     ) -> dict[str, Any]:
         response.headers["Cache-Control"] = "no-store"
         return repository.get_svg_asset(project_id, branch_id, asset_id, revision)
+
+    @app.get("/api/v1/projects/{project_id}/branches/{branch_id}/audio/{asset_id}")
+    def audio_asset(
+        project_id: str, branch_id: str, asset_id: str,
+        revision: Annotated[int | None, Query(ge=0, le=9007199254740991)] = None,
+    ) -> Response:
+        raw = repository.get_audio_asset(project_id, branch_id, asset_id, revision)
+        return Response(content=raw, media_type="audio/wav", headers={
+            "Cache-Control": "no-store", "Content-Length": str(len(raw)),
+        })
 
     @app.post("/api/v1/projects/{project_id}/branches/{branch_id}/commands")
     def execute(

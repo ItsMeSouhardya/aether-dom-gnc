@@ -9,7 +9,7 @@ const command = { commandId: 'cmd_one', projectId: 'proj_neon_shogun', branchId:
 afterEach(() => vi.unstubAllGlobals());
 
 describe('persisted project boundary', () => {
-  it.each(['setShotCamera','setLayerAppearance','importSvgLayer','editSvgElement','setLayerKeyframe','deleteLayerKeyframe'])('accepts %s receipts in compatible document histories', op => {
+  it.each(['setShotCamera','setLayerAppearance','importSvgLayer','editSvgElement','setLayerKeyframe','deleteLayerKeyframe','setShotTension'])('accepts %s receipts in compatible document histories', op => {
     const document = structuredClone(sample) as CdomDocument;
     document.schemaVersion = '0.2.0'; document.project.revision = 1; document.branches[0].headRevision = 1;
     const receipt = {commandId:'stage',revision:1,op,targetId:'layer_kael',reason:'Edit',createdAt:'2026-11-12T10:00:00Z',changedEntityIds:['layer_kael']};

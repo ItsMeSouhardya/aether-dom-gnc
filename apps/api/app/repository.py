@@ -10,6 +10,7 @@ from alembic.config import Config
 from sqlalchemy import Connection, RowMapping, create_engine, select
 from sqlalchemy.engine import URL
 
+from app.audio_assets import read_audio
 from app.commands import CommandError, apply_operation, ensure_valid_document, validate_command
 from app.contracts import load_fixture
 from app.persistence.tables import branches, commands, snapshots
@@ -124,6 +125,23 @@ class Repository:
         return {"assetId": asset_id, "uri": asset["uri"],
                 "sourceUri": asset.get("sourceUri", asset["uri"]),
                 **self.asset_store.read_svg(asset["uri"])}
+
+    def get_audio_asset(
+        self, project_id: str, branch_id: str, asset_id: str, revision: int | None = None,
+    ) -> bytes:
+        if revision is not None and (isinstance(revision, bool) or not isinstance(revision, int)
+                                     or not 0 <= revision <= 9007199254740991):
+            raise CommandError(
+                422, "INVALID_REVISION", "Revision must be a nonnegative safe integer",
+            )
+        document = self.get(project_id, branch_id)["document"] if revision is None else (
+            self.revision_document(project_id, branch_id, revision)
+        )
+        assets = [asset for asset in document["assets"] if asset["id"] == asset_id]
+        if (len(assets) != 1 or assets[0]["kind"] != "audio"
+                or not any(track["assetId"] == asset_id for track in document["audioTracks"])):
+            raise CommandError(404, "ASSET_NOT_FOUND", "The referenced audio asset does not exist")
+        return read_audio(self.asset_root, assets[0]["uri"])
 
     def execute(self, project_id: str, branch_id: str, value: object) -> dict[str, Any]:
         payload = validate_command(value)

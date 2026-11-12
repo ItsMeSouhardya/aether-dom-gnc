@@ -9,6 +9,19 @@
 .studio code { font: .75rem/1.5 ui-monospace, Consolas, monospace; overflow-wrap: anywhere; }
 .studio button:focus-visible { outline-offset: -3px; }
 .stage-tools { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.audio-panel { padding: 20px; }
+.audio-panel > .inspector-section-heading { flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
+.audio-preview-controls { display: grid; gap: 14px; margin-top: 20px; }
+.audio-preview-controls label { display: flex; flex-direction: column; gap: 8px; color: var(--muted); font-size: .75rem; }
+.audio-preview-controls .audio-toggle { flex-direction: row; align-items: center; min-height: 44px; }
+.audio-panel input[type=range] { width: 100%; min-width: 0; accent-color: var(--accent); }
+.audio-panel input[type=checkbox] { accent-color: var(--accent); min-width: 18px; height: 18px; }
+.studio .audio-panel .audio-toggle input[type=checkbox] { width: 18px; min-height: 18px; flex: none; margin: 0; }
+.audio-panel select { width: 100%; min-height: 40px; padding: 8px; border: 1px solid #7c8b6e; border-radius: 3px; color: var(--fg); background: #11150e; font: inherit; }
+.audio-panel meter { width: 100%; height: 16px; accent-color: var(--accent); }
+.audio-track { padding-block: 16px; border-bottom: 1px solid var(--line); }
+.audio-track > .reference-values { display: grid; grid-template-columns: 1fr 1fr; margin-top: 12px; }
+.audio-panel .panel-note { margin-block: 8px; }
 .stage-tools .studio-button { min-height: 32px; padding: 5px 9px; font-size: .6875rem; }
 .stage-tools [aria-pressed=true] { background: var(--selected); border-color: var(--accent); color: var(--accent); }
 .stage-toolbar { flex-wrap: wrap; }
@@ -205,7 +218,7 @@
 .timeline-ruler > div { display: flex; justify-content: space-between; }
 .timeline-track { align-items: center; min-height: 26px; }
 .timeline-track > span { font-size: .6875rem; overflow-wrap: anywhere; }
-.timeline-track-lane { min-width: 0; padding-block: 3px; border-bottom: 1px solid #353e2e; }
+.timeline-track-lane { position: relative; min-width: 0; min-height: 20px; padding-block: 3px; border-bottom: 1px solid #353e2e; }
 .timeline-placeholder-bar { display: block; padding-inline: 9px; border: 1px dashed #68785a; background: #283122; color: #c3cbb8; font-size: .625rem; }
 .studio .timeline-note { color: var(--muted); padding: 2px 20px 12px; font-size: .625rem; }
 .studio-timeline > .panel-note { padding: 20px; }
