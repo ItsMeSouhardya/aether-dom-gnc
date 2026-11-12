@@ -67,3 +67,24 @@ Python additionally reserves 16 UTF-8 bytes per finite JSON number in every boun
 Pure API validation dry-runs on a copied base snapshot and rejects invalid targets, permission escapes and no-op batches. Diff entries name entity-relative authored fields such as `transform.x` and `audio.tension`, with explicit before/after presence flags. Schema changes are reported separately. Approval rebuilds the captured context and verifies its digest, evidence, operations and exact diff against the unchanged base. Proposals are stored separately from canonical `.cdom`; generation and rejection do not create revisions.
 
 Command contract **0.5.0** adds only `approveProposal`, with a proposal `targetId`, empty `args`, explicit human actor and expected revision. The repository loads the stored proposal and applies its batch atomically as one undoable revision. Browser-supplied replacements and public snapshot restores remain forbidden. Document schemas and existing command operations are unchanged.
+# Portable player manifests
+
+`player-manifest.schema.json` defines the version1.0.0 media wrapper. Its `document`
+is validated separately against the preserved0.1/0.2/0.3 canonical schemas. Import
+`PlayerManifest`, `validatePlayerManifest`, `parsePlayerManifest`, and
+`decodeManifestAudio` from `@aether-dom/schema`. Prefer `parsePlayerManifest` for
+untrusted raw JSON: it checks UTF8 size and nesting before parsing. Validation
+never repairs or mutates input.
+
+The wrapper embeds exactly the SVG/audio assets referenced by shot-owned layers
+and tracks. It rejects ambiguous IDs, invalid membership/references, unsupported
+layers/media, unknown rights, mismatched SVG metadata, unsafe SVG, and noncanonical
+base64 or invalid PCM16 WAV. Shared limits are32MiB per JSON manifest,64 assets,
+8MiB per WAV, depth32, and200000 JSON nodes. WAV retains the existing mono/stereo,
+8–48kHz,16-bit, maximum30-second rules. Neither local imports nor validation reads
+authored URIs. The shared fixture and case table exercise both TS and Python.
+
+Command contract0.6 adds human-only `setShotLayoutOverride` with a shot target and
+`{aspectRatio:'9:16',layerTransforms:Record<string,Transform>|null}`. Transforms
+require all five fields, positive scale, and at most64 uniquely owned layer IDs.
+Null removes the portrait override. Canonical document schemas stay unchanged.

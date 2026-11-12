@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://example.org/aether-dom/command.schema.v0.5.0.json",
+  "$id": "https://example.org/aether-dom/command.schema.v0.6.0.json",
   "title": "CdomCommand",
   "type": "object",
   "$defs": {
@@ -681,6 +681,86 @@
           "properties": {}
         }
       }
+    },
+    {
+      "type": "object",
+      "unevaluatedProperties": false,
+      "allOf": [
+        {
+          "$ref": "#/$defs/envelope"
+        },
+        {
+          "type": "object",
+          "required": [
+            "op",
+            "targetId",
+            "args"
+          ],
+          "properties": {
+            "op": {
+              "const": "setShotLayoutOverride"
+            },
+            "targetId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "args": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "aspectRatio",
+                "layerTransforms"
+              ],
+              "properties": {
+                "aspectRatio": {
+                  "const": "9:16"
+                },
+                "layerTransforms": {
+                  "type": [
+                    "object",
+                    "null"
+                  ],
+                  "maxProperties": 64,
+                  "propertyNames": {
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "x": {
+                        "type": "number"
+                      },
+                      "y": {
+                        "type": "number"
+                      },
+                      "z": {
+                        "type": "number"
+                      },
+                      "scale": {
+                        "type": "number",
+                        "exclusiveMinimum": 0
+                      },
+                      "rotationDeg": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "x",
+                      "y",
+                      "z",
+                      "scale",
+                      "rotationDeg"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
     }
   ]
 }

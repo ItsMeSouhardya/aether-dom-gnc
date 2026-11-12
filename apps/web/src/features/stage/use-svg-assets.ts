@@ -1,11 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import type { CdomDocument, SvgAsset } from '@aether-dom/schema';
+import type { CdomDocument } from '@aether-dom/schema';
 import { loadSvgAsset } from '@/lib/svg-asset-api';
 
-export type AssetState = { svg?: SvgAsset; error?: string };
-export const assetKey = (asset: { id: string; uri: string }) => `${asset.id}:${asset.uri}`;
+import { assetKey, type AssetState } from './asset-state';
+export { assetKey, type AssetState } from './asset-state';
 export function useSvgAssets(document: CdomDocument) {
   const [assets, setAssets] = useState<Record<string, AssetState>>({});
   useEffect(() => {

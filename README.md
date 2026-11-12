@@ -1,6 +1,6 @@
 # AETHER-DOM
 
-A local-first creative IDE for semantic, cross-modal storytelling. **Task06 — AI proposals** adds scoped, offline mock proposals with inspectable diffs and explicit approval through the saved command history. The selected Afterlight v2 landing page remains separate and unchanged.
+A local-first creative IDE for semantic, cross-modal storytelling. **Task07 — Aspect-ratio & player** adds editable portrait compositions, safe-area guides, independent playback and portable JSON export with local media. The selected Afterlight v2 landing page remains separate and unchanged.
 
 ## Local setup — Windows PowerShell
 
@@ -50,6 +50,12 @@ Select a layer, then choose **Proposals** in the header. Choose the selected lay
 
 Generating or rejecting a proposal leaves canon and undo history unchanged. **Approve proposal** applies only the stored, revalidated operations in one revision and one undo entry. A stale proposal cannot overwrite newer work; reload and generate a fresh proposal. Saved proposal decisions survive reload/restart, and Undo restores canon while retaining the historical approval. Proposal records live in a separate SQLite table added by migration0002; existing documents are not upgraded. Provider JSON, context and records are bounded and validated, with no import, raw restore, recovery or arbitrary batch permission.
 
+Choose **9:16** above the stage to preview the saved portrait override. The **Portrait composition** inspector edits the selected layer's alternate transform; dragging, arrow nudges and depth controls also target only portrait. **Fit subjects** creates an unsaved draft that packs visible character sprites within the5% side/10% top-and-bottom guides. Review it, then **Save portrait layout** or **Cancel layout**. **Use base transforms in portrait** drafts removal of the alternate map and still requires Save. Base transforms, other aspect settings and document schema stay unchanged. Undo restores the exact previous override. Safe-area labels describe sprite bounds at time zero, not every animated frame; backgrounds may crop. Existing keyframe movement is rebased on the alternate composition.
+
+Choose **Player** in the header to open the current saved revision at `/player`. Choose a shot/aspect, use Play/Pause or seek, and explicitly **Enable audio** to hear its embedded local mix. Focus the frame for Space/arrow/Home/End keyboard controls. Changing shot/aspect resets playback and audio. This read-only route uses the same composition, renderer, playback clock and audio engine as the studio.
+
+**Export JSON** downloads a portable `.cdom.json` bundle containing the exact saved document plus sanitized SVG trees and PCM WAV media. Unsaved drafts are excluded. Open it through **Open JSON** in the player; media playback then works with the API offline. The app itself must be installed/running: the JSON is data for this player, not an HTML application or video. The initial bundle format is JSON rather than ZIP, with a32MiB total limit,64 referenced assets and8MiB per WAV. Missing, unsupported, unsafe or unknown-rights referenced media fails export with actionable guidance. Files stay local; no publication or canonical write occurs. Original media references inside the document remain intact.
+
 On macOS/Linux use `python3 -m venv .venv` and `.venv/bin/python -m pip install -r apps/api/requirements-dev.txt`; pnpm commands are identical.
 
 ## Shared checks
@@ -81,13 +87,14 @@ On this Windows host the bundled Playwright Chromium failed to launch. Local bro
 - `GET /api/v1/projects/{projectId}/branches/{branchId}/audio/{assetId}?revision=N`: bounded PCM16 WAV bytes for a referenced audio asset at that saved revision. Traversal, network paths, redirected links and invalid/oversized files are rejected.
 - `GET/POST /api/v1/projects/{projectId}/branches/{branchId}/agent-proposals`: list the latest20 review records or generate a scoped proposal against `expectedRevision`.
 - `POST /api/v1/projects/{projectId}/branches/{branchId}/agent-proposals/{proposalId}/reject`: persist rejection with an empty JSON object; approval uses the existing commands endpoint.
+- `GET /api/v1/projects/{projectId}/branches/{branchId}/player-manifest?revision=N`: exact saved document plus portable embedded SVG/audio media; `download=1` adds an attachment filename. Omit revision to capture current head once. No history/proposal records are exported.
 - [Local OpenAPI docs](http://127.0.0.1:8000/docs).
 
 The web server forwards only these fixed resources and preserves conflict/error status. Browser writes require same-origin JSON requests. Server-only `AETHER_API_ORIGIN` defaults to `http://127.0.0.1:8000`; copy `.env.example` to `apps/web/.env.local` only if changing it. Never use a `NEXT_PUBLIC_` variable for server configuration or secrets. Keep the API bound to loopback; this local task does not add authentication or a public service.
 
 `packages/schema/cdom.schema.json` and the original fixture remain version **0.1.0**. Version0.2 adds stage metadata; version0.3 adds optional `shot.audio.tension`. All three remain readable. `setShotTension` upgrades its copied snapshot losslessly; undo restores exact prior authored fields/version. Stage commands preserve existing0.3 metadata. Startup performs no document upgrade. AJV and Python consume the same schemas; see [the contract guide](packages/schema/README.md).
 
-`command.schema.json` defines command version **0.5.0**, including human-only `approveProposal` targeting a stored proposal with empty args; derived analysis remains **0.1.0**. SQLite owns canonical state; React accepts only validated, revision-matched responses. Selection, drafts, playback and analyser values stay temporary. Real AI providers, semantic dialogue analysis, advanced rigs, auth and collaboration remain later work. The original fixture’s contradiction stays preserved, while saved branch repairs change its current diagnostic.
+`command.schema.json` defines command version **0.6.0**, adding `setShotLayoutOverride` targeting a shot with `{aspectRatio:'9:16',layerTransforms:map|null}`; derived analysis remains **0.1.0**. Existing document versions already support these fields, so no document upgrade or SQL migration is needed. SQLite owns canonical state; React accepts only validated, revision-matched responses. Selection, drafts, playback and analyser values stay temporary. Video export/branching belong to Task08; real AI providers, semantic dialogue analysis, advanced rigs, auth and collaboration remain later work. The original fixture’s contradiction stays preserved, while saved branch repairs change its current diagnostic.
 
 ## Selected landing and frozen references
 

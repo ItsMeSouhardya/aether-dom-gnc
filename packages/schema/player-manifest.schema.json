@@ -1,0 +1,191 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/aether-dom/player-manifest.v1.schema.json",
+  "title": "PlayerManifestWire",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "manifestVersion",
+    "document",
+    "assets"
+  ],
+  "$defs": {
+    "node": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tag": {
+          "enum": [
+            "svg",
+            "g",
+            "path",
+            "rect",
+            "circle",
+            "ellipse",
+            "line",
+            "polyline",
+            "polygon",
+            "text"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "attributes": {
+          "type": "object",
+          "maxProperties": 32,
+          "propertyNames": {
+            "maxLength": 64
+          },
+          "additionalProperties": {
+            "type": "string",
+            "maxLength": 32768
+          }
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 32768
+        },
+        "children": {
+          "type": "array",
+          "maxItems": 512,
+          "items": {
+            "$ref": "#/$defs/node"
+          }
+        }
+      },
+      "required": [
+        "tag",
+        "id",
+        "attributes",
+        "text",
+        "children"
+      ]
+    },
+    "svg": {
+      "title": "SvgAsset",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "assetId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "uri": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceUri": {
+          "type": "string",
+          "minLength": 1
+        },
+        "viewBox": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            },
+            "width": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "height": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          },
+          "required": [
+            "x",
+            "y",
+            "width",
+            "height"
+          ]
+        },
+        "root": {
+          "$ref": "#/$defs/node"
+        }
+      },
+      "required": [
+        "assetId",
+        "uri",
+        "sourceUri",
+        "viewBox",
+        "root"
+      ]
+    }
+  },
+  "properties": {
+    "manifestVersion": {
+      "const": "1.0.0"
+    },
+    "document": {
+      "type": "object",
+      "description": "Validated separately against its unchanged canonical document version."
+    },
+    "assets": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "assetId",
+              "kind",
+              "svg"
+            ],
+            "properties": {
+              "assetId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "kind": {
+                "const": "svg"
+              },
+              "svg": {
+                "$ref": "#/$defs/svg"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "assetId",
+              "kind",
+              "mimeType",
+              "dataBase64"
+            ],
+            "properties": {
+              "assetId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "kind": {
+                "const": "audio"
+              },
+              "mimeType": {
+                "const": "audio/wav"
+              },
+              "dataBase64": {
+                "type": "string",
+                "minLength": 4,
+                "maxLength": 11184812
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
