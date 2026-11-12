@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/aether-dom/svg.schema.v0.1.0.json",
+  "title": "SvgAsset",
+  "$defs": {
+    "node": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tag": {
+          "enum": [
+            "svg",
+            "g",
+            "path",
+            "rect",
+            "circle",
+            "ellipse",
+            "line",
+            "polyline",
+            "polygon",
+            "text"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "attributes": {
+          "type": "object",
+          "maxProperties": 32,
+          "propertyNames": {
+            "maxLength": 64
+          },
+          "additionalProperties": {
+            "type": "string",
+            "maxLength": 32768
+          }
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 32768
+        },
+        "children": {
+          "type": "array",
+          "maxItems": 512,
+          "items": {
+            "$ref": "#/$defs/node"
+          }
+        }
+      },
+      "required": [
+        "tag",
+        "id",
+        "attributes",
+        "text",
+        "children"
+      ]
+    }
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "assetId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "uri": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sourceUri": {
+      "type": "string",
+      "minLength": 1
+    },
+    "viewBox": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "width": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "height": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      },
+      "required": [
+        "x",
+        "y",
+        "width",
+        "height"
+      ]
+    },
+    "root": {
+      "$ref": "#/$defs/node"
+    }
+  },
+  "required": [
+    "assetId",
+    "uri",
+    "sourceUri",
+    "viewBox",
+    "root"
+  ]
+}

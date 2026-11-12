@@ -11,7 +11,11 @@ SCHEMA_ROOT = Path(__file__).resolve().parents[3] / "packages" / "schema"
 SCHEMA = json.loads((SCHEMA_ROOT / "cdom.schema.json").read_text(encoding="utf-8"))
 Draft202012Validator.check_schema(SCHEMA)
 VALIDATOR = Draft202012Validator(SCHEMA)
-SCHEMA_VERSION: str = SCHEMA["properties"]["schemaVersion"]["const"]
+SCHEMA_V2 = json.loads((SCHEMA_ROOT / "cdom.v0.2.schema.json").read_text(encoding="utf-8"))
+Draft202012Validator.check_schema(SCHEMA_V2)
+VALIDATOR_V2 = Draft202012Validator(SCHEMA_V2)
+SCHEMA_VERSION = "0.2.0"
+SUPPORTED_SCHEMA_VERSIONS = ["0.1.0", "0.2.0"]
 
 
 def _portable_issues(value: object, path: str = "") -> list[dict[str, str]]:
@@ -44,6 +48,11 @@ def _portable_issues(value: object, path: str = "") -> list[dict[str, str]]:
 
 def validate_document(document: object) -> list[dict[str, str]]:
     """Structural validation only; never coerce, repair, or mutate canon."""
+    validator = (
+        VALIDATOR_V2
+        if isinstance(document, dict) and document.get("schemaVersion") == "0.2.0"
+        else VALIDATOR
+    )
     return _portable_issues(document) + [
         {
             "path": "/" + "/".join(
@@ -51,7 +60,7 @@ def validate_document(document: object) -> list[dict[str, str]]:
             ),
             "message": error.message,
         }
-        for error in VALIDATOR.iter_errors(document)
+        for error in validator.iter_errors(document)
     ]
 
 

@@ -18,7 +18,8 @@ def test_health(client: TestClient) -> None:
     response = client.get("/api/v1/health")
     assert response.status_code == 200
     assert response.json() == {
-        "status": "ok", "service": "aether-dom-api", "schemaVersion": "0.1.0"
+        "status": "ok", "service": "aether-dom-api", "schemaVersion": "0.2.0",
+        "supportedSchemaVersions": ["0.1.0", "0.2.0"],
     }
 
 

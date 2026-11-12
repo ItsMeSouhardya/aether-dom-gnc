@@ -6,8 +6,12 @@ import { useState } from 'react';
 import type { CommandOperation, Transform } from '@/features/commands/draft';
 import { TransformEditor } from './transform-editor';
 import { CharacterCanon } from './character-canon';
+import { AppearanceEditor, KeyframeEditor, SvgEditor } from '../stage/stage-editors';
+import { assetKey, type AssetState } from '@/features/stage/use-svg-assets';
+import type { Playback } from '@/features/stage/playback';
+import type { StageMode } from './layer-stage';
 
-export function LayerInspector({ document, selection, clear, busy, blocked, save, run }: { document: CdomDocument; selection: StudioSelection; clear: () => void; busy: boolean; blocked: boolean; save: (targetId: string, transform: Transform, expectedRevision: number) => Promise<boolean>; run: (operation: CommandOperation, reason: string, revision?: number) => Promise<boolean> }) {
+export function LayerInspector({ document, selection, clear, busy, blocked, save, run, assets, mode, selectedElement, selectElement, playback }: { document: CdomDocument; selection: StudioSelection; clear: () => void; busy: boolean; blocked: boolean; save: (targetId: string, transform: Transform, expectedRevision: number) => Promise<boolean>; run: (operation: CommandOperation, reason: string, revision?: number) => Promise<boolean>; assets: Record<string, AssetState>; mode: StageMode; selectedElement: string | null; selectElement: (id: string) => void; playback: Playback }) {
   const [editing, setEditing] = useState(false);
   const layer = getShotLayers(document, selection.shotId).find(layer => layer.id === selection.layerId);
   const asset = document.assets.find(asset => asset.id === layer?.assetId);
@@ -27,8 +31,11 @@ export function LayerInspector({ document, selection, clear, busy, blocked, save
         {editing ? <TransformEditor transform={layer.transform} revision={document.project.revision} busy={busy} blocked={blocked} save={(value, revision) => save(layer.id, value, revision)} cancel={() => setEditing(false)} />
           : <button className="studio-button transform-edit-button" disabled={busy || blocked} onClick={() => setEditing(true)}>Edit transform</button>}
       </section>
+      <AppearanceEditor key={`appearance:${document.project.revision}`} document={document} layer={layer} busy={busy} blocked={blocked} run={run} />
+      {mode === 'animation' ? <KeyframeEditor document={document} layer={layer} playback={playback} busy={busy} blocked={blocked} run={run} /> : null}
+      {mode === 'svg' && asset && assets[assetKey(asset)]?.svg ? <SvgEditor key={asset.uri} document={document} layer={layer} svg={assets[assetKey(asset)].svg!} selectedId={selectedElement} onSelect={selectElement} busy={busy} blocked={blocked} run={run} /> : null}
       {character ? <CharacterCanon document={document} character={character} layer={layer} busy={busy} blocked={blocked} run={run} /> : null}
-      <section className="inspector-section"><h3>Source reference</h3><dl className="reference-values"><div><dt>Asset</dt><dd><code>{layer.assetId}</code></dd></div><div><dt>Path</dt><dd><code>{asset?.uri ?? 'Asset reference unavailable'}</code></dd></div><div><dt>Rights metadata</dt><dd>{asset?.rights.replaceAll('_', ' ') ?? 'Unavailable'}</dd></div></dl><p className="panel-note">Source file not bundled. The stage shows a layout block.</p></section>
+      <section className="inspector-section"><h3>Source reference</h3><dl className="reference-values"><div><dt>Asset</dt><dd><code>{layer.assetId}</code></dd></div><div><dt>Path</dt><dd><code>{asset?.uri ?? 'Asset reference unavailable'}</code></dd></div><div><dt>Rights metadata</dt><dd>{asset?.rights.replaceAll('_', ' ') ?? 'Unavailable'}</dd></div></dl><p className="panel-note">{asset && assets[assetKey(asset)]?.svg ? 'Local SVG · stable source element IDs' : asset && assets[assetKey(asset)]?.error ? assets[assetKey(asset)].error : 'Source preview unavailable.'}</p></section>
       <button className="studio-button inspector-clear" onClick={clear}>Clear selection</button>
     </div> : <div className="inspector-empty"><Icon name="inspect" /><h3>Select a layer</h3><p>Choose a layer on the stage or in the navigator to inspect its transform and source references.</p><p>Selection is temporary. Your document stays unchanged.</p></div>}
   </section>;

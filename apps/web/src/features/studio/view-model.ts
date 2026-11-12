@@ -21,7 +21,7 @@ export function getShotLayers(document: CdomDocument, shotId: string | null): La
 }
 
 export function layerName(document: CdomDocument, layer: Layer): string {
-  return document.characters.find(character => character.id === layer.characterId)?.name
+  return layer.name ?? document.characters.find(character => character.id === layer.characterId)?.name
     ?? layer.id.replace(/^layer_/, '').split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 }
 

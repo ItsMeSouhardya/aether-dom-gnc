@@ -78,6 +78,32 @@ test('allows keyboard selection, resets on reload and supports narrow reflow', a
   }
 });
 
+test('gives the stage useful space on a fullscreen desktop with scaled browser UI', async ({ page }, testInfo) => {
+  await page.setViewportSize({ width: 1536, height: 730 });
+  await page.goto('/');
+  await expect(page.getByRole('button', { name: 'Import SVG', exact: true })).toBeVisible();
+  const frame = page.locator('.stage-canvas');
+  const geometry = await page.locator('.stage-workspace').evaluate(element => {
+    const container = element.getBoundingClientRect(), canvas = element.querySelector('.stage-canvas')!.getBoundingClientRect();
+    return { available: container.width, width: canvas.width, height: canvas.height, fits: canvas.top >= container.top && canvas.bottom <= container.bottom };
+  });
+  expect(geometry.width).toBeGreaterThan(geometry.available * .7);
+  expect(geometry.fits).toBe(true);
+  expect(geometry.width / geometry.height).toBeCloseTo(16 / 9, 1);
+  await page.screenshot({ path: testInfo.outputPath('fullscreen-stage.png'), fullPage: true });
+  await page.getByRole('button', { name: 'Show timeline tracks', exact: true }).click();
+  await expect(page.locator('.timeline-layout')).toBeVisible();
+  expect((await frame.boundingBox())!.width).toBeLessThan(geometry.width);
+  await page.getByRole('button', { name: 'Hide timeline tracks', exact: true }).click();
+  await expect(page.locator('.timeline-layout')).toBeHidden();
+  await page.getByRole('button', { name: 'Animation mode', exact: true }).click();
+  await expect(page.locator('.timeline-layout')).toBeVisible();
+  await page.getByRole('button', { name: 'Layout mode', exact: true }).click();
+  await page.setViewportSize({ width: 1920, height: 930 });
+  await expect.poll(async () => (await frame.boundingBox())!.width).toBeGreaterThan(900);
+  await expect(page.getByRole('button', { name: 'Diagnostics', exact: true })).toBeVisible();
+});
+
 test('fits the stage frame when diagnostics reduce the available height', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 800 });
   await page.goto('/');

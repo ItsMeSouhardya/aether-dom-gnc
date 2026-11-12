@@ -1,6 +1,9 @@
 node_modules/
 .next/
 .venv/
+.venv-task04/
+assets/imported/
+assets/originals/
 __pycache__/
 .pytest_cache/
 .mypy_cache/

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="neon_sign" viewBox="0 0 180 120">
+  <path id="sign_bracket" d="M146 20 L168 20 L168 117 M149 92 L168 92" fill="none" stroke="#65757b" stroke-width="6"/>
+  <rect id="sign_panel" x="6" y="6" width="145" height="92" rx="8" fill="#263541" stroke="#83958e" stroke-width="3"/>
+  <rect id="sign_inner_border" x="15" y="15" width="127" height="74" rx="3" fill="none" stroke="#d399ad" stroke-width="2"/>
+  <path id="sign_glyph_left" d="M32 34 L58 34 M45 28 L45 72 M30 49 L60 49 M33 72 L58 58" fill="none" stroke="#e2adc2" stroke-width="5" stroke-linecap="round"/>
+  <path id="sign_glyph_right" d="M80 32 L122 32 M90 27 L90 72 M111 27 L111 72 M80 49 L122 49 M80 72 L122 72" fill="none" stroke="#b4d4c6" stroke-width="5" stroke-linecap="round"/>
+</svg>

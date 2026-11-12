@@ -2,11 +2,14 @@
 
 import copy
 import json
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
 from jsonschema import Draft202012Validator
 
 from app.contracts import SCHEMA_ROOT, _portable_issues, validate_document
+
+if TYPE_CHECKING:
+    from app.svg_assets import SvgAssetStore
 
 COMMAND_SCHEMA = json.loads((SCHEMA_ROOT / "command.schema.json").read_text(encoding="utf-8"))
 Draft202012Validator.check_schema(COMMAND_SCHEMA)
@@ -77,9 +80,21 @@ def _constraint(
 
 def apply_operation(
     document: dict[str, Any], operation: dict[str, Any],
+    asset_store: "SvgAssetStore | None" = None,
 ) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any], list[str]]:
     """Apply typed edits and stored inverses, including Task 02 transform records."""
     op = operation.get("op", "setLayerTransform")
+    if op == "restoreStageSnapshot":
+        result = copy.deepcopy(operation["args"]["document"])
+        ensure_valid_document(result)
+        changed = operation["args"]["changedEntityIds"]
+        inverse = {**operation, "args": {"document": copy.deepcopy(document),
+                                        "changedEntityIds": changed}}
+        return result, copy.deepcopy(operation), inverse, changed
+    if op in {"setShotCamera", "setLayerAppearance", "importSvgLayer", "editSvgElement",
+              "setLayerKeyframe", "deleteLayerKeyframe"}:
+        from app.stage_commands import apply_stage_operation
+        return apply_stage_operation(document, operation, asset_store)
     if op == "setLayerTransform":
         result, forward, inverse = apply_transform(document, operation)
         return result, forward, inverse, [operation["targetId"]]

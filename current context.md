@@ -2,9 +2,15 @@
 
 Last updated: 12 November 2026 (Asia/Calcutta).
 
+Fullscreen sizing follow-up complete: at1536×730 the frame grew from309px to720px wide (2.3×). Layout defaults to compact timeline controls; Show tracks expands rows, Animate opens them automatically, and desktop drawer controls share one horizontal row. Removed the900px frame cap and desktop760px page minimum. Mobile timeline controls wrap into two readable rows. New regression covers scaled fullscreen,1920px desktop, toggle/animation and aspect/containment. Final follow-up checks:62 browser tests,94 frontend tests, lint/types/build/preservation clean. Web preview now session54072 on3000; API8000 remains running. Read-only preview observed the user's newer revision6; no project commands were issued for this layout fix. All changes remain uncommitted.
+
 ## Current phase
 
-**Task 03 — Dependency graph and linter is complete and verified.** Changes remain uncommitted on feat/task-03-dependency-graph-linter, based on merged Task 02 commit 87e956e. Pure graph indexes/invalidation, evidence-linked rules, reviewed pose/recovery commands and draft-only dialect checking are implemented. Final verification: 257 unit/API tests passed, 1 host-limited file-symlink test skipped, 46 desktop/mobile browser tests passed, plus lint/types/build/preservation and independent review fixes. Plan: docs/superpowers/plans/2026-11-11-task-03-dependency-graph-linter.md; evidence: docs/tasks/task-03-verification.md. Original document/fixture, landing and archives stay preserved. Next: Task 04 — 2.5D stage. Full media rendering, auth and AI remain future work.
+**Task04 — 2.5D stage is complete and verified** on feat/task-04-2-5d-stage, based on merged Task03 c56eec4 (user commit89b85e2). Drag/reorder, local SVG rendering/import/source-ID editing, camera, appearance, linear keyframes and independent playback are implemented through revision-checked commands. Final checks:420 unit/API tests passed,1 legacy host skip,60 desktop/mobile browser tests passed plus1 development StrictMode regression; lint/types/build/preservation clean. Independent review findings fixed. Plan: docs/superpowers/plans/2026-11-12-task-04-stage.md; evidence: docs/tasks/task-04-verification.md. No Task04 commit/push/merge; user handles integration. Original0.1 schema/fixture, kit, landing and archives preserved. Next: Task05 — Audio graph.
+
+Task04 preview: web3000 session32332, API8000 session33710; browser left open. Regular user database remains revision0/history0 and last-written11Nov23:29, canonical hash unchanged across restart (see evidence). Browser/API mutation tests used isolated databases/media. New original fixture SVGs live in assets/fixtures; user imports/versions in ignored assets/originals and assets/imported must be backed up with SQLite. Both0.1/0.2 documents remain readable; new stage commands losslessly upgrade and undo restores prior authored schema/state. No startup document upgrade. Text/non-scaling-stroke assets and unavailable/lost GPU contexts use native fallback. WebGPU/advanced rigs remain deferred.
+
+Task04 local environment: Windows Application Control blocks pydantic_core in the old Python3.14 `.venv`; the separate `.venv-task04` uses the official bundled Python3.12.14 and identical pinned requirements (supported puremypy workaround). Ignored `.env.api.local` sets AETHER_PYTHON=.venv-task04/Scripts/python.exe; tools/api.mjs reads this optional override. Original `.venv` remains intact. RTK is also host-blocked; direct tools used. No security policy was changed.
 
 ## Active source and frozen references
 
@@ -34,7 +40,7 @@ Planning chat: 6af337a3-3148-83ec-be6c-37ac69e4be74. It was read through read_th
 From the workspace root (full Windows setup in README.md):
 
 - pnpm dev / pnpm dev:web → Next.js product on http://127.0.0.1:3000/.
-- pnpm dev:api → FastAPI on http://127.0.0.1:8000/ using root .venv.
+- pnpm dev:api → FastAPI on http://127.0.0.1:8000/ using root .venv or optional AETHER_PYTHON from root .env.api.local (this host uses .venv-task04).
 - pnpm lint / pnpm typecheck / pnpm test → complete local source and contract checks.
 - pnpm build → Next production build; pnpm --filter web start serves it.
 - pnpm test:e2e → built-app desktop/mobile checks; starts fresh isolated services on 3100/8100 and a unique ignored database.

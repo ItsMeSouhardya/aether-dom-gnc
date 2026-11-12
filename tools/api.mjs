@@ -4,7 +4,10 @@ import { fileURLToPath } from 'node:url';
 import { resolve } from 'node:path';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
-const python = resolve(root, '.venv', process.platform === 'win32' ? 'Scripts/python.exe' : 'bin/python');
+const localEnvironment = resolve(root, '.env.api.local');
+if (existsSync(localEnvironment)) process.loadEnvFile(localEnvironment);
+const python = process.env.AETHER_PYTHON ? resolve(root, process.env.AETHER_PYTHON)
+  : resolve(root, '.venv', process.platform === 'win32' ? 'Scripts/python.exe' : 'bin/python');
 const port = process.env.AETHER_API_PORT || '8000';
 const commands = {
   dev: ['-m', 'uvicorn', 'app.main:app', '--host', '127.0.0.1', '--port', port, '--reload'],
@@ -16,7 +19,7 @@ const commands = {
 };
 const args = commands[process.argv[2]];
 if (!args || !existsSync(python)) {
-  console.error(!args ? 'Expected dev, serve, migrate, test, lint or typecheck.' : 'Missing root .venv. Follow the Python setup in README.md.');
+  console.error(!args ? 'Expected dev, serve, migrate, test, lint or typecheck.' : 'Python executable not found. Follow README.md or configure AETHER_PYTHON in .env.api.local.');
   process.exitCode = 1;
 } else {
   const child = spawn(python, args, { cwd: resolve(root, 'apps/api'), stdio: 'inherit' });

@@ -13,6 +13,7 @@ from sqlalchemy.engine import URL
 from app.commands import CommandError, apply_operation, ensure_valid_document, validate_command
 from app.contracts import load_fixture
 from app.persistence.tables import branches, commands, snapshots
+from app.svg_assets import SvgAssetStore
 
 ROOT = Path(__file__).resolve().parents[3]
 API_ROOT = Path(__file__).resolve().parents[1]
@@ -26,8 +27,14 @@ def resolve_database_path(path: Path | None = None) -> Path:
 
 
 class Repository:
-    def __init__(self, database_path: Path | None = None) -> None:
+    def __init__(self, database_path: Path | None = None, asset_root: Path | None = None) -> None:
         self.path = resolve_database_path(database_path)
+        self.asset_root = asset_root if asset_root is not None else Path(
+            os.environ.get("AETHER_ASSET_ROOT", str(ROOT)),
+        )
+        if not self.asset_root.is_absolute():
+            self.asset_root = ROOT / self.asset_root
+        self.asset_store = SvgAssetStore(self.asset_root)
         self.engine = create_engine(
             URL.create("sqlite", database=str(self.path)),
             connect_args={"check_same_thread": False, "timeout": 30},
@@ -95,11 +102,28 @@ class Repository:
     ) -> dict[str, Any]:
         """Read an immutable predecessor for invalidation, never a moving head."""
         with self.engine.connect() as connection:
-            document: dict[str, Any] = connection.execute(select(snapshots.c.document).where(
+            self._branch(connection, project_id, branch_id)
+            document: dict[str, Any] | None = connection.execute(select(snapshots.c.document).where(
                 snapshots.c.project_id == project_id, snapshots.c.branch_id == branch_id,
                 snapshots.c.revision == revision,
-            )).scalar_one()
+            )).scalar_one_or_none()
+            if document is None:
+                raise CommandError(404, "REVISION_NOT_FOUND", "The revision does not exist")
             return document
+
+    def get_svg_asset(
+        self, project_id: str, branch_id: str, asset_id: str, revision: int | None = None,
+    ) -> dict[str, Any]:
+        document = self.get(project_id, branch_id)["document"] if revision is None else (
+            self.revision_document(project_id, branch_id, revision)
+        )
+        assets = [asset for asset in document["assets"] if asset["id"] == asset_id]
+        if len(assets) != 1 or assets[0]["kind"] != "svg":
+            raise CommandError(404, "ASSET_NOT_FOUND", "The SVG asset does not exist")
+        asset = assets[0]
+        return {"assetId": asset_id, "uri": asset["uri"],
+                "sourceUri": asset.get("sourceUri", asset["uri"]),
+                **self.asset_store.read_svg(asset["uri"])}
 
     def execute(self, project_id: str, branch_id: str, value: object) -> dict[str, Any]:
         payload = validate_command(value)
@@ -139,7 +163,7 @@ class Repository:
                 )).mappings().one()
                 operation = source["inverse"] if op == "undo" else source["forward"]
             document, forward, inverse, changed_ids = apply_operation(
-                current["document"], operation,
+                current["document"], operation, self.asset_store,
             )
             revision += 1
             document["project"]["revision"] = revision

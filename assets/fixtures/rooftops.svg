@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="rooftop_scene" viewBox="0 0 800 450">
+  <rect id="night_sky" width="800" height="450" fill="#151c29"/>
+  <circle id="moon" cx="648" cy="74" r="32" fill="#c9ceba"/>
+  <path id="distant_skyline" d="M0 226 L0 153 L56 153 L56 116 L104 116 L104 182 L148 182 L148 133 L195 133 L195 92 L238 92 L238 177 L286 177 L286 147 L344 147 L344 106 L389 106 L389 196 L443 196 L443 131 L493 131 L493 84 L535 84 L535 166 L581 166 L581 112 L633 112 L633 184 L696 184 L696 142 L751 142 L751 190 L800 190 L800 450 L0 450 Z" fill="#26303e"/>
+  <path id="window_rows" d="M69 142 h17 v8 h-17 Z M69 162 h17 v8 h-17 Z M208 117 h15 v8 h-15 Z M208 139 h15 v8 h-15 Z M359 130 h15 v8 h-15 Z M359 152 h15 v8 h-15 Z M507 110 h15 v8 h-15 Z M507 132 h15 v8 h-15 Z M598 139 h17 v8 h-17 Z M711 168 h16 v8 h-16 Z" fill="#b0c3b1" opacity="0.7"/>
+  <path id="foreground_buildings" d="M0 298 L0 231 L94 231 L94 205 L181 205 L181 277 L257 277 L257 221 L328 221 L328 261 L401 261 L401 192 L464 192 L464 289 L554 289 L554 232 L652 232 L652 259 L724 259 L724 216 L800 216 L800 450 L0 450 Z" fill="#1c2631"/>
+  <path id="neon_windows" d="M12 255 h58 v4 h-58 Z M112 231 h44 v4 h-44 Z M273 245 h38 v4 h-38 Z M418 217 h28 v4 h-28 Z M573 257 h56 v4 h-56 Z M742 244 h40 v4 h-40 Z" fill="#ba86a0"/>
+  <path id="roof_surface" d="M0 365 L800 330 L800 450 L0 450 Z" fill="#384047"/>
+  <path id="parapet" d="M0 337 L800 307 L800 336 L0 370 Z" fill="#5b6264"/>
+  <path id="parapet_shadow" d="M0 363 L800 331 L800 342 L0 375 Z" fill="#222e36"/>
+  <path id="roof_seams" d="M0 416 L800 376 M182 364 L126 450 M434 352 L456 450 M666 343 L755 450" fill="none" stroke="#75817c" stroke-width="1" opacity="0.45"/>
+</svg>

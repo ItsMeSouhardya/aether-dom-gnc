@@ -1,66 +1,129 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://example.org/aether-dom/command.schema.v0.2.0.json",
+  "$id": "https://example.org/aether-dom/command.schema.v0.3.0.json",
   "title": "CdomCommand",
   "type": "object",
   "$defs": {
     "envelope": {
       "type": "object",
-      "required": ["commandId", "projectId", "branchId", "expectedRevision", "actor", "reason"],
+      "required": [
+        "commandId",
+        "projectId",
+        "branchId",
+        "expectedRevision",
+        "actor",
+        "reason"
+      ],
       "properties": {
-    "commandId": { "type": "string", "minLength": 1, "maxLength": 128 },
-    "projectId": { "type": "string", "minLength": 1, "maxLength": 128 },
-    "branchId": { "type": "string", "minLength": 1, "maxLength": 128 },
-    "expectedRevision": { "type": "integer", "minimum": 0, "maximum": 9007199254740991 },
-    "actor": {
-      "type": "object", "additionalProperties": false, "required": ["kind", "id"],
-      "properties": { "kind": { "const": "human" }, "id": { "type": "string", "minLength": 1, "maxLength": 128 } }
-    },
-    "reason": { "type": "string", "minLength": 1, "maxLength": 500 }
+        "commandId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "projectId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "branchId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "expectedRevision": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "actor": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id"
+          ],
+          "properties": {
+            "kind": {
+              "const": "human"
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
       }
     },
     "transform": {
-      "type": "object", "additionalProperties": false, "minProperties": 1,
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
       "properties": {
-        "x": { "type": "number" }, "y": { "type": "number" }, "z": { "type": "number" },
-        "scale": { "type": "number", "exclusiveMinimum": 0 }, "rotationDeg": { "type": "number" }
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "z": {
+          "type": "number"
+        },
+        "scale": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "rotationDeg": {
+          "type": "number"
+        }
       }
     }
   },
   "oneOf": [
     {
-      "type": "object", "unevaluatedProperties": false,
+      "type": "object",
+      "unevaluatedProperties": false,
       "allOf": [
-        { "$ref": "#/$defs/envelope" },
         {
-          "type": "object", "required": ["op", "targetId", "args"],
-          "properties": {
-            "op": { "const": "setLayerPose" },
-            "targetId": { "type": "string", "minLength": 1, "maxLength": 128 },
-            "args": {
-              "type": "object", "additionalProperties": false, "required": ["pose"],
-              "properties": { "pose": { "type": ["string", "null"], "minLength": 1, "maxLength": 128, "pattern": "\\S" } }
-            }
-          }
-        }
-      ]
-    },
-    {
-      "type": "object", "unevaluatedProperties": false,
-      "allOf": [
-        { "$ref": "#/$defs/envelope" },
+          "$ref": "#/$defs/envelope"
+        },
         {
-          "type": "object", "required": ["op", "targetId", "args"],
+          "type": "object",
+          "required": [
+            "op",
+            "targetId",
+            "args"
+          ],
           "properties": {
-            "op": { "const": "recordConstraintRecovery" },
-            "targetId": { "type": "string", "minLength": 1, "maxLength": 128 },
+            "op": {
+              "const": "setLayerPose"
+            },
+            "targetId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
             "args": {
-              "type": "object", "additionalProperties": false, "required": ["eventId", "sceneId", "order", "description"],
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "pose"
+              ],
               "properties": {
-                "eventId": { "type": "string", "minLength": 1, "maxLength": 128 },
-                "sceneId": { "type": "string", "minLength": 1, "maxLength": 128 },
-                "order": { "type": "integer", "minimum": 0, "maximum": 9007199254740991 },
-                "description": { "type": "string", "minLength": 1, "maxLength": 1000, "pattern": "\\S" }
+                "pose": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "maxLength": 128,
+                  "pattern": "\\S"
+                }
               }
             }
           }
@@ -68,24 +131,484 @@
       ]
     },
     {
-      "type": "object", "unevaluatedProperties": false,
+      "type": "object",
+      "unevaluatedProperties": false,
       "allOf": [
-        { "$ref": "#/$defs/envelope" },
         {
-          "type": "object", "required": ["op", "targetId", "args"],
+          "$ref": "#/$defs/envelope"
+        },
+        {
+          "type": "object",
+          "required": [
+            "op",
+            "targetId",
+            "args"
+          ],
           "properties": {
-            "op": { "const": "setLayerTransform" },
-            "targetId": { "type": "string", "minLength": 1, "maxLength": 128 },
-            "args": { "$ref": "#/$defs/transform" }
+            "op": {
+              "const": "recordConstraintRecovery"
+            },
+            "targetId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "args": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "eventId",
+                "sceneId",
+                "order",
+                "description"
+              ],
+              "properties": {
+                "eventId": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "sceneId": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "order": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "description": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 1000,
+                  "pattern": "\\S"
+                }
+              }
+            }
           }
         }
       ]
     },
     {
-      "type": "object", "unevaluatedProperties": false,
+      "type": "object",
+      "unevaluatedProperties": false,
       "allOf": [
-        { "$ref": "#/$defs/envelope" },
-        { "type": "object", "required": ["op"], "properties": { "op": { "enum": ["undo", "redo"] } } }
+        {
+          "$ref": "#/$defs/envelope"
+        },
+        {
+          "type": "object",
+          "required": [
+            "op",
+            "targetId",
+            "args"
+          ],
+          "properties": {
+            "op": {
+              "const": "setLayerTransform"
+            },
+            "targetId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "args": {
+              "$ref": "#/$defs/transform"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "unevaluatedProperties": false,
+      "allOf": [
+        {
+          "$ref": "#/$defs/envelope"
+        },
+        {
+          "type": "object",
+          "required": [
+            "op"
+          ],
+          "properties": {
+            "op": {
+              "enum": [
+                "undo",
+                "redo"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "unevaluatedProperties": false,
+      "allOf": [
+        {
+          "$ref": "#/$defs/envelope"
+        },
+        {
+          "type": "object",
+          "required": [
+            "op",
+            "targetId",
+            "args"
+          ],
+          "properties": {
+            "op": {
+              "const": "setShotCamera"
+            },
+            "targetId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "args": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "camera": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "aspectRatio": {
+                      "enum": [
+                        "16:9",
+                        "9:16",
+                        "1:1"
+                      ]
+                    },
+                    "position": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "x": {
+                          "type": "number",
+                          "minimum": -1000,
+                          "maximum": 1000
+                        },
+                        "y": {
+                          "type": "number",
+                          "minimum": -1000,
+                          "maximum": 1000
+                        },
+                        "z": {
+                          "type": "number",
+                          "minimum": 0.1,
+                          "maximum": 1000
+                        }
+                      },
+                      "required": [
+                        "x",
+                        "y",
+                        "z"
+                      ]
+                    },
+                    "fovDeg": {
+                      "type": "number",
+                      "minimum": 1,
+                      "maximum": 120
+                    }
+                  },
+                  "required": [
+                    "aspectRatio",
+                    "position",
+                    "fovDeg"
+                  ]
+                }
+              },
+              "required": [
+                "camera"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "unevaluatedProperties": false,
+      "allOf": [
+        {
+          "$ref": "#/$defs/envelope"
+        },
+        {
+          "type": "object",
+          "required": [
+            "op",
+            "targetId",
+            "args"
+          ],
+          "properties": {
+            "op": {
+              "const": "setLayerAppearance"
+            },
+            "targetId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "args": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "visible": {
+                  "type": "boolean"
+                },
+                "opacity": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              },
+              "required": [],
+              "minProperties": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "unevaluatedProperties": false,
+      "allOf": [
+        {
+          "$ref": "#/$defs/envelope"
+        },
+        {
+          "type": "object",
+          "required": [
+            "op",
+            "targetId",
+            "args"
+          ],
+          "properties": {
+            "op": {
+              "const": "importSvgLayer"
+            },
+            "targetId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "args": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "assetId": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "layerId": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 80,
+                  "pattern": "\\S"
+                },
+                "rights": {
+                  "enum": [
+                    "project_original",
+                    "licensed",
+                    "unknown"
+                  ]
+                },
+                "svg": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 262144
+                }
+              },
+              "required": [
+                "assetId",
+                "layerId",
+                "name",
+                "rights",
+                "svg"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "unevaluatedProperties": false,
+      "allOf": [
+        {
+          "$ref": "#/$defs/envelope"
+        },
+        {
+          "type": "object",
+          "required": [
+            "op",
+            "targetId",
+            "args"
+          ],
+          "properties": {
+            "op": {
+              "const": "editSvgElement"
+            },
+            "targetId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "args": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "elementId": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "attributes": {
+                  "type": "object",
+                  "minProperties": 1,
+                  "maxProperties": 32,
+                  "propertyNames": {
+                    "maxLength": 64
+                  },
+                  "additionalProperties": {
+                    "type": "string",
+                    "maxLength": 16384
+                  }
+                }
+              },
+              "required": [
+                "elementId",
+                "attributes"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "unevaluatedProperties": false,
+      "allOf": [
+        {
+          "$ref": "#/$defs/envelope"
+        },
+        {
+          "type": "object",
+          "required": [
+            "op",
+            "targetId",
+            "args"
+          ],
+          "properties": {
+            "op": {
+              "const": "setLayerKeyframe"
+            },
+            "targetId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "args": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "keyframeId": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "timeMs": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "transform": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "x",
+                    "y",
+                    "z",
+                    "scale",
+                    "rotationDeg"
+                  ],
+                  "properties": {
+                    "x": {
+                      "type": "number"
+                    },
+                    "y": {
+                      "type": "number"
+                    },
+                    "z": {
+                      "type": "number"
+                    },
+                    "scale": {
+                      "type": "number",
+                      "exclusiveMinimum": 0
+                    },
+                    "rotationDeg": {
+                      "type": "number"
+                    }
+                  }
+                }
+              },
+              "required": [
+                "keyframeId",
+                "timeMs",
+                "transform"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "unevaluatedProperties": false,
+      "allOf": [
+        {
+          "$ref": "#/$defs/envelope"
+        },
+        {
+          "type": "object",
+          "required": [
+            "op",
+            "targetId",
+            "args"
+          ],
+          "properties": {
+            "op": {
+              "const": "deleteLayerKeyframe"
+            },
+            "targetId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "args": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "keyframeId": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                }
+              },
+              "required": [
+                "keyframeId"
+              ]
+            }
+          }
+        }
       ]
     }
   ]

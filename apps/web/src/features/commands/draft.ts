@@ -6,6 +6,12 @@ export type TransformDraft = Record<keyof Transform, string>;
 export type CommandOperation = { op: 'setLayerTransform'; targetId: string; args: Partial<Transform> }
   | { op: 'setLayerPose'; targetId: string; args: { pose: string | null } }
   | { op: 'recordConstraintRecovery'; targetId: string; args: { eventId: string; sceneId: string; order: number; description: string } }
+  | { op: 'setShotCamera'; targetId: string; args: { camera: CdomDocument['shots'][number]['camera'] } }
+  | { op: 'setLayerAppearance'; targetId: string; args: { visible?: boolean; opacity?: number } }
+  | { op: 'importSvgLayer'; targetId: string; args: { assetId: string; layerId: string; name: string; rights: 'project_original' | 'licensed' | 'unknown'; svg: string } }
+  | { op: 'editSvgElement'; targetId: string; args: { elementId: string; attributes: Record<string, string> } }
+  | { op: 'setLayerKeyframe'; targetId: string; args: { keyframeId: string; timeMs: number; transform: Transform } }
+  | { op: 'deleteLayerKeyframe'; targetId: string; args: { keyframeId: string } }
   | { op: 'undo' | 'redo' };
 
 export function parseTransformDraft(draft: TransformDraft):

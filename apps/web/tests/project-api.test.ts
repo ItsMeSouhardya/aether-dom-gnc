@@ -9,6 +9,23 @@ const command = { commandId: 'cmd_one', projectId: 'proj_neon_shogun', branchId:
 afterEach(() => vi.unstubAllGlobals());
 
 describe('persisted project boundary', () => {
+  it.each(['setShotCamera','setLayerAppearance','importSvgLayer','editSvgElement','setLayerKeyframe','deleteLayerKeyframe'])('accepts %s receipts in compatible document histories', op => {
+    const document = structuredClone(sample) as CdomDocument;
+    document.schemaVersion = '0.2.0'; document.project.revision = 1; document.branches[0].headRevision = 1;
+    const receipt = {commandId:'stage',revision:1,op,targetId:'layer_kael',reason:'Edit',createdAt:'2026-11-12T10:00:00Z',changedEntityIds:['layer_kael']};
+    expect(parseProjectSnapshot({document,history:{canUndo:true,canRedo:false,entries:[receipt]},analysis:emptyAnalysis(document)}).history.entries[0].op).toBe(op);
+    expect(() => parseProjectSnapshot({document,history:{canUndo:true,canRedo:false,entries:[{...receipt,op:'restoreStageSnapshot'}]},analysis:emptyAnalysis(document)})).toThrow('project contract');
+  });
+  it('requires analysis coverage of nested keyframes and rejects missing or unrelated frame IDs', () => {
+    const document = structuredClone(sample) as CdomDocument;
+    document.schemaVersion = '0.2.0';
+    document.layers[1].keyframes = [{id:'kf_灯',timeMs:1000,transform:document.layers[1].transform}];
+    const analysis = emptyAnalysis(document);
+    if (!analysis.graph.nodes.some(node => node.id === 'kf_灯')) analysis.graph.nodes.push({id:'kf_灯',kind:'keyframe',label:'Frame'});
+    expect(parseProjectSnapshot({...snapshot,document,analysis}).document.layers[1].keyframes?.[0].id).toBe('kf_灯');
+    expect(() => parseProjectSnapshot({...snapshot,document,analysis:{...analysis,graph:{...analysis.graph,nodes:analysis.graph.nodes.filter(node => node.id !== 'kf_灯')}}})).toThrow('analysis contract');
+    expect(() => parseProjectSnapshot({...snapshot,document,analysis:{...analysis,graph:{...analysis.graph,nodes:analysis.graph.nodes.map(node => node.id === 'kf_灯' ? {...node,id:'unrelated-frame'} : node)}}})).toThrow('analysis contract');
+  });
   it('loads a validated persisted snapshot with history availability', async () => {
     vi.stubGlobal('fetch', async () => Response.json(snapshot));
     const loaded = await loadProject();
