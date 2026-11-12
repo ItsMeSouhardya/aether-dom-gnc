@@ -3,10 +3,11 @@ import type { StudioSelection } from '@/features/studio/selection';
 import { getShotLayers, kindLabel, layerName } from '@/features/studio/view-model';
 import { Icon } from './icons';
 import { useState } from 'react';
-import type { Transform } from '@/features/commands/draft';
+import type { CommandOperation, Transform } from '@/features/commands/draft';
 import { TransformEditor } from './transform-editor';
+import { CharacterCanon } from './character-canon';
 
-export function LayerInspector({ document, selection, clear, busy, blocked, save }: { document: CdomDocument; selection: StudioSelection; clear: () => void; busy: boolean; blocked: boolean; save: (targetId: string, transform: Transform, expectedRevision: number) => Promise<boolean> }) {
+export function LayerInspector({ document, selection, clear, busy, blocked, save, run }: { document: CdomDocument; selection: StudioSelection; clear: () => void; busy: boolean; blocked: boolean; save: (targetId: string, transform: Transform, expectedRevision: number) => Promise<boolean>; run: (operation: CommandOperation, reason: string, revision?: number) => Promise<boolean> }) {
   const [editing, setEditing] = useState(false);
   const layer = getShotLayers(document, selection.shotId).find(layer => layer.id === selection.layerId);
   const asset = document.assets.find(asset => asset.id === layer?.assetId);
@@ -26,7 +27,7 @@ export function LayerInspector({ document, selection, clear, busy, blocked, save
         {editing ? <TransformEditor transform={layer.transform} revision={document.project.revision} busy={busy} blocked={blocked} save={(value, revision) => save(layer.id, value, revision)} cancel={() => setEditing(false)} />
           : <button className="studio-button transform-edit-button" disabled={busy || blocked} onClick={() => setEditing(true)}>Edit transform</button>}
       </section>
-      {character ? <section className="inspector-section"><h3>Character</h3><p>{character.name}</p><p className="panel-note">{character.dialect.style}</p><dl className="reference-values"><div><dt>Pose</dt><dd>{layer.pose?.replaceAll('_', ' ') ?? 'Not specified'}</dd></div></dl></section> : null}
+      {character ? <CharacterCanon document={document} character={character} layer={layer} busy={busy} blocked={blocked} run={run} /> : null}
       <section className="inspector-section"><h3>Source reference</h3><dl className="reference-values"><div><dt>Asset</dt><dd><code>{layer.assetId}</code></dd></div><div><dt>Path</dt><dd><code>{asset?.uri ?? 'Asset reference unavailable'}</code></dd></div><div><dt>Rights metadata</dt><dd>{asset?.rights.replaceAll('_', ' ') ?? 'Unavailable'}</dd></div></dl><p className="panel-note">Source file not bundled. The stage shows a layout block.</p></section>
       <button className="studio-button inspector-clear" onClick={clear}>Clear selection</button>
     </div> : <div className="inspector-empty"><Icon name="inspect" /><h3>Select a layer</h3><p>Choose a layer on the stage or in the navigator to inspect its transform and source references.</p><p>Selection is temporary. Your document stays unchanged.</p></div>}

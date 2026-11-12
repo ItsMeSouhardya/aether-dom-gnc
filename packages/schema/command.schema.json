@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://example.org/aether-dom/command.schema.v0.1.0.json",
+  "$id": "https://example.org/aether-dom/command.schema.v0.2.0.json",
   "title": "CdomCommand",
   "type": "object",
   "$defs": {
@@ -28,6 +28,45 @@
     }
   },
   "oneOf": [
+    {
+      "type": "object", "unevaluatedProperties": false,
+      "allOf": [
+        { "$ref": "#/$defs/envelope" },
+        {
+          "type": "object", "required": ["op", "targetId", "args"],
+          "properties": {
+            "op": { "const": "setLayerPose" },
+            "targetId": { "type": "string", "minLength": 1, "maxLength": 128 },
+            "args": {
+              "type": "object", "additionalProperties": false, "required": ["pose"],
+              "properties": { "pose": { "type": ["string", "null"], "minLength": 1, "maxLength": 128, "pattern": "\\S" } }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "object", "unevaluatedProperties": false,
+      "allOf": [
+        { "$ref": "#/$defs/envelope" },
+        {
+          "type": "object", "required": ["op", "targetId", "args"],
+          "properties": {
+            "op": { "const": "recordConstraintRecovery" },
+            "targetId": { "type": "string", "minLength": 1, "maxLength": 128 },
+            "args": {
+              "type": "object", "additionalProperties": false, "required": ["eventId", "sceneId", "order", "description"],
+              "properties": {
+                "eventId": { "type": "string", "minLength": 1, "maxLength": 128 },
+                "sceneId": { "type": "string", "minLength": 1, "maxLength": 128 },
+                "order": { "type": "integer", "minimum": 0, "maximum": 9007199254740991 },
+                "description": { "type": "string", "minLength": 1, "maxLength": 1000, "pattern": "\\S" }
+              }
+            }
+          }
+        }
+      ]
+    },
     {
       "type": "object", "unevaluatedProperties": false,
       "allOf": [

@@ -1,6 +1,6 @@
 # AETHER-DOM
 
-A local-first creative IDE for semantic, cross-modal storytelling. **Task 02 — Commands and persistence** adds explicit transform editing, durable SQLite snapshots, revision checks, undo/redo and change history to the studio. The selected Afterlight v2 landing page remains separate and unchanged.
+A local-first creative IDE for semantic, cross-modal storytelling. **Task 03 — Dependency graph and linter** adds evidence-linked continuity diagnostics, inspectable dependency impact, reversible pose/recovery commands and an unsaved dialect checker to the local studio. The selected Afterlight v2 landing page remains separate and unchanged.
 
 ## Local setup — Windows PowerShell
 
@@ -28,9 +28,13 @@ Open [the local studio](http://127.0.0.1:3000/). The API seeds Neon Shogun once,
 
 Every saved command checks its base revision and commits a new snapshot. Undo restores authored values exactly while creating a new revision. A stale draft receives HTTP 409 and cannot overwrite newer work. If a response is lost, the app blocks further writes until **Reload latest** confirms what was saved. Drafts are temporary and are discarded on selection changes or reload. Selection and drafts never write directly into canon.
 
+Open **Diagnostics** to see Kael’s injured-arm conflict, the authored pose, constraint and injury event that support it. **Select affected layer** opens the navigable layer in the inspector. Choose **Edit pose** and save a right-arm pose, or **Review recovery** to explicitly record a described recovery event. Both paths are persisted and reversible. The scene’s shots are evaluated after its referenced events, using their maximum order; a recovery clears an injury only from its later event order. Unknown poses or ambiguous timing receive coverage warnings.
+
+**Dependencies** shows the selected layer’s sources/dependents and the latest command’s affected nodes in evaluation order. Additions and removals use both adjacent revision graphs. Analysis is recomputed from saved canon; bindings do not rewrite transforms or audio values. **Dialect draft check** continuously checks text against the selected character’s forbidden words/phrases. This text is unsaved: the supplied document format has no attributed dialogue field. Matching preserves Unicode word marks and avoids substring matches.
+
 The database defaults to `data/aether-dom.sqlite3` and is excluded from Git. Startup runs the checked-in Alembic migration and seeds only an absent branch. To choose another file, set `$env:AETHER_DATABASE_PATH='data/my-project.sqlite3'` in the API terminal before starting it; relative paths resolve against this workspace. Explicit migration: `node tools/api.mjs migrate`. For a backup, stop the API and copy the database file; keep your backup outside Git. Do not delete the database to apply code updates. See [API persistence details](apps/api/README.md).
 
-The desktop shell uses side panels and a bottom timeline. Narrow screens stack the panels; all selection controls remain accessible. The stage is a labeled layout blockout because source media is not bundled. Its clamped presentation does not rewrite authored transforms. Timeline tracks are placeholders, and continuity checks are not run yet. Stop each service with Ctrl+C. If the API is stopped, the page explains the failure and offers **Try again**, without silently substituting a fixture.
+The desktop shell uses side panels and a bottom timeline. Narrow screens stack the panels; selection and editing controls remain accessible. The stage is a labeled layout blockout because source media is not bundled; diagnostics groups the seven absent seed asset files separately. Its clamped presentation does not rewrite authored transforms. Timeline tracks remain placeholders. On desktop, opening a drawer collapses the timeline body to preserve stage space; closing it restores the tracks. Stop services with Ctrl+C. If the API is stopped, the page explains the failure and offers **Try again**.
 
 On macOS/Linux use `python3 -m venv .venv` and `.venv/bin/python -m pip install -r apps/api/requirements-dev.txt`; pnpm commands are identical.
 
@@ -54,15 +58,16 @@ Production preview: start `pnpm dev:api`, then `pnpm --filter web start`. Stop t
 
 - [GET /api/v1/health](http://127.0.0.1:8000/api/v1/health): service and schema version.
 - [GET /api/v1/fixtures/neon-shogun](http://127.0.0.1:8000/api/v1/fixtures/neon-shogun): unchanged validated fixture, revision 0.
-- `GET /api/v1/projects/{projectId}/branches/{branchId}/document`: saved canonical document and recent history.
-- `POST /api/v1/projects/{projectId}/branches/{branchId}/commands`: validated `setLayerTransform`, `undo` or `redo`; requires `expectedRevision`, command ID, stable project/branch/target IDs, human actor and reason.
+- `GET /api/v1/projects/{projectId}/branches/{branchId}/document`: saved document, recent history and revision-bound analysis.
+- `GET /api/v1/projects/{projectId}/branches/{branchId}/diagnostics`: derived issues, graph and invalidation metadata.
+- `POST /api/v1/projects/{projectId}/branches/{branchId}/commands`: validated `setLayerTransform`, `setLayerPose`, `recordConstraintRecovery`, `undo` or `redo`; requires `expectedRevision`, command ID, stable identities, human actor and reason.
 - [Local OpenAPI docs](http://127.0.0.1:8000/docs).
 
 The web server forwards only these fixed resources and preserves conflict/error status. Browser writes require same-origin JSON requests. Server-only `AETHER_API_ORIGIN` defaults to `http://127.0.0.1:8000`; copy `.env.example` to `apps/web/.env.local` only if changing it. Never use a `NEXT_PUBLIC_` variable for server configuration or secrets. Keep the API bound to loopback; this local task does not add authentication or a public service.
 
 `packages/schema/cdom.schema.json` is canonical JSON Schema 2020-12, version **0.1.0**. AJV and Python jsonschema consume the same schema and negative fixtures. TypeScript types are generated from it; see [the contract guide](packages/schema/README.md).
 
-`packages/schema/command.schema.json` separately defines the versioned command contract. SQLite owns canonical state; React replaces its cache only after a validated server response. Zustand holds selection IDs/actions only. General reference integrity, continuity diagnostics, media rendering, playback, AI, auth and collaboration remain later tasks. Asset paths are metadata; their files are not supplied here. Kael's injured-arm contradiction is intentionally preserved.
+`packages/schema/command.schema.json` defines command version **0.2.0**; `analysis.schema.json` defines derived analysis version **0.1.0**. SQLite owns canonical state; React accepts only a validated response whose analysis revision and graph identities match its document. Zustand holds selection IDs/actions only. Graph/rule checks are deterministic and run without cloud keys. Full rendering, playback, semantic dialogue analysis, AI, auth and collaboration remain later tasks. The original fixture’s contradiction stays preserved, while saved branch repairs change its current diagnostic.
 
 ## Selected landing and frozen references
 
@@ -91,4 +96,4 @@ Open [Afterlight v2](http://localhost:4173/). Stop its dev server before preview
 - `design_archive/`, `design_specifications/vendor/` — preserved references.
 - `aether_dom_codex_kit/`, `initial_first_plan_provided/`, `design_inspirations/` — preserved original specifications and source material.
 
-Next: **Task 03 — Linter and dependencies**, following the ordered kit board and canonical-state boundaries. Task 04 adds the full 2.5D stage. Task 02 edits layer transforms only; timeline and diagnostics remain placeholders.
+Next: **Task 04 — 2.5D stage**, following the ordered kit board and canonical-state boundaries. Task 03 provides graph/linter behavior and reviewed continuity repairs; full media rendering, drag/reorder and keyframe interpolation remain next.

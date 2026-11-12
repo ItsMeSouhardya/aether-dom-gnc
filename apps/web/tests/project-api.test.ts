@@ -1,8 +1,10 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import sample from '../../../packages/schema/fixtures/sample.cdom.json';
 import { loadProject, submitCommand, parseProjectSnapshot, ProjectApiError } from '../src/lib/project-api';
+import { emptyAnalysis } from './fixtures/analysis';
+import type { CdomDocument } from '@aether-dom/schema';
 
-const snapshot = { document: sample, history: { canUndo: false, canRedo: false, entries: [] } };
+const snapshot = { document: sample, history: { canUndo: false, canRedo: false, entries: [] }, analysis: emptyAnalysis(sample as CdomDocument) };
 const command = { commandId: 'cmd_one', projectId: 'proj_neon_shogun', branchId: 'branch_main', expectedRevision: 0, actor: { kind: 'human', id: 'local_creator' }, reason: 'Move Kael', op: 'setLayerTransform', targetId: 'layer_kael', args: { x: 0.2 } };
 afterEach(() => vi.unstubAllGlobals());
 
@@ -16,6 +18,11 @@ describe('persisted project boundary', () => {
   it('rejects incomplete history metadata or invalid canon', () => {
     expect(() => parseProjectSnapshot({ ...snapshot, history: { canUndo: 'yes', canRedo: false, entries: [] } })).toThrow('project contract');
     expect(() => parseProjectSnapshot({ ...snapshot, document: { ...sample, schemaVersion: '9.0.0' } })).toThrow('document contract');
+  });
+  it('rejects missing, stale and unrelated analysis instead of showing false diagnostics', () => {
+    expect(() => parseProjectSnapshot({ ...snapshot, analysis: undefined })).toThrow('analysis contract');
+    expect(() => parseProjectSnapshot({ ...snapshot, analysis: { ...snapshot.analysis, revision: 7 } })).toThrow('analysis contract');
+    expect(() => parseProjectSnapshot({ ...snapshot, analysis: { ...snapshot.analysis, graph: { ...snapshot.analysis.graph, nodes: [{ id: 'unrelated', kind: 'layer', label: 'Other project' }] } } })).toThrow('analysis contract');
   });
   it('preserves a 409 as a conflict requiring a reload', async () => {
     vi.stubGlobal('fetch', async () => Response.json({ detail: { code: 'REVISION_CONFLICT', message: 'Revision changed', currentRevision: 2 } }, { status: 409 }));
@@ -37,7 +44,7 @@ describe('persisted project boundary', () => {
   it('returns only the matching committed revision and receipt', async () => {
     const document = structuredClone(sample); document.project.revision = 1; document.branches[0].headRevision = 1; document.layers[1].transform.x = 0.2;
     const receipt = { commandId: 'cmd_one', revision: 1, op: 'setLayerTransform', targetId: 'layer_kael', reason: 'Move Kael', createdAt: '2026-11-11T10:00:00Z', changedEntityIds: ['layer_kael'] };
-    vi.stubGlobal('fetch', async () => Response.json({ document, history: { canUndo: true, canRedo: false, entries: [receipt] }, receipt }));
+    vi.stubGlobal('fetch', async () => Response.json({ document, history: { canUndo: true, canRedo: false, entries: [receipt] }, receipt, analysis: emptyAnalysis(document as CdomDocument) }));
     const saved = await submitCommand(command);
     expect(saved.document.project.revision).toBe(1);
     expect(saved.document.layers[1].transform.x).toBe(0.2);

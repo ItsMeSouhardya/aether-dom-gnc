@@ -4,6 +4,7 @@ import { compile } from 'json-schema-to-typescript';
 for (const [source, target, title] of [
   ['cdom.schema.json', 'cdom.generated.ts', 'CdomDocument'],
   ['command.schema.json', 'command.generated.ts', 'CdomCommand'],
+  ['analysis.schema.json', 'analysis.generated.ts', 'DocumentAnalysis'],
 ]) {
   const outputUrl = new URL(`../src/${target}`, import.meta.url);
   const schema = JSON.parse(await readFile(new URL(`../${source}`, import.meta.url), 'utf8'));

@@ -1,7 +1,7 @@
-import { validateCdom, validateCommand, type CdomCommand, type CdomDocument } from '@aether-dom/schema';
+import { validateCdom, validateCommand, validateAnalysis, type DocumentAnalysis, type CdomCommand, type CdomDocument } from '@aether-dom/schema';
 
-export type CommandReceipt = { commandId: string; revision: number; op: 'setLayerTransform' | 'undo' | 'redo'; targetId: string | null; reason: string; createdAt: string; changedEntityIds: string[] };
-export type ProjectSnapshot = { document: CdomDocument; history: { canUndo: boolean; canRedo: boolean; entries: CommandReceipt[] } };
+export type CommandReceipt = { commandId: string; revision: number; op: CdomCommand['op']; targetId: string | null; reason: string; createdAt: string; changedEntityIds: string[] };
+export type ProjectSnapshot = { document: CdomDocument; history: { canUndo: boolean; canRedo: boolean; entries: CommandReceipt[] }; analysis: DocumentAnalysis };
 export type CommandResult = ProjectSnapshot & { receipt: CommandReceipt };
 export const projectBase = (projectId: string, branchId: string) => `/api/v1/projects/${encodeURIComponent(projectId)}/branches/${encodeURIComponent(branchId)}`;
 export const seedProjectBase = projectBase('proj_neon_shogun', 'branch_main');
@@ -14,7 +14,7 @@ const record = (value: unknown): value is Record<string, unknown> => typeof valu
 function receipt(value: unknown): value is CommandReceipt {
   return record(value) && typeof value.commandId === 'string' && value.commandId.length > 0
     && typeof value.revision === 'number' && Number.isSafeInteger(value.revision) && value.revision > 0
-    && ['setLayerTransform', 'undo', 'redo'].includes(String(value.op)) && (value.targetId === null || typeof value.targetId === 'string')
+    && ['setLayerTransform', 'setLayerPose', 'recordConstraintRecovery', 'undo', 'redo'].includes(String(value.op)) && (value.targetId === null || typeof value.targetId === 'string')
     && typeof value.reason === 'string' && typeof value.createdAt === 'string' && Number.isFinite(Date.parse(value.createdAt))
     && Array.isArray(value.changedEntityIds) && value.changedEntityIds.every(id => typeof id === 'string');
 }
@@ -28,7 +28,12 @@ export function parseProjectSnapshot(value: unknown): ProjectSnapshot {
     || !Array.isArray(history.entries) || !history.entries.every(receipt)
     || !Number.isSafeInteger(document.document.project.revision)
     || history.entries.some(entry => entry.revision > document.document.project.revision)) throw new Error('The response does not match the project contract.');
-  return { document: document.document, history: { canUndo: history.canUndo, canRedo: history.canRedo, entries: history.entries } };
+  const analysis = validateAnalysis(value.analysis);
+  const canon = document.document;
+  const ids = new Set([canon.project, ...canon.branches, ...canon.characters, ...canon.characters.flatMap(character => character.constraints), ...canon.events, ...canon.scenes, ...canon.shots, ...canon.layers, ...canon.assets, ...canon.audioTracks, ...canon.bindings].map(entity => entity.id));
+  if (!analysis.valid || analysis.analysis.revision !== canon.project.revision
+    || analysis.analysis.graph.nodes.length !== ids.size || analysis.analysis.graph.nodes.some(node => !ids.has(node.id))) throw new Error('The response does not match the analysis contract.');
+  return { document: canon, history: { canUndo: history.canUndo, canRedo: history.canRedo, entries: history.entries }, analysis: analysis.analysis };
 }
 
 async function requestJson(path: string, init?: RequestInit): Promise<unknown> {

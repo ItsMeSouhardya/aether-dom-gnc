@@ -1,8 +1,10 @@
 import { expect, test } from '@playwright/test';
 import sample from '../../packages/schema/fixtures/sample.cdom.json' with { type: 'json' };
+import { emptyAnalysis } from '../../apps/web/tests/fixtures/analysis';
+import type { CdomDocument } from '@aether-dom/schema';
 
 const documentRoute = '**/api/v1/projects/proj_neon_shogun/branches/branch_main/document';
-const snapshot = (document: unknown) => ({ document, history: { canUndo: false, canRedo: false, entries: [] } });
+const snapshot = (document: unknown) => ({ document, history: { canUndo: false, canRedo: false, entries: [] }, analysis: emptyAnalysis(document as CdomDocument) });
 
 test('selects layers through the navigator and stage and inspects exact canon values', async ({ page, request }, testInfo) => {
   const errors: string[] = [];
@@ -25,7 +27,7 @@ test('selects layers through the navigator and stage and inspects exact canon va
   await expect(navigator.getByRole('button', { name: 'Select layer Vance', exact: true })).toHaveAttribute('aria-pressed', 'true');
   await expect(page.getByRole('region', { name: 'Timeline' })).toContainText('16s');
   await page.getByRole('button', { name: 'Diagnostics' }).click();
-  await expect(page.getByText('Continuity checks are not enabled yet.')).toBeVisible();
+  await expect(page.getByRole('article', { name: 'CANON_PHYSICAL_CONFLICT layer_kael', exact: true })).toBeVisible();
   expect(await (await request.get('/api/v1/fixtures/neon-shogun')).json()).toEqual(sample);
   expect(errors).toEqual([]);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
@@ -84,10 +86,11 @@ test('fits the stage frame when diagnostics reduce the available height', async 
   const geometry = await page.locator('.stage-workspace').evaluate(element => {
     const container = element.getBoundingClientRect();
     const frame = element.querySelector('.stage-canvas')!.getBoundingClientRect();
-    return { top: frame.top - container.top, bottom: container.bottom - frame.bottom, ratio: frame.width / frame.height };
+    return { top: frame.top - container.top, bottom: container.bottom - frame.bottom, width: frame.width, ratio: frame.width / frame.height };
   });
   expect(geometry.top).toBeGreaterThanOrEqual(0);
   expect(geometry.bottom).toBeGreaterThanOrEqual(0);
+  expect(geometry.width).toBeGreaterThan(240);
   expect(geometry.ratio).toBeCloseTo(16 / 9, 1);
 });
 

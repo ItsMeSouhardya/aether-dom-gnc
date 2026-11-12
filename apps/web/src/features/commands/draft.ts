@@ -3,7 +3,10 @@ import { validateCommand, type CdomCommand, type CdomDocument } from '@aether-do
 export type Transform = CdomDocument['layers'][number]['transform'];
 export const transformKeys = ['x', 'y', 'z', 'scale', 'rotationDeg'] as const;
 export type TransformDraft = Record<keyof Transform, string>;
-export type CommandOperation = { op: 'setLayerTransform'; targetId: string; args: Partial<Transform> } | { op: 'undo' | 'redo' };
+export type CommandOperation = { op: 'setLayerTransform'; targetId: string; args: Partial<Transform> }
+  | { op: 'setLayerPose'; targetId: string; args: { pose: string | null } }
+  | { op: 'recordConstraintRecovery'; targetId: string; args: { eventId: string; sceneId: string; order: number; description: string } }
+  | { op: 'undo' | 'redo' };
 
 export function parseTransformDraft(draft: TransformDraft):
   { valid: true; transform: Transform } | { valid: false; field: keyof Transform; message: string } {

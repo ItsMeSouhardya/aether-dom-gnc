@@ -68,7 +68,7 @@ def test_partial_transform_preserves_other_fields_and_fixture(client: TestClient
     before = snapshot(client)
     assert before == {"document": load_fixture(), "history": {
         "canUndo": False, "canRedo": False, "entries": [],
-    }}
+    }, "analysis": before["analysis"]}
     result = execute(client, command())
     expected = load_fixture()
     expected["layers"][1]["transform"]["x"] = -0.25
@@ -151,7 +151,10 @@ def test_restart_preserves_history_and_redo(tmp_path: Path) -> None:
         changed = execute(first, command())
         undone = execute(first, command(1, "undo"))
     with TestClient(app_for(path)) as second:
-        assert snapshot(second) == {k: v for k, v in undone.items() if k != "receipt"}
+        current = snapshot(second)
+        assert {k: v for k, v in current.items() if k != "analysis"} == {
+            k: v for k, v in undone.items() if k not in ("receipt", "analysis")
+        }
         redone = execute(second, command(2, "redo"))
         assert authored(redone["document"]) == authored(changed["document"])
         assert redone["document"]["project"]["revision"] == 3
