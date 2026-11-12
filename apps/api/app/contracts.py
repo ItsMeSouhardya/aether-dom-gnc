@@ -14,9 +14,11 @@ VALIDATOR = Draft202012Validator(SCHEMA)
 SCHEMA_VERSION: str = SCHEMA["properties"]["schemaVersion"]["const"]
 
 
-def _non_finite_issues(value: object, path: str = "") -> list[dict[str, str]]:
+def _portable_issues(value: object, path: str = "") -> list[dict[str, str]]:
     # Python permits NaN/Infinity and arbitrary-size integers. Both must stay
     # finite when decoded as JavaScript numbers; never repair them as null.
+    if isinstance(value, str) and any(0xD800 <= ord(char) <= 0xDFFF for char in value):
+        return [{"path": path or "/", "message": "Text must contain Unicode scalar values"}]
     if isinstance(value, (int, float)):
         try:
             finite = math.isfinite(value)
@@ -25,25 +27,24 @@ def _non_finite_issues(value: object, path: str = "") -> list[dict[str, str]]:
         if not finite:
             return [{"path": path or "/", "message": "Number must be finite"}]
     if isinstance(value, dict):
-        return [
-            issue
-            for key, child in value.items()
-            for issue in _non_finite_issues(
-                child, path + "/" + str(key).replace("~", "~0").replace("/", "~1")
-            )
-        ]
+        issues = []
+        for key, child in value.items():
+            location = path + "/" + str(key).replace("~", "~0").replace("/", "~1")
+            issues.extend(_portable_issues(str(key), location))
+            issues.extend(_portable_issues(child, location))
+        return issues
     if isinstance(value, list):
         return [
             issue
             for index, child in enumerate(value)
-            for issue in _non_finite_issues(child, f"{path}/{index}")
+            for issue in _portable_issues(child, f"{path}/{index}")
         ]
     return []
 
 
 def validate_document(document: object) -> list[dict[str, str]]:
     """Structural validation only; never coerce, repair, or mutate canon."""
-    return _non_finite_issues(document) + [
+    return _portable_issues(document) + [
         {
             "path": "/" + "/".join(
                 str(part).replace("~", "~0").replace("/", "~1") for part in error.absolute_path

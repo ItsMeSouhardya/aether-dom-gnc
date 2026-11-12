@@ -39,7 +39,7 @@ export default function StudioLoader() {
       sent = true;
       const result = await submitCommand(command);
       if (!mounted.current) return false;
-      setState({ kind: 'ready', snapshot: { document: result.document, history: result.history } });
+      setState({ kind: 'ready', snapshot: { document: result.document, history: result.history, analysis: result.analysis } });
       setFeedback({ error: false, message: `Saved locally · Revision ${result.document.project.revision}` });
       return true;
     } catch (error) {
@@ -50,7 +50,7 @@ export default function StudioLoader() {
       return false;
     } finally { writing.current = false; if (mounted.current) setBusy(false); }
   }
-  if (state.kind === 'ready') return <StudioShell document={state.snapshot.document} history={state.snapshot.history} reload={reload} busy={busy} requiresReload={requiresReload} feedback={feedback} run={run} />;
+  if (state.kind === 'ready') return <StudioShell document={state.snapshot.document} history={state.snapshot.history} analysis={state.snapshot.analysis} reload={reload} busy={busy} requiresReload={requiresReload} feedback={feedback} run={run} />;
   return <main id="studio" className="studio studio-connection">
     <header className="studio-header"><div className="studio-wordmark"><Icon name="brand" /><span>AETHER-DOM</span></div><span>Local studio</span></header>
     <section className="studio-connection-message" aria-busy={state.kind === 'loading'}><h1>{state.kind === 'loading' ? 'Opening studio…' : 'Studio unavailable'}</h1><p role={state.kind === 'error' ? 'alert' : 'status'}>{state.kind === 'loading' ? 'Loading the local document and checking its contract.' : state.message}</p><button className="studio-button" disabled={state.kind === 'loading'} onClick={reload}>{state.kind === 'loading' ? 'Loading document…' : 'Try again'}</button></section>

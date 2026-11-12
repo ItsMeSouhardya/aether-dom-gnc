@@ -10,7 +10,7 @@ from alembic.config import Config
 from sqlalchemy import Connection, RowMapping, create_engine, select
 from sqlalchemy.engine import URL
 
-from app.commands import CommandError, apply_transform, ensure_valid_document, validate_command
+from app.commands import CommandError, apply_operation, ensure_valid_document, validate_command
 from app.contracts import load_fixture
 from app.persistence.tables import branches, commands, snapshots
 
@@ -90,6 +90,17 @@ class Repository:
             connection.exec_driver_sql("BEGIN")
             return self._snapshot(connection, self._branch(connection, project_id, branch_id))
 
+    def revision_document(
+        self, project_id: str, branch_id: str, revision: int,
+    ) -> dict[str, Any]:
+        """Read an immutable predecessor for invalidation, never a moving head."""
+        with self.engine.connect() as connection:
+            document: dict[str, Any] = connection.execute(select(snapshots.c.document).where(
+                snapshots.c.project_id == project_id, snapshots.c.branch_id == branch_id,
+                snapshots.c.revision == revision,
+            )).scalar_one()
+            return document
+
     def execute(self, project_id: str, branch_id: str, value: object) -> dict[str, Any]:
         payload = validate_command(value)
         if payload["projectId"] != project_id or payload["branchId"] != branch_id:
@@ -117,8 +128,8 @@ class Repository:
             current = self._snapshot(connection, branch)
             undo, redo = list(branch["undo_stack"]), list(branch["redo_stack"])
             op = payload["op"]
-            if op == "setLayerTransform":
-                operation = {"targetId": payload["targetId"], "args": payload["args"]}
+            if op not in ("undo", "redo"):
+                operation = {"op": op, "targetId": payload["targetId"], "args": payload["args"]}
             else:
                 stack = undo if op == "undo" else redo
                 if not stack:
@@ -127,14 +138,16 @@ class Repository:
                     commands.c.command_id == stack[-1],
                 )).mappings().one()
                 operation = source["inverse"] if op == "undo" else source["forward"]
-            document, forward, inverse = apply_transform(current["document"], operation)
+            document, forward, inverse, changed_ids = apply_operation(
+                current["document"], operation,
+            )
             revision += 1
             document["project"]["revision"] = revision
             for document_branch in document["branches"]:
                 if document_branch["id"] == branch_id:
                     document_branch["headRevision"] = revision
             ensure_valid_document(document)
-            if op == "setLayerTransform":
+            if op not in ("undo", "redo"):
                 undo.append(payload["commandId"])
                 redo.clear()
             elif op == "undo":
@@ -145,7 +158,7 @@ class Repository:
                 "commandId": payload["commandId"], "revision": revision, "op": op,
                 "targetId": operation["targetId"], "reason": payload["reason"],
                 "createdAt": datetime.now(UTC).isoformat(),
-                "changedEntityIds": [operation["targetId"]],
+                "changedEntityIds": changed_ids,
             }
             result = {"document": document, "receipt": receipt, "history": {
                 "canUndo": bool(undo), "canRedo": bool(redo),

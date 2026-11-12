@@ -4,11 +4,12 @@ From the workspace root, create `.venv` and install `apps/api/requirements-dev.t
 
 - `GET /api/v1/health` → `{ "status": "ok", "service": "aether-dom-api", "schemaVersion": "0.1.0" }`.
 - `GET /api/v1/fixtures/neon-shogun` → the validated supplied document, revision 0.
-- `GET /api/v1/projects/proj_neon_shogun/branches/branch_main/document` → `{document, history}`.
-- `POST /api/v1/projects/proj_neon_shogun/branches/branch_main/commands` → `{document, history, receipt}`.
+- `GET /api/v1/projects/proj_neon_shogun/branches/branch_main/document` → `{document, history, analysis}`.
+- `POST /api/v1/projects/proj_neon_shogun/branches/branch_main/commands` → `{document, history, receipt, analysis}`.
+- `GET /api/v1/projects/proj_neon_shogun/branches/branch_main/diagnostics` → revision-bound `DocumentAnalysis`.
 - `/docs` → local OpenAPI documentation.
 
-The API binds to `127.0.0.1:8000`; set `AETHER_API_PORT` to use a different port. The Next server forwards fixed health, fixture, document and command paths; browser requests stay same-origin and require no permissive CORS configuration. Set server-only `AETHER_API_ORIGIN` in `apps/web/.env.local` if needed. Do not prefix it with `NEXT_PUBLIC_`.
+The API binds to `127.0.0.1:8000`; set `AETHER_API_PORT` to use a different port. Next forwards fixed health, fixture, document, diagnostics and command paths; browser requests stay same-origin without permissive CORS. Set server-only `AETHER_API_ORIGIN` in `apps/web/.env.local` if needed. Do not prefix it with `NEXT_PUBLIC_`.
 
 The bundled fixture is validated at startup; invalid source data prevents a healthy startup. Each fixture read loads fresh JSON, validates it, and sends `Cache-Control: no-store`. The health and fixture routes remain read-only, and saved commands never change the fixture file.
 
@@ -18,11 +19,22 @@ SQLite owns canonical state. The database defaults to `<workspace>/data/aether-d
 node tools/api.mjs migrate
 ```
 
-Every accepted command is saved immediately in one serialized SQLite transaction: revision check, validated snapshot, full audit command/actor/reason/timestamp, exact forward/inverse transforms, and undo/redo stacks. `setLayerTransform` accepts one or more of `x`, `y`, `z`, `scale` and `rotationDeg`. `undo` and `redo` restore authored values exactly while incrementing revision metadata. New edits clear redo without deleting historical snapshots or receipts. There is no separate save endpoint.
+Every accepted command is saved immediately in one serialized SQLite transaction: revision check, validated snapshot, full audit command/actor/reason/timestamp, exact forward/inverse operations, and undo/redo stacks. `setLayerTransform` accepts one or more of `x`, `y`, `z`, `scale` and `rotationDeg`. `undo` and `redo` restore authored values exactly while incrementing revision metadata. New edits clear redo without deleting historical snapshots or receipts. There is no separate save endpoint.
+
+Command contract 0.2.0 adds two continuity repairs; the canonical document stays at 0.1.0 and no database migration is required:
+
+- `setLayerPose` targets a layer referencing an existing character and accepts `{pose: string|null}`. A string must contain a non-whitespace character and be at most 128 characters; `null` clears the pose. Unknown pose semantics remain valid authored canon and produce coverage diagnostics.
+- `recordConstraintRecovery` targets an unresolved `limb_injury` constraint and accepts `{eventId, sceneId, order, description}`. The event ID must be globally unused, the scene must exist, and order must be a unique nonnegative safe integer greater than the injury's start-event order. Description must contain a non-whitespace character and be at most 1,000 characters. The command creates a `physical_recovery` event, appends its ID to that scene, and sets `resolvedByEventId` atomically. It never renumbers existing events. Saving explicitly asserts that recovery as story canon.
+
+Undo removes a recovery event, restores the original scene event list and constraint exactly, and redo recreates it across restarts. Task 02 transform-history records remain readable. Pose receipts include layer and character IDs; recovery receipts include constraint, character, event and scene IDs, including the removed event on undo. Physical contradictions are soft diagnostics, so manual canonical edits remain possible.
 
 Use the shared `packages/schema/command.schema.json` envelope with a unique `commandId`, route-matching `projectId`/`branchId`, `expectedRevision`, human actor and reason. Commands are validated without coercion; scale must be positive and all numbers finite. `history` contains `canUndo`, `canRedo` and the latest 20 receipts, newest first. A receipt contains `commandId`, `revision`, `op`, `targetId`, `reason`, `createdAt` and `changedEntityIds`. All document and command responses use `Cache-Control: no-store`.
 
-Errors use FastAPI's `{detail: {code, message, ...}}`: invalid commands return 422; missing project/branch/layer returns 404; stale revisions return 409 with `code: REVISION_CONFLICT` and `currentRevision`; empty undo/redo and conflicting command-ID reuse also return 409. An identical command-ID/payload replay returns its original committed result, even after later commands or a restart.
+Errors use FastAPI's `{detail: {code, message, ...}}`: invalid commands return 422; missing project/branch/target/scene returns 404; stale revisions return 409 with `code: REVISION_CONFLICT` and `currentRevision`; empty undo/redo, already resolved constraints and conflicting command-ID reuse also return 409. An identical command-ID/payload replay returns its original committed document, receipt and history, even after later commands or a restart.
+
+`analysis` follows `packages/schema/analysis.schema.json`: revision, evidence-linked issues, dependency graph and invalidation. It is derived from the exact document returned in that response, never from a separately read branch head. POST invalidation uses the receipt's complete changed IDs; GET and the diagnostics endpoint analyze the current committed snapshot with no command-specific invalidation. All these responses use `Cache-Control: no-store`.
+
+Analysis is never stored in canonical snapshots or immutable audit result JSON. On replay it is recomputed for the original revision, so file availability can change while document/receipt/history remain identical. POST impact traverses both the committed graph and its immutable predecessor, retaining dependencies of removed events during undo; current graph ordering/cycle blocking governs evaluation. The file adapter permits clean relative paths inside the actual workspace `assets/` directory, rejects redirected roots and escaping links, and never fetches remote URIs. The graph/linter recompute completely without evaluating bindings into canon or providing incremental rendering/audio. Scenes follow their referenced events; integral JSON numbers such as `2.0` retain integer chronology semantics, while ambiguous orders and unsupported poses warn about coverage. All command strings must contain Unicode scalar values; malformed surrogate text returns 422 before writing. Dialect checking remains a web-only unsaved draft because this document has no attributed dialogue field.
 
 For a consistent manual backup, stop the API, copy the SQLite file to a separate backup path, then restart it. Restore by stopping the API and replacing the database with that backup, or point `AETHER_DATABASE_PATH` at it. Keep local databases out of Git. Startup migrations preserve existing edits; deleting the database discards them and causes the next startup to seed revision 0.
 

@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/aether-dom/analysis.schema.v0.1.0.json",
+  "title": "DocumentAnalysis",
+  "type": "object", "additionalProperties": false,
+  "required": ["revision", "issues", "graph", "invalidation"],
+  "$defs": {
+    "id": { "type": "string", "minLength": 1 },
+    "ids": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/id" } },
+    "evidence": {
+      "type": "object", "additionalProperties": false, "required": ["entityId", "path", "message"],
+      "properties": { "entityId": { "$ref": "#/$defs/id" }, "path": { "type": "string" }, "message": { "type": "string" } }
+    },
+    "diagnostic": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "code", "severity", "subjectId", "path", "message", "evidence"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" }, "code": { "$ref": "#/$defs/id" },
+        "severity": { "enum": ["warning", "error"] }, "subjectId": { "$ref": "#/$defs/id" },
+        "path": { "type": "string" }, "message": { "type": "string" },
+        "evidence": { "type": "array", "items": { "$ref": "#/$defs/evidence" } }
+      }
+    }
+  },
+  "properties": {
+    "revision": { "type": "integer", "minimum": 0, "maximum": 9007199254740991 },
+    "issues": { "type": "array", "items": { "$ref": "#/$defs/diagnostic" } },
+    "graph": {
+      "type": "object", "additionalProperties": false, "required": ["nodes", "edges", "cycleNodeIds"],
+      "properties": {
+        "nodes": { "type": "array", "items": {
+          "type": "object", "additionalProperties": false, "required": ["id", "kind", "label"],
+          "properties": { "id": { "$ref": "#/$defs/id" }, "kind": { "$ref": "#/$defs/id" }, "label": { "type": "string" } }
+        } },
+        "edges": { "type": "array", "items": {
+          "type": "object", "additionalProperties": false, "required": ["sourceId", "targetId", "kind"],
+          "properties": { "sourceId": { "$ref": "#/$defs/id" }, "targetId": { "$ref": "#/$defs/id" }, "kind": { "$ref": "#/$defs/id" } }
+        } },
+        "cycleNodeIds": { "$ref": "#/$defs/ids" }
+      }
+    },
+    "invalidation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["changedEntityIds", "impactedEntityIds", "evaluationOrder", "cycleNodeIds"],
+      "properties": {
+        "changedEntityIds": { "$ref": "#/$defs/ids" }, "impactedEntityIds": { "$ref": "#/$defs/ids" },
+        "evaluationOrder": { "$ref": "#/$defs/ids" }, "cycleNodeIds": { "$ref": "#/$defs/ids" }
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 export type ProjectParams = { projectId: string; branchId: string };
 
-export async function proxyProjectApi(params: ProjectParams, resource: 'document' | 'commands', request?: Request): Promise<Response> {
+export async function proxyProjectApi(params: ProjectParams, resource: 'document' | 'commands' | 'diagnostics', request?: Request): Promise<Response> {
   if (resource === 'commands') {
     if (!request || request.method !== 'POST') return Response.json({ detail: { message: 'POST required' } }, { status: 405 });
     const origin = request.headers.get('Origin');

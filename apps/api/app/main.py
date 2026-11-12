@@ -1,16 +1,18 @@
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from pathlib import Path
-from typing import Annotated, Any, Literal
+from typing import Annotated, Any, Literal, cast
 
 from fastapi import Body, FastAPI, Request, Response
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
+from app.asset_inventory import inspect_assets
 from app.commands import CommandError
 from app.contracts import SCHEMA_VERSION, load_fixture
-from app.repository import Repository
+from app.linter import analyze_document
+from app.repository import ROOT, Repository
 
 
 class Health(BaseModel):
@@ -21,6 +23,20 @@ class Health(BaseModel):
 
 def create_app(database_path: Path | None = None) -> FastAPI:
     repository = Repository(database_path)
+
+    def decorate(result: dict[str, Any]) -> dict[str, Any]:
+        # Derived analysis never enters snapshots or immutable command results.
+        # Analyze this exact response snapshot, including historical idempotent replays.
+        document = result["document"]
+        changed_ids = result.get("receipt", {}).get("changedEntityIds", ())
+        previous = repository.revision_document(
+            document["project"]["id"], document["project"]["activeBranchId"],
+            document["project"]["revision"] - 1,
+        ) if "receipt" in result else None
+        return {**result, "analysis": analyze_document(
+            document, changed_entity_ids=changed_ids, asset_status=inspect_assets(document, ROOT),
+            previous_document=previous,
+        )}
 
     @asynccontextmanager
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
@@ -56,14 +72,19 @@ def create_app(database_path: Path | None = None) -> FastAPI:
     @app.get("/api/v1/projects/{project_id}/branches/{branch_id}/document")
     def document(project_id: str, branch_id: str, response: Response) -> dict[str, Any]:
         response.headers["Cache-Control"] = "no-store"
-        return repository.get(project_id, branch_id)
+        return decorate(repository.get(project_id, branch_id))
+
+    @app.get("/api/v1/projects/{project_id}/branches/{branch_id}/diagnostics")
+    def diagnostics(project_id: str, branch_id: str, response: Response) -> dict[str, Any]:
+        response.headers["Cache-Control"] = "no-store"
+        return cast(dict[str, Any], decorate(repository.get(project_id, branch_id))["analysis"])
 
     @app.post("/api/v1/projects/{project_id}/branches/{branch_id}/commands")
     def execute(
         project_id: str, branch_id: str, response: Response, payload: Annotated[Any, Body()],
     ) -> dict[str, Any]:
         response.headers["Cache-Control"] = "no-store"
-        return repository.execute(project_id, branch_id, payload)
+        return decorate(repository.execute(project_id, branch_id, payload))
 
     return app
 

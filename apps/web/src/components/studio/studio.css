@@ -119,6 +119,45 @@
 .studio-primary:hover { background: #eff4e7; }
 .studio .transform-validation { margin-top: 12px; color: #f0c8ac; font-size: .75rem; }
 .studio-drawers { grid-area: diagnostics; min-width: 0; }
+.studio-analysis-drawer { border-top: 1px solid var(--line); background: #1b1f18; min-width: 0; }
+.studio-drawer-content { padding: 14px 20px; max-height: min(240px, 28dvh); overflow: auto; }
+.studio-drawer-content .change-history-content { padding: 0; max-height: none; overflow: visible; }
+.analysis-introduction { margin-bottom: 16px; }
+.analysis-introduction > p:first-child { font-weight: 600; margin-bottom: 4px; }
+.diagnostic-issue { padding: 16px 0; border-top: 1px solid var(--line); max-width: 100%; }
+.diagnostic-heading { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px; margin-bottom: 7px; }
+.diagnostic-heading strong, .dialect-warning { color: #f0c8ac; }
+.diagnostic-heading code { color: var(--muted); font-size: .6875rem; }
+.diagnostic-issue > .panel-note { margin-top: 5px; }
+.diagnostic-issue .studio-button { margin-top: 12px; }
+.studio .diagnostic-evidence { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 12px 28px; }
+.diagnostic-evidence li { display: flex; flex-direction: column; gap: 3px; max-width: 65ch; flex: 1 1 240px; min-width: 0; }
+.diagnostic-evidence li > code { color: var(--accent); }
+.diagnostic-evidence li > code:last-child { color: var(--muted); font-size: .625rem; }
+.diagnostic-evidence span { color: var(--muted); font-size: .75rem; overflow-wrap: anywhere; }
+.asset-diagnostics, .analysis-document-note { margin-top: 16px; border-top: 1px solid var(--line); padding-top: 10px; }
+.studio-analysis-drawer summary { cursor: pointer; padding-block: 6px; color: var(--muted); }
+.analysis-document-note p { margin-top: 8px; max-width: 75ch; }
+.dependency-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.dependency-columns h3, .invalidation-summary h3 { margin-bottom: 10px; }
+.dependency-columns li { display: flex; flex-direction: column; gap: 3px; padding-block: 10px; border-top: 1px solid var(--line); }
+.dependency-columns li code { color: var(--accent); }
+.dependency-columns li small { color: var(--muted); }
+.invalidation-summary { margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--line); }
+.invalidation-summary ol { display: flex; flex-wrap: wrap; gap: 8px 30px; margin-bottom: 0; padding-left: 20px; color: var(--muted); }
+.lore-editor { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); }
+.lore-editor label, .dialect-draft label { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; color: var(--muted); font-size: .75rem; }
+.studio :is(.lore-editor, .dialect-draft) :is(input, select, textarea) { width: 100%; max-width: 100%; min-width: 0; min-height: 40px; padding: 8px; border: 1px solid #7c8b6e; border-radius: 3px; color: var(--fg); background: #11150e; font: inherit; line-height: 1.5; caret-color: var(--accent); }
+.studio :is(.lore-editor, .dialect-draft) textarea { min-height: 100px; resize: vertical; }
+.studio :is(.lore-editor, .dialect-draft) :is(input, select, textarea):focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.studio :is(.lore-editor, .dialect-draft) :is(input, select, textarea):disabled { opacity: .65; }
+.recovery-editor > p:not(:first-child) { margin-top: 10px; font-size: .75rem; }
+.constraint-entry + .constraint-entry { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--line); }
+.constraint-entry > code { display: block; margin-block: 6px; color: var(--muted); }
+.constraint-entry > .panel-note + .panel-note { margin-top: 8px; }
+.dialect-draft > p[role=status] { margin-top: 12px; font-size: .75rem; }
+.dialect-draft li { padding-top: 12px; font-size: .75rem; }
+.dialect-draft li span { display: block; margin-top: 4px; color: var(--muted); overflow-wrap: anywhere; }
 .command-feedback { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 42px; padding: 10px 20px; border-top: 1px solid var(--line); background: #1d2818; color: var(--accent); font-size: .75rem; }
 .command-feedback-error { background: #2b231c; color: #f0c8ac; }
 .command-feedback p { min-width: 0; }
@@ -144,6 +183,12 @@
 .timeline-placeholder-bar { display: block; padding-inline: 9px; border: 1px dashed #68785a; background: #283122; color: #c3cbb8; font-size: .625rem; }
 .studio .timeline-note { color: var(--muted); padding: 2px 20px 12px; font-size: .625rem; }
 .studio-timeline > .panel-note { padding: 20px; }
+.timeline-collapse-hint { display: none; color: var(--muted); font-size: .6875rem; font-weight: 400; }
+@media (min-width: 1051px) {
+  .studio-drawer-open .studio-workbench { grid-template-rows: minmax(0, 1fr) 44px auto; }
+  .studio-drawer-open .studio-timeline > :not(.timeline-header) { display: none; }
+  .studio-drawer-open .timeline-collapse-hint { display: inline; }
+}
 .studio-diagnostics { grid-area: diagnostics; border-top: 1px solid var(--line); background: #1b1f18; }
 .diagnostics-toggle { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 42px; padding: 10px 18px; border: 0; background: transparent; color: var(--fg); text-align: left; }
 .diagnostics-toggle:hover { background: #282f22; }
@@ -190,6 +235,7 @@
   .studio-button { min-height: 44px; }
   .studio-header-actions { flex-wrap: wrap; gap: 10px; }
   .transform-draft-fields input { min-height: 44px; font-size: 1rem; }
+  .studio :is(.lore-editor, .dialect-draft) :is(input, select, textarea) { min-height: 44px; font-size: 1rem; }
   .studio-statusbar { flex-wrap: wrap; min-height: 44px; gap: 8px 16px; }
 }
 @media (max-width: 720px) {
@@ -224,6 +270,8 @@
   .studio-statusbar { align-items: flex-start; flex-direction: column; padding: 14px 16px; font-size: .6875rem; }
   .command-feedback { flex-wrap: wrap; padding-inline: 16px; }
   .change-history-content { max-height: 240px; padding-inline: 16px; }
+  .studio-drawer-content { max-height: 440px; padding-inline: 16px; }
+  .dependency-columns { grid-template-columns: 1fr; gap: 20px; }
   .studio-skeleton { grid-template-columns: 1fr; margin-inline: 16px; }
 }
 @media (max-width: 520px) {

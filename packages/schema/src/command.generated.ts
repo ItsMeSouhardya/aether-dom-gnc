@@ -2,6 +2,25 @@
 
 export type CdomCommand =
   | (Envelope & {
+      op: 'setLayerPose';
+      targetId: string;
+      args: {
+        pose: string | null;
+      };
+      [k: string]: unknown;
+    })
+  | (Envelope & {
+      op: 'recordConstraintRecovery';
+      targetId: string;
+      args: {
+        eventId: string;
+        sceneId: string;
+        order: number;
+        description: string;
+      };
+      [k: string]: unknown;
+    })
+  | (Envelope & {
       op: 'setLayerTransform';
       targetId: string;
       args: Transform;
