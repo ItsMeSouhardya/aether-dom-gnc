@@ -22,6 +22,7 @@ import { useSvgAssets } from '@/features/stage/use-svg-assets';
 import type { StageMode } from './layer-stage';
 import { useAudioPreview, useAudioSettings } from '@/features/audio/use-audio-preview';
 import { AudioPanel } from '../audio/audio-panel';
+import { ProposalPanel } from '../proposals/proposal-panel';
 
 type Props = { document: CdomDocument; history: ProjectSnapshot['history']; analysis: ProjectSnapshot['analysis']; reload: () => void; busy: boolean; requiresReload: boolean;
   feedback: { error: boolean; message: string } | null; run: (operation: CommandOperation, reason: string, expectedRevision?: number) => Promise<boolean> };
@@ -32,6 +33,7 @@ export function StudioShell({ document, history, analysis, reload, busy, require
   const selection = useStore(store, state => state.selection);
   const [mode, setMode] = useState<StageMode>('layout');
   const [audioOpen, setAudioOpen] = useState(false);
+  const [proposalsOpen, setProposalsOpen] = useState(false);
   const [audioSettings, changeAudioSettings] = useAudioSettings();
   const [selectedElement, selectElement] = useState<string | null>(null);
   const shot = document.shots.find(shot => shot.id === selection.shotId);
@@ -54,7 +56,7 @@ export function StudioShell({ document, history, analysis, reload, busy, require
     <header className="studio-header">
       <div className="studio-wordmark"><Icon name="brand" /><span>AETHER-DOM</span></div>
       <div className="studio-project-heading"><h1>{document.project.title}</h1><span className="studio-branch">{branch?.name ?? 'Branch unavailable'}</span></div>
-      <div className="studio-header-actions"><Link className="studio-text-link" href="/document">Seed overview</Link>
+      <div className="studio-header-actions"><button className="studio-button" aria-label="AI proposals" aria-pressed={proposalsOpen} onClick={() => { playback.pause(); setAudioOpen(false); setProposalsOpen(value => !value); }}>Proposals</button><Link className="studio-text-link" href="/document">Seed overview</Link>
         <button className="studio-button" aria-label="Undo" disabled={busy || requiresReload || !history.canUndo} onClick={() => { void run({ op: 'undo' }, 'Undo last edit'); }}>Undo</button>
         <button className="studio-button" aria-label="Redo" disabled={busy || requiresReload || !history.canRedo} onClick={() => { void run({ op: 'redo' }, 'Redo last edit'); }}>Redo</button>
         <button className="studio-button" disabled={busy} onClick={reload} aria-label="Reload document"><Icon name="refresh" /><span>Reload</span></button></div>
@@ -62,10 +64,10 @@ export function StudioShell({ document, history, analysis, reload, busy, require
     <div className="studio-workbench">
       <ProjectNavigator document={document} selection={selection} dispatch={dispatch} />
       <LayerStage key={selection.shotId} document={document} selection={selection} dispatch={dispatch} assets={assets} playback={playback} mode={mode} setMode={setMode} selectedElement={selectedElement} selectElement={selectElement} busy={busy} blocked={requiresReload} run={run} audio={audio} reactiveGlow={audioSettings.reactiveGlow} />
-      {audioOpen ? <aside className="studio-inspector" aria-label="Audio inspector"><AudioPanel document={document} shotId={selection.shotId} runtime={audio} settings={audioSettings} onSettingsChange={changeAudioSettings} busy={busy} blocked={requiresReload} run={run} onClose={() => setAudioOpen(false)} /></aside> : <LayerInspector key={selection.layerId ?? 'none'} document={document} selection={selection} clear={() => dispatch({ type: 'clear-layer' })} busy={busy} blocked={requiresReload} run={run}
+      {proposalsOpen ? <aside className="studio-inspector" aria-label="Proposal inspector"><ProposalPanel document={document} layerId={selection.layerId} shotId={selection.shotId} busy={busy} blocked={requiresReload} run={run} onClose={() => setProposalsOpen(false)} /></aside> : audioOpen ? <aside className="studio-inspector" aria-label="Audio inspector"><AudioPanel document={document} shotId={selection.shotId} runtime={audio} settings={audioSettings} onSettingsChange={changeAudioSettings} busy={busy} blocked={requiresReload} run={run} onClose={() => setAudioOpen(false)} /></aside> : <LayerInspector key={selection.layerId ?? 'none'} document={document} selection={selection} clear={() => dispatch({ type: 'clear-layer' })} busy={busy} blocked={requiresReload} run={run}
         assets={assets} mode={mode} selectedElement={selectedElement} selectElement={selectElement} playback={playback}
         save={(targetId, transform, revision) => run({ op: 'setLayerTransform', targetId, args: transform }, `Move ${layerName(document, document.layers.find(layer => layer.id === targetId)!)}`, revision)} />}
-      <Timeline document={document} shotId={selection.shotId} playback={playback} mode={mode} setMode={setMode} openAudio={() => setAudioOpen(value => !value)} audioOpen={audioOpen} />
+      <Timeline document={document} shotId={selection.shotId} playback={playback} mode={mode} setMode={setMode} openAudio={() => { setProposalsOpen(false); setAudioOpen(value => !value); }} audioOpen={audioOpen} />
       <div className="studio-drawers">
         {feedback ? <div className={`command-feedback ${feedback.error ? 'command-feedback-error' : ''}`}><p role={feedback.error ? 'alert' : 'status'} aria-label="Save status">{feedback.message}</p>{requiresReload ? <button className="studio-button" onClick={reload}>Reload latest</button> : null}</div> : null}
         <Diagnostics document={document} analysis={analysis} open={drawer === 'diagnostics'} toggle={() => toggle('diagnostics')} selectEntity={selectEntity} />

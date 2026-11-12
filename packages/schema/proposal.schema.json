@@ -1,0 +1,606 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/aether-dom/Proposal.schema.v0.1.0.json",
+  "title": "Proposal",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "proposalId",
+    "projectId",
+    "branchId",
+    "baseRevision",
+    "agentRole",
+    "scopeIds",
+    "allowedOps",
+    "intent",
+    "message",
+    "operations",
+    "evidenceNodeIds",
+    "explanation",
+    "contextNodes",
+    "contextDigest",
+    "diff",
+    "schemaVersionBefore",
+    "schemaVersionAfter",
+    "provider",
+    "modelVersion",
+    "estimatedCost",
+    "previewRef",
+    "status",
+    "createdAt",
+    "reviewedAt",
+    "reviewedBy",
+    "approvalCommandId"
+  ],
+  "properties": {
+    "proposalId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "projectId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "branchId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "baseRevision": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "agentRole": {
+      "enum": [
+        "lore",
+        "visual",
+        "acoustic"
+      ]
+    },
+    "scopeIds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128
+      },
+      "maxItems": 8,
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "allowedOps": {
+      "type": "array",
+      "items": {
+        "title": "ProposalOpName",
+        "enum": [
+          "setLayerTransform",
+          "setLayerPose",
+          "setLayerAppearance",
+          "setShotCamera",
+          "setShotTension"
+        ]
+      },
+      "maxItems": 5,
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "intent": {
+      "enum": [
+        "repair_pose",
+        "move_right",
+        "set_tension"
+      ]
+    },
+    "message": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "operations": {
+      "type": "array",
+      "items": {
+        "title": "ProposalOperation",
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "op",
+              "targetId",
+              "args"
+            ],
+            "properties": {
+              "op": {
+                "const": "setLayerTransform"
+              },
+              "targetId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "args": {
+                "$ref": "#/$defs/transform"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "op",
+              "targetId",
+              "args"
+            ],
+            "properties": {
+              "op": {
+                "const": "setLayerPose"
+              },
+              "targetId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "args": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "pose"
+                ],
+                "properties": {
+                  "pose": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "minLength": 1,
+                    "maxLength": 128,
+                    "pattern": "\\S"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "op",
+              "targetId",
+              "args"
+            ],
+            "properties": {
+              "op": {
+                "const": "setLayerAppearance"
+              },
+              "targetId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "args": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "visible": {
+                    "type": "boolean"
+                  },
+                  "opacity": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  }
+                },
+                "required": [],
+                "minProperties": 1
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "op",
+              "targetId",
+              "args"
+            ],
+            "properties": {
+              "op": {
+                "const": "setShotCamera"
+              },
+              "targetId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "args": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "camera": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "aspectRatio": {
+                        "enum": [
+                          "16:9",
+                          "9:16",
+                          "1:1"
+                        ]
+                      },
+                      "position": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "x": {
+                            "type": "number",
+                            "minimum": -1000,
+                            "maximum": 1000
+                          },
+                          "y": {
+                            "type": "number",
+                            "minimum": -1000,
+                            "maximum": 1000
+                          },
+                          "z": {
+                            "type": "number",
+                            "minimum": 0.1,
+                            "maximum": 1000
+                          }
+                        },
+                        "required": [
+                          "x",
+                          "y",
+                          "z"
+                        ]
+                      },
+                      "fovDeg": {
+                        "type": "number",
+                        "minimum": 1,
+                        "maximum": 120
+                      }
+                    },
+                    "required": [
+                      "aspectRatio",
+                      "position",
+                      "fovDeg"
+                    ]
+                  }
+                },
+                "required": [
+                  "camera"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "op",
+              "targetId",
+              "args"
+            ],
+            "properties": {
+              "op": {
+                "const": "setShotTension"
+              },
+              "targetId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "args": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "tension"
+                ],
+                "properties": {
+                  "tension": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "maxItems": 8,
+      "minItems": 1
+    },
+    "evidenceNodeIds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128
+      },
+      "maxItems": 32,
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "explanation": {
+      "type": "string",
+      "maxLength": 4000,
+      "minLength": 1
+    },
+    "contextNodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "kind",
+          "value"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "kind": {
+            "enum": [
+              "layer",
+              "shot",
+              "character",
+              "constraint",
+              "event"
+            ]
+          },
+          "value": {
+            "$ref": "#/$defs/json"
+          }
+        }
+      },
+      "maxItems": 32,
+      "minItems": 1
+    },
+    "contextDigest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "diff": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "entityId",
+          "path",
+          "before",
+          "after",
+          "beforePresent",
+          "afterPresent"
+        ],
+        "properties": {
+          "entityId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "before": {
+            "$ref": "#/$defs/json"
+          },
+          "after": {
+            "$ref": "#/$defs/json"
+          },
+          "beforePresent": {
+            "type": "boolean"
+          },
+          "afterPresent": {
+            "type": "boolean"
+          }
+        }
+      },
+      "maxItems": 128,
+      "minItems": 1
+    },
+    "schemaVersionBefore": {
+      "enum": [
+        "0.1.0",
+        "0.2.0",
+        "0.3.0"
+      ]
+    },
+    "schemaVersionAfter": {
+      "enum": [
+        "0.1.0",
+        "0.2.0",
+        "0.3.0"
+      ]
+    },
+    "provider": {
+      "const": "local_mock"
+    },
+    "modelVersion": {
+      "type": "string",
+      "maxLength": 128,
+      "minLength": 1
+    },
+    "estimatedCost": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "amount",
+        "currency"
+      ],
+      "properties": {
+        "amount": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "currency": {
+          "const": "USD"
+        }
+      }
+    },
+    "previewRef": {
+      "type": "null"
+    },
+    "status": {
+      "enum": [
+        "pending_review",
+        "approved",
+        "rejected"
+      ]
+    },
+    "createdAt": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "reviewedAt": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "reviewedBy": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "approvalCommandId": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1,
+      "maxLength": 128
+    }
+  },
+  "$defs": {
+    "json": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "string",
+          "maxLength": 8192
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/json"
+          },
+          "maxItems": 128,
+          "minItems": 0
+        },
+        {
+          "type": "object",
+          "maxProperties": 128,
+          "propertyNames": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/json"
+          }
+        }
+      ]
+    },
+    "envelope": {
+      "type": "object",
+      "required": [
+        "commandId",
+        "projectId",
+        "branchId",
+        "expectedRevision",
+        "actor",
+        "reason"
+      ],
+      "properties": {
+        "commandId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "projectId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "branchId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "expectedRevision": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "actor": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id"
+          ],
+          "properties": {
+            "kind": {
+              "const": "human"
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      }
+    },
+    "transform": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "z": {
+          "type": "number"
+        },
+        "scale": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "rotationDeg": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}

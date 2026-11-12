@@ -1,6 +1,6 @@
 import { validateCdom, validateCommand, validateAnalysis, type DocumentAnalysis, type CdomCommand, type CdomDocument } from '@aether-dom/schema';
 
-export type CommandReceipt = { commandId: string; revision: number; op: CdomCommand['op']; targetId: string | null; reason: string; createdAt: string; changedEntityIds: string[] };
+export type CommandReceipt = { commandId: string; revision: number; op: CdomCommand['op']; targetId: string | null; reason: string; createdAt: string; changedEntityIds: string[]; proposalId?: string; provider?: string; modelVersion?: string; approvedBy?: string };
 export type ProjectSnapshot = { document: CdomDocument; history: { canUndo: boolean; canRedo: boolean; entries: CommandReceipt[] }; analysis: DocumentAnalysis };
 export type CommandResult = ProjectSnapshot & { receipt: CommandReceipt };
 export const projectBase = (projectId: string, branchId: string) => `/api/v1/projects/${encodeURIComponent(projectId)}/branches/${encodeURIComponent(branchId)}`;
@@ -14,8 +14,10 @@ const record = (value: unknown): value is Record<string, unknown> => typeof valu
 function receipt(value: unknown): value is CommandReceipt {
   return record(value) && typeof value.commandId === 'string' && value.commandId.length > 0
     && typeof value.revision === 'number' && Number.isSafeInteger(value.revision) && value.revision > 0
-    && ['setLayerTransform', 'setLayerPose', 'recordConstraintRecovery', 'setShotCamera', 'setShotTension', 'setLayerAppearance', 'importSvgLayer', 'editSvgElement', 'setLayerKeyframe', 'deleteLayerKeyframe', 'undo', 'redo'].includes(String(value.op)) && (value.targetId === null || typeof value.targetId === 'string')
+    && ['setLayerTransform', 'setLayerPose', 'recordConstraintRecovery', 'setShotCamera', 'setShotTension', 'setLayerAppearance', 'importSvgLayer', 'editSvgElement', 'setLayerKeyframe', 'deleteLayerKeyframe', 'approveProposal', 'undo', 'redo'].includes(String(value.op)) && (value.targetId === null || typeof value.targetId === 'string')
     && typeof value.reason === 'string' && typeof value.createdAt === 'string' && Number.isFinite(Date.parse(value.createdAt))
+    && (value.op !== 'approveProposal' || typeof value.proposalId === 'string' && value.proposalId === value.targetId && value.provider === 'local_mock'
+      && typeof value.modelVersion === 'string' && value.modelVersion.length > 0 && typeof value.approvedBy === 'string' && value.approvedBy.length > 0)
     && Array.isArray(value.changedEntityIds) && value.changedEntityIds.every(id => typeof id === 'string');
 }
 
@@ -66,6 +68,7 @@ export async function submitCommand(value: unknown): Promise<CommandResult> {
     if (!record(response) || !receipt(response.receipt) || response.receipt.commandId !== command.commandId
       || response.receipt.op !== command.op || response.receipt.revision !== snapshot.document.project.revision
       || response.receipt.revision !== command.expectedRevision + 1
+      || command.op === 'approveProposal' && (response.receipt.targetId !== command.targetId || response.receipt.approvedBy !== command.actor.id)
       || snapshot.document.project.id !== command.projectId || snapshot.document.project.activeBranchId !== command.branchId) throw new Error('Unmatched receipt');
     return { ...snapshot, receipt: response.receipt };
   } catch { throw new ProjectApiError('The save response did not match the command. Reload latest to check the saved revision.', 502, true); }

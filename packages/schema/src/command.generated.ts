@@ -109,6 +109,12 @@ export type CdomCommand =
         tension: number;
       };
       [k: string]: unknown;
+    })
+  | (Envelope & {
+      op: 'approveProposal';
+      targetId: string;
+      args: Record<string, never>;
+      [k: string]: unknown;
     });
 
 export interface Envelope {

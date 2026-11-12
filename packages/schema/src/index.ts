@@ -15,6 +15,8 @@ export { validateCommand } from './commands';
 export type { CdomCommand } from './command.generated';
 export { validateAnalysis } from './analysis';
 export type { DocumentAnalysis } from './analysis.generated';
+export { validateProposal, validateProposalRequest } from './proposals';
+export type { Proposal, ProposalRequest, ProposalOperation, ProposalOpName } from './proposals';
 export type ValidationIssue = { path: string; message: string };
 export type ValidationResult =
   | { valid: true; document: CdomDocument }

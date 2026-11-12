@@ -9,6 +9,14 @@ const command = { commandId: 'cmd_one', projectId: 'proj_neon_shogun', branchId:
 afterEach(() => vi.unstubAllGlobals());
 
 describe('persisted project boundary', () => {
+  it('requires approval provenance to match the explicitly approved proposal', async () => {
+    const document = structuredClone(sample) as CdomDocument;
+    document.project.revision = 1; document.branches[0].headRevision = 1;
+    const approve = { ...command, op: 'approveProposal', targetId: 'proposal_one', args: {} };
+    const receipt = { commandId: command.commandId, revision: 1, op: 'approveProposal', targetId: 'proposal_one', reason: 'Approve', createdAt: '2026-11-12T14:00:00Z', changedEntityIds: ['layer_kael'], proposalId: 'different_proposal', provider: 'local_mock', modelVersion: 'mock-v1', approvedBy: 'local_creator' };
+    vi.stubGlobal('fetch', async () => Response.json({ document, receipt, history: { canUndo: true, canRedo: false, entries: [receipt] }, analysis: emptyAnalysis(document) }));
+    await expect(submitCommand(approve)).rejects.toThrow('did not match');
+  });
   it.each(['setShotCamera','setLayerAppearance','importSvgLayer','editSvgElement','setLayerKeyframe','deleteLayerKeyframe','setShotTension'])('accepts %s receipts in compatible document histories', op => {
     const document = structuredClone(sample) as CdomDocument;
     document.schemaVersion = '0.2.0'; document.project.revision = 1; document.branches[0].headRevision = 1;

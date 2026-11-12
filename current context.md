@@ -1,8 +1,18 @@
 # Current context — AETHER-DOM
 
-Last updated: 12 November 2026 (Asia/Calcutta).
+Last updated: 13 November 2026 (Asia/Calcutta).
+
+Task 06 — AI proposals is complete on `feat/task-06-ai-proposals`, based on the user's committed Task05 `34d4e35`. Plan: docs/superpowers/plans/2026-11-12-task-06-ai-proposals.md; evidence: docs/tasks/task-06-verification.md. All Task06 changes remain uncommitted; no push/merge/PR. User handles integration. Next: **Task07 — Aspect-ratio & player**.
 
 ## Current phase
+
+Implemented an offline provider protocol/mock, selected-node context, strict bounded JSON parsing, explicit scope/operation permissions, exact field diffs and persisted approve/reject review records. Human `approveProposal` command0.5 applies only stored/revalidated operations atomically as one revision/undo/audit entry. Generation/rejection do not change canon; stale approval requires reload/regeneration. Decisions survive restart and remain historical after undo. Alembic0002 adds a proposal side-table; document0.1/0.2/0.3 schemas/types, fixture and original kit stay unchanged. No cloud SDK, key, network call or new runtime dependency. The mock follows three chosen scenarios; message text is inert.
+
+Final verification: **585 unit/API tests passed** (364 API,89 schema,132 web),1 legacy host-limited symlink skip; **84 production desktop/mobile browser cases passed**; **3 development effect/audio/proposal cases passed**. Lint, types/generated drift, build, git diff check and178-file preservation passed. Independent whole-branch review findings were fixed: array node-count parity, final persisted metadata bounds/transaction rollback, numeric JSON wire-size expansion and root approval receipt provenance. Reviewer confirmed all bounds corrections with12 focused regressions and no remaining findings. One initial browser load timeout passed in the final stable-build run. Desktop1536×850/mobile390×844 review inspected and captures saved in docs/tasks/task-06-desktop.png/mobile.png.
+
+Regular user project remains revision6/history6/schema0.1.0, sorted Python JSON SHA256 `3a7fc9d7954c5b284c9d6215bf33daace4cef3ea9149b6f405e3bf4d740229ab`; its proposal list is empty. All mutation tests used isolated databases/assets. Restart loaded only the proposal side-table migration. Final HTTP200 preview: web http://127.0.0.1:3000/ and API http://127.0.0.1:8000/, background launcher PIDs2976/31712, ignored logs data/task06-web-preview.log and task06-api-preview.log. Select Kael → Proposals → Generate proposal to inspect the diff before deciding. Temporary visual/test services stopped. RTK0.42.4 now works; older blocked notes below are historical. Existing Python3.12 .venv-task04 override remains. Local browser checks used installed Edge; CI retains Chromium and adds proposal development smoke. CI has not run remotely.
+
+## Previous phase — Task 05
 
 **Task 05 — Audio reactive is complete and verified** on `feat/task-05-audio-reactive`, based on the user's Task 04 commit `f4eee75`. The user requested this local branch rename from `codex/task-05-audio-reactive`; no remote change was performed. Native Web Audio plays original local stems/Foley after explicit enable, evaluates tension/panning, follows precise seeks and drives bounded imperative glow. Optional document 0.3 `shot.audio.tension` and command 0.4 preserve old versions and exact undo. Safe revision-bound WAV route/proxy and inspector mixer are implemented. No new runtime dependency, lockfile change, SQL migration or startup document upgrade.
 
@@ -113,7 +123,7 @@ On 11 November 2026, the user requested connection to https://github.com/ItsMeSo
 
 ## Resume
 
-Read this file, PRODUCT.md and the selected design specification before changes. Task 05 is complete; next is the kit's Task 06. Read the ordered board and canonical-state architecture before implementing scoped AI proposals. Preserve SQLite ownership, revision-bound analysis and separate selection/drafts/playback/audio. AI output must remain proposals until explicit review; no unreviewed writes. Fixture and seed overview stay immutable. Dialogue checking remains an unsaved draft tool because this document version has no attributed lines. Keep landing refinements in landing-page/ and the frozen archive unchanged. Update this context at milestones and handoff.
+Read this file, PRODUCT.md and the selected design specification before changes. Task06 is complete; next is the kit's Task07 — Aspect-ratio & player. Read the ordered board and canonical-state architecture before implementation. Preserve SQLite ownership, revision-bound analysis and separate selection/drafts/playback/audio. AI output must remain proposals until explicit review; no unreviewed writes. Fixture and seed overview stay immutable. Dialogue checking remains an unsaved draft tool because this document version has no attributed lines. Keep landing refinements in landing-page/ and the frozen archive unchanged. Update this context at milestones and handoff.
 
 ## Task 01 verification and handoff
 

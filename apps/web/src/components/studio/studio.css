@@ -22,6 +22,26 @@
 .audio-track { padding-block: 16px; border-bottom: 1px solid var(--line); }
 .audio-track > .reference-values { display: grid; grid-template-columns: 1fr 1fr; margin-top: 12px; }
 .audio-panel .panel-note { margin-block: 8px; }
+.proposal-panel { min-width: 0; padding: 20px; }
+.proposal-panel > .inspector-section-heading { flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+.proposal-panel > .panel-note { margin-block: 10px; }
+.proposal-panel :is(.proposal-permissions, .proposal-list) { display: grid; gap: 8px; }
+.proposal-panel fieldset { min-width: 0; padding: 12px; margin: 16px 0; border: 1px solid var(--line); }
+.proposal-panel legend { padding-inline: 5px; font-size: .75rem; color: var(--muted); }
+.studio .proposal-panel .audio-toggle { display: flex; flex-direction: row; align-items: center; gap: 8px; min-height: 36px; margin-top: 0; }
+.studio .proposal-panel .audio-toggle input[type=checkbox] { width: 18px; min-height: 18px; flex: none; margin: 0; accent-color: var(--accent); }
+.proposal-panel :is(.proposal-history, .proposal-review) { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--line); }
+.proposal-list li { min-width: 0; padding-block: 8px; border-bottom: 1px solid var(--line); }
+.proposal-list li > .studio-button { width: 100%; text-align: left; justify-content: flex-start; overflow-wrap: anywhere; }
+.proposal-list li > span { display: block; margin-top: 6px; }
+.proposal-panel pre { white-space: pre-wrap; overflow-wrap: anywhere; font: .6875rem/1.6 ui-monospace, Consolas, monospace; background: #11150e; padding: 10px; border: 1px solid var(--line); }
+.proposal-context { margin-top: 20px; }
+.proposal-context summary { cursor: pointer; padding-block: 10px; color: var(--accent); }
+.proposal-panel h4 { font-size: .75rem; margin-block: 16px 8px; }
+@media (max-width: 720px) {
+  .studio-header-actions { flex-wrap: wrap; gap: 8px; }
+  .studio .proposal-panel .audio-toggle { min-height: 44px; }
+}
 .stage-tools .studio-button { min-height: 32px; padding: 5px 9px; font-size: .6875rem; }
 .stage-tools [aria-pressed=true] { background: var(--selected); border-color: var(--accent); color: var(--accent); }
 .stage-toolbar { flex-wrap: wrap; }
