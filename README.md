@@ -1,10 +1,10 @@
 # AETHER-DOM
 
-A local-first creative IDE for semantic, cross-modal storytelling. **Task 03 — Dependency graph and linter** adds evidence-linked continuity diagnostics, inspectable dependency impact, reversible pose/recovery commands and an unsaved dialect checker to the local studio. The selected Afterlight v2 landing page remains separate and unchanged.
+A local-first creative IDE for semantic, cross-modal storytelling. **Task 04 — 2.5D stage** adds editable local SVG planes and sprites, camera controls and interpolated keyframes to the studio. The selected Afterlight v2 landing page remains separate and unchanged.
 
 ## Local setup — Windows PowerShell
 
-Prerequisites: Node **22.13+**, pnpm **11.25.0**, Python **3.12+**. Verified locally with Node 22.23.3 and Python 3.14.6. Install pnpm with `npm install --global pnpm@11.25.0` if needed. Open PowerShell at this project root; paths with spaces are supported.
+Prerequisites: Node **22.13+**, pnpm **11.25.0**, Python **3.12+**. Task04 verified locally with Node22.23.3 and Python3.12.14. Install pnpm with `npm install --global pnpm@11.25.0` if needed. Open PowerShell at this project root; paths with spaces are supported.
 
 ```powershell
 pnpm install --frozen-lockfile
@@ -12,7 +12,7 @@ py -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r apps/api/requirements-dev.txt
 ```
 
-If `py` is unavailable, use your installed Python executable. No environment activation, cloud keys, Docker, database server, accounts, or model calls are needed. Package installation needs internet; the installed scaffold uses local files and services.
+If `py` is unavailable, use your installed Python executable. The API launcher optionally reads root `.env.api.local`; set `AETHER_PYTHON=.venv-task04/Scripts/python.exe` there to select an alternate environment. This host uses that separate Python3.12 environment because Windows Application Control blocks a native extension in the older `.venv`; both environments remain intact. No environment activation, cloud keys, Docker, database server, accounts, or model calls are needed. Package installation needs internet; the installed scaffold uses local files and services.
 
 Start the API in one terminal, then the web app in another:
 
@@ -34,7 +34,11 @@ Open **Diagnostics** to see Kael’s injured-arm conflict, the authored pose, co
 
 The database defaults to `data/aether-dom.sqlite3` and is excluded from Git. Startup runs the checked-in Alembic migration and seeds only an absent branch. To choose another file, set `$env:AETHER_DATABASE_PATH='data/my-project.sqlite3'` in the API terminal before starting it; relative paths resolve against this workspace. Explicit migration: `node tools/api.mjs migrate`. For a backup, stop the API and copy the database file; keep your backup outside Git. Do not delete the database to apply code updates. See [API persistence details](apps/api/README.md).
 
-The desktop shell uses side panels and a bottom timeline. Narrow screens stack the panels; selection and editing controls remain accessible. The stage is a labeled layout blockout because source media is not bundled; diagnostics groups the seven absent seed asset files separately. Its clamped presentation does not rewrite authored transforms. Timeline tracks remain placeholders. On desktop, opening a drawer collapses the timeline body to preserve stage space; closing it restores the tracks. Stop services with Ctrl+C. If the API is stopped, the page explains the failure and offers **Try again**.
+The desktop shell uses side panels and a bottom timeline. Narrow screens stack the panels. **Layout** renders the four original local SVG fixtures through Three.js WebGL2, with native SVG fallback. Drag a layer to submit one transform command; Escape cancels. Arrow keys nudge focused layers; the inspector edits exact values, including offscreen layers. **Bring forward / Send backward** changes only the selected layer’s Z. **Camera** edits pan, dolly, FOV and aspect, with a16:9 reset. No canonical transform clamping occurs.
+
+**Import SVG** accepts bounded static UTF-8 SVG shapes/groups/text and records source rights. Scripts, links, styles, external references and unsupported content are rejected. Supplied element IDs and the asset ID survive **Edit SVG** changes; the dropdown and native overlay select source elements. Save edits geometry/presentation attributes; all instances sharing that asset use the new immutable version. Safe original files and edited versions live in ignored `assets/originals/` and `assets/imported/`; back these up together with the database. The three absent audio files belong to Task05.
+
+**Animate** enables keyframe authoring in the inspector. Seek in milliseconds, add/update/delete a frame and save explicitly. Playback linearly interpolates X/Y/Z, scale and rotation without changing base transforms or writing preview frames. Layout always edits the base transform. GPU denial/context loss preserves native editing. On desktop, opening a drawer collapses the timeline body to preserve stage space. Stop services with Ctrl+C; an unavailable API offers **Try again**.
 
 On macOS/Linux use `python3 -m venv .venv` and `.venv/bin/python -m pip install -r apps/api/requirements-dev.txt`; pnpm commands are identical.
 
@@ -60,14 +64,15 @@ Production preview: start `pnpm dev:api`, then `pnpm --filter web start`. Stop t
 - [GET /api/v1/fixtures/neon-shogun](http://127.0.0.1:8000/api/v1/fixtures/neon-shogun): unchanged validated fixture, revision 0.
 - `GET /api/v1/projects/{projectId}/branches/{branchId}/document`: saved document, recent history and revision-bound analysis.
 - `GET /api/v1/projects/{projectId}/branches/{branchId}/diagnostics`: derived issues, graph and invalidation metadata.
-- `POST /api/v1/projects/{projectId}/branches/{branchId}/commands`: validated `setLayerTransform`, `setLayerPose`, `recordConstraintRecovery`, `undo` or `redo`; requires `expectedRevision`, command ID, stable identities, human actor and reason.
+- `POST /api/v1/projects/{projectId}/branches/{branchId}/commands`: validated transform/pose/recovery, camera, appearance, SVG import/edit, keyframe and undo/redo commands; requires `expectedRevision`, command ID, stable identities, human actor and reason.
+- `GET /api/v1/projects/{projectId}/branches/{branchId}/assets/{assetId}?revision=N`: validated SVG tree for an asset referenced by that immutable saved revision; no arbitrary file access.
 - [Local OpenAPI docs](http://127.0.0.1:8000/docs).
 
 The web server forwards only these fixed resources and preserves conflict/error status. Browser writes require same-origin JSON requests. Server-only `AETHER_API_ORIGIN` defaults to `http://127.0.0.1:8000`; copy `.env.example` to `apps/web/.env.local` only if changing it. Never use a `NEXT_PUBLIC_` variable for server configuration or secrets. Keep the API bound to loopback; this local task does not add authentication or a public service.
 
-`packages/schema/cdom.schema.json` is canonical JSON Schema 2020-12, version **0.1.0**. AJV and Python jsonschema consume the same schema and negative fixtures. TypeScript types are generated from it; see [the contract guide](packages/schema/README.md).
+`packages/schema/cdom.schema.json` and the original fixture remain version **0.1.0**. `cdom.v0.2.schema.json` adds optional layer appearance/keyframes and source metadata. Both versions remain readable; the first new stage command upgrades losslessly, and undo restores the exact prior authored version and field presence. Startup performs no document upgrade. AJV and Python consume the same schemas; see [the contract guide](packages/schema/README.md).
 
-`packages/schema/command.schema.json` defines command version **0.2.0**; `analysis.schema.json` defines derived analysis version **0.1.0**. SQLite owns canonical state; React accepts only a validated response whose analysis revision and graph identities match its document. Zustand holds selection IDs/actions only. Graph/rule checks are deterministic and run without cloud keys. Full rendering, playback, semantic dialogue analysis, AI, auth and collaboration remain later tasks. The original fixture’s contradiction stays preserved, while saved branch repairs change its current diagnostic.
+`command.schema.json` defines command version **0.3.0**; derived analysis remains **0.1.0**. SQLite owns canonical state; React accepts only validated, revision-matched responses. Selection, drafts and the playback clock stay temporary. Semantic dialogue analysis, audio, advanced rigs, AI, auth and collaboration remain later tasks. The original fixture’s contradiction stays preserved, while saved branch repairs change its current diagnostic.
 
 ## Selected landing and frozen references
 
@@ -96,4 +101,4 @@ Open [Afterlight v2](http://localhost:4173/). Stop its dev server before preview
 - `design_archive/`, `design_specifications/vendor/` — preserved references.
 - `aether_dom_codex_kit/`, `initial_first_plan_provided/`, `design_inspirations/` — preserved original specifications and source material.
 
-Next: **Task 04 — 2.5D stage**, following the ordered kit board and canonical-state boundaries. Task 03 provides graph/linter behavior and reviewed continuity repairs; full media rendering, drag/reorder and keyframe interpolation remain next.
+Next: **Task 05 — Audio graph**, following the ordered kit board and canonical-state boundaries. WebGPU and advanced rigs/Bezier editing remain deferred.

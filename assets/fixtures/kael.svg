@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="kael_sprite" viewBox="0 0 130 260">
+  <ellipse id="kael_shadow" cx="65" cy="250" rx="43" ry="8" fill="#0b1017" opacity="0.5"/>
+  <path id="kael_legs" d="M42 164 L65 164 L62 236 L44 239 Z M67 164 L88 164 L91 237 L73 240 Z" fill="#202733"/>
+  <path id="kael_boots" d="M43 230 L62 230 L62 246 L33 246 L33 239 Z M73 231 L91 231 L101 241 L101 247 L73 247 Z" fill="#101822"/>
+  <path id="kael_coat" d="M41 70 L89 70 L104 153 L91 184 L65 174 L38 185 L25 154 Z" fill="#47686a" stroke="#839c91" stroke-width="2"/>
+  <path id="kael_lapel" d="M48 72 L65 96 L82 72 L73 138 L57 138 Z" fill="#21343c"/>
+  <path id="kael_left_arm" d="M38 78 L25 87 L15 154 L29 159 L47 109 Z" fill="#547679" stroke="#839c91" stroke-width="2"/>
+  <path id="kael_right_arm" d="M91 78 L103 89 L115 151 L102 157 L83 109 Z" fill="#47686a" stroke="#839c91" stroke-width="2"/>
+  <path id="kael_bandage" d="M18 132 L33 137 L29 150 L16 146 Z" fill="#d8d4bd"/>
+  <path id="kael_hands" d="M16 152 L29 155 L27 168 L17 168 Z M103 153 L115 150 L117 164 L106 167 Z" fill="#bb9e86"/>
+  <rect id="kael_neck" x="55" y="53" width="20" height="23" fill="#bb9e86"/>
+  <path id="kael_face" d="M43 25 Q64 8 86 26 L83 53 L65 66 L46 52 Z" fill="#c5aa91"/>
+  <path id="kael_hair" d="M40 35 L38 18 L56 5 L79 9 L91 25 L84 41 L78 25 L65 24 L48 37 Z" fill="#171e29"/>
+  <path id="kael_features" d="M50 40 h9 M70 39 h9 M58 54 h14" fill="none" stroke="#3e3c3e" stroke-width="2"/>
+  <path id="kael_trim" d="M65 98 L65 170 M35 156 L54 153 M78 152 L97 156" fill="none" stroke="#a8b49b" stroke-width="2"/>
+</svg>

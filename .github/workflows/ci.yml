@@ -28,3 +28,7 @@ jobs:
       - run: pnpm test:e2e
         env:
           CI: 'true'
+      - run: pnpm exec playwright test tests/e2e/stage.spec.ts --project desktop --grep 'effect replay'
+        env:
+          CI: 'true'
+          AETHER_E2E_DEV: '1'

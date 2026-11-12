@@ -33,6 +33,11 @@ def entity_records(document: dict[str, Any]) -> list[tuple[str, str, dict[str, A
             path = f"/{collection}/{index}"
             if entity.get("id"):
                 result.append((entity["id"], kind, entity, path))
+            if kind == "layer":
+                for offset, keyframe in enumerate(entity.get("keyframes", [])):
+                    if keyframe.get("id"):
+                        result.append((keyframe["id"], "keyframe", keyframe,
+                                       f"{path}/keyframes/{offset}"))
             if kind == "character":
                 for offset, constraint in enumerate(entity.get("constraints", [])):
                     if constraint.get("id"):
@@ -212,6 +217,9 @@ def build_graph(document: dict[str, Any]) -> DependencyGraph:
             for child in entity.get("layerIds", []) + entity.get("audioTrackIds", []):
                 edge(child, entity_id, "aggregates")
         elif kind in {"layer", "audio_track"}:
+            if kind == "layer":
+                for keyframe in entity.get("keyframes", []):
+                    edge(keyframe.get("id"), entity_id, "animates")
             edge(entity.get("assetId"), entity_id, "uses_asset")
             edge(entity_id, entity.get("shotId"), "aggregates")
             edge(entity.get("characterId"), entity_id, "appears_in")

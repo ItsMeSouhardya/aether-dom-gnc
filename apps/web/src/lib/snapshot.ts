@@ -22,8 +22,9 @@ export async function loadSnapshot(): Promise<CdomDocument> {
   ]);
   if (typeof health !== 'object' || health === null || !('status' in health) || health.status !== 'ok'
     || !('service' in health) || health.service !== 'aether-dom-api'
-    || !('schemaVersion' in health) || health.schemaVersion !== '0.1.0') {
-    throw new Error('The API health response is incompatible. Check that the Task 00 API is running.');
+    || !('schemaVersion' in health) || !(health.schemaVersion === '0.1.0'
+      || health.schemaVersion === '0.2.0' && 'supportedSchemaVersions' in health && Array.isArray(health.supportedSchemaVersions) && health.supportedSchemaVersions.includes('0.1.0'))) {
+    throw new Error('The API health response is incompatible. Check that the local API supports the original seed version.');
   }
   const result = validateCdom(fixture);
   if (!result.valid) throw new Error('The fixture does not match the document contract. Check the API terminal, then try again.');

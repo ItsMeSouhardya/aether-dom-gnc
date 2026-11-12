@@ -2,7 +2,7 @@
 
 From the workspace root, create `.venv` and install `apps/api/requirements-dev.txt` as described in the root README. Then run `pnpm dev:api` (or `pnpm --filter api dev`). The shared launcher uses the root virtual environment and resolves paths independently of the current directory.
 
-- `GET /api/v1/health` → `{ "status": "ok", "service": "aether-dom-api", "schemaVersion": "0.1.0" }`.
+- `GET /api/v1/health` → `{ "status": "ok", "service": "aether-dom-api", "schemaVersion": "0.2.0", "supportedSchemaVersions": ["0.1.0", "0.2.0"] }`.
 - `GET /api/v1/fixtures/neon-shogun` → the validated supplied document, revision 0.
 - `GET /api/v1/projects/proj_neon_shogun/branches/branch_main/document` → `{document, history, analysis}`.
 - `POST /api/v1/projects/proj_neon_shogun/branches/branch_main/commands` → `{document, history, receipt, analysis}`.
@@ -45,6 +45,18 @@ node tools/api.mjs typecheck
 ```
 
 Tests use `create_app(database_path=temporary_path)` or isolated repositories. App construction does not open a database; initialization occurs in the TestClient lifespan. Tests never write the user's default database.
+
+Task 04 adds command contract 0.3.0: `setShotCamera`, `setLayerAppearance`, `importSvgLayer`, `editSvgElement`, `setLayerKeyframe`, and `deleteLayerKeyframe`. Existing operations and historical inverses remain supported. A successful new stage operation upgrades its copied document to 0.2.0; startup and old operations leave 0.1.0 snapshots unchanged. Trusted internal snapshot inverses restore exact authored fields and schema versions, while revision metadata remains monotonic. Snapshot restoration is never a public command. Redo and command replay reuse the committed asset references and IDs.
+
+Camera commands accept `{camera:{aspectRatio,position:{x,y,z},fovDeg}}` with XY ±1000, Z 0.1–1000 and FOV 1–120. Appearance accepts a nonempty partial `{visible,opacity}`. Keyframes use `{keyframeId,timeMs,transform}` with all five transform numbers; time is an integer within the shot, times are unique, IDs are globally unique and each layer has at most 128 frames. Deletion accepts `{keyframeId}`. Keyframes participate in dependency analysis through `keyframe → layer` edges, including removed IDs during undo/deletion invalidation.
+
+SVG import targets a shot with `{assetId,layerId,name,rights,svg}`. Both IDs must be globally unused; names contain 1–80 characters and rights are `project_original`, `licensed` or `unknown`. Import creates a centered `svg_plane` and preserves sanitized source IDs. Element edits target an SVG asset with `{elementId,attributes}` and preserve its asset ID and original source. Shared layer instances reference the same edited asset. Unsupported geometry/presentation, unsafe XML, scripts, external references and redirected storage paths are rejected, never silently stripped.
+
+`create_app(database_path=None, asset_root=None)` and `Repository` accept an isolated workspace-like asset root containing `assets/`. The default is the workspace; `AETHER_ASSET_ROOT` overrides it. Import/edit tests always inject temporary roots. Immutable accepted originals go under `assets/originals/`; sanitized content hashes choose `assets/imported/` filenames. Only metadata/URIs enter canon. Unreferenced blobs may remain after transaction rollback but are inaccessible through the API.
+
+`GET /api/v1/projects/{projectId}/branches/{branchId}/assets/{assetId}?revision=N` returns a sanitized `SvgAsset` tree for that referenced SVG at the immutable revision; omitting revision uses current head. It never serves arbitrary paths or original XML. Missing branches/revisions/assets return 404; unsafe content/storage returns 422. Every result uses `Cache-Control: no-store`. The fixture and fixture endpoint remain 0.1.0.
+
+The shared launcher loads the ignored workspace `.env.api.local` and accepts `AETHER_PYTHON` (an absolute interpreter path or a path relative to the workspace). Without an override it uses `.venv`. On this Windows host, Python 3.14's pinned `pydantic_core` extension remains blocked by Application Control even after an official same-version reinstall. A separate `.venv-task04` created normally with the bundled Python 3.12.14 successfully imports the pinned API packages; local config selects `AETHER_PYTHON=.venv-task04/Scripts/python.exe`. The original environment was retained; no system security policy was modified. The following pure-mypy installation is also used in that environment because its compiled wheel is blocked.
 
 Python 3.12+ is supported. Windows users may use `py` to create the environment when `python` is a Store alias. If application control blocks mypy's compiled wheel, install its pure Python distribution without changing system policy:
 

@@ -29,6 +29,78 @@ export type CdomCommand =
   | (Envelope & {
       op: 'undo' | 'redo';
       [k: string]: unknown;
+    })
+  | (Envelope & {
+      op: 'setShotCamera';
+      targetId: string;
+      args: {
+        camera: {
+          aspectRatio: '16:9' | '9:16' | '1:1';
+          position: {
+            x: number;
+            y: number;
+            z: number;
+          };
+          fovDeg: number;
+        };
+      };
+      [k: string]: unknown;
+    })
+  | (Envelope & {
+      op: 'setLayerAppearance';
+      targetId: string;
+      args: {
+        visible?: boolean;
+        opacity?: number;
+      };
+      [k: string]: unknown;
+    })
+  | (Envelope & {
+      op: 'importSvgLayer';
+      targetId: string;
+      args: {
+        assetId: string;
+        layerId: string;
+        name: string;
+        rights: 'project_original' | 'licensed' | 'unknown';
+        svg: string;
+      };
+      [k: string]: unknown;
+    })
+  | (Envelope & {
+      op: 'editSvgElement';
+      targetId: string;
+      args: {
+        elementId: string;
+        attributes: {
+          [k: string]: string;
+        };
+      };
+      [k: string]: unknown;
+    })
+  | (Envelope & {
+      op: 'setLayerKeyframe';
+      targetId: string;
+      args: {
+        keyframeId: string;
+        timeMs: number;
+        transform: {
+          x: number;
+          y: number;
+          z: number;
+          scale: number;
+          rotationDeg: number;
+        };
+      };
+      [k: string]: unknown;
+    })
+  | (Envelope & {
+      op: 'deleteLayerKeyframe';
+      targetId: string;
+      args: {
+        keyframeId: string;
+      };
+      [k: string]: unknown;
     });
 
 export interface Envelope {

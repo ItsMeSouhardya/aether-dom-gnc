@@ -243,13 +243,12 @@ def test_pose_requires_existing_character_and_recovery_valid_start(
 
 
 def test_replay_uses_original_document_and_current_asset_inventory(
-    tmp_path: Path, monkeypatch,
+    tmp_path: Path,
 ) -> None:
-    monkeypatch.setattr(main, "ROOT", tmp_path)
     asset = tmp_path / "assets" / "fixtures" / "kael.svg"
     asset.parent.mkdir(parents=True)
     asset.write_text("<svg/>", encoding="utf-8")
-    with TestClient(main.create_app(tmp_path / "inventory.sqlite3")) as client:
+    with TestClient(main.create_app(tmp_path / "inventory.sqlite3", asset_root=tmp_path)) as client:
         payload = command()
         original = execute(client, payload)
         execute(client, command(1, "undo"))

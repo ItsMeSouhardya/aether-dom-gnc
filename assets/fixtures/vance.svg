@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="vance_sprite" viewBox="0 0 130 260">
+  <ellipse id="vance_shadow" cx="65" cy="250" rx="43" ry="8" fill="#0b1017" opacity="0.5"/>
+  <path id="vance_legs" d="M43 161 L65 161 L62 238 L44 239 Z M67 161 L88 161 L91 239 L72 239 Z" fill="#252b38"/>
+  <path id="vance_shoes" d="M43 232 L62 232 L62 247 L32 247 L32 242 Z M72 233 L91 233 L102 243 L102 248 L72 248 Z" fill="#111722"/>
+  <path id="vance_suit" d="M40 72 L91 72 L99 167 L67 176 L32 165 Z" fill="#655b73" stroke="#a297a8" stroke-width="2"/>
+  <path id="vance_shirt" d="M50 73 L65 95 L80 73 L74 136 L56 136 Z" fill="#d4cbbf"/>
+  <path id="vance_tie" d="M62 90 L68 90 L73 125 L65 137 L59 126 Z" fill="#b5969a"/>
+  <path id="vance_lapels" d="M47 72 L61 133 L39 105 L48 98 L40 88 Z M83 72 L70 133 L92 105 L82 98 L91 88 Z" fill="#3c3b51"/>
+  <path id="vance_arms" d="M39 77 L25 89 L16 151 L30 156 L46 109 Z M91 78 L104 91 L115 151 L101 157 L84 110 Z" fill="#655b73" stroke="#a297a8" stroke-width="2"/>
+  <path id="vance_hands" d="M17 153 L30 156 L27 170 L18 169 Z M102 155 L114 151 L117 165 L106 170 Z" fill="#c4a990"/>
+  <rect id="vance_neck" x="55" y="54" width="20" height="22" fill="#c4a990"/>
+  <path id="vance_face" d="M44 24 Q66 11 86 27 L82 54 L65 66 L47 53 Z" fill="#d0b79b"/>
+  <path id="vance_hair" d="M42 34 L42 18 L58 7 L80 13 L88 25 L84 39 L77 26 L49 30 Z" fill="#34323e"/>
+  <path id="vance_features" d="M50 40 h10 M71 40 h9 M58 55 h14" fill="none" stroke="#514348" stroke-width="2"/>
+  <path id="vance_pocket" d="M77 116 h13 v3 h-13 Z" fill="#d7c7c6"/>
+</svg>

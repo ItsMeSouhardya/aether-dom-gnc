@@ -10,6 +10,12 @@ function respond(document: unknown = fixture, status = 200, healthPayload: unkno
 }
 
 describe('API snapshot boundary', () => {
+  it('reads the preserved V1 seed from a V2 service that explicitly supports V1', async () => {
+    respond(fixture, 200, { ...health, schemaVersion: '0.2.0', supportedSchemaVersions: ['0.1.0', '0.2.0'] });
+    expect((await loadSnapshot()).schemaVersion).toBe('0.1.0');
+    respond(fixture, 200, { ...health, schemaVersion: '0.2.0', supportedSchemaVersions: ['0.2.0'] });
+    await expect(loadSnapshot()).rejects.toThrow('incompatible');
+  });
   it('returns only a validated document from a healthy service', async () => {
     respond();
     const document = await loadSnapshot();
