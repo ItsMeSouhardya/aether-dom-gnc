@@ -2,9 +2,19 @@
 
 Last updated: 13 November 2026 (Asia/Calcutta).
 
-Task 06 — AI proposals is complete on `feat/task-06-ai-proposals`, based on the user's committed Task05 `34d4e35`. Plan: docs/superpowers/plans/2026-11-12-task-06-ai-proposals.md; evidence: docs/tasks/task-06-verification.md. All Task06 changes remain uncommitted; no push/merge/PR. User handles integration. Next: **Task07 — Aspect-ratio & player**.
+**Task07 — Aspect-ratio & player is complete** on `feat/task-07-aspect-player`, based on the user's committed/pushed Task06 `32912ca`. Plan/ledger: docs/superpowers/plans/2026-11-13-task-07-aspect-player.md; evidence: docs/tasks/task-07-verification.md. All Task07 changes remain uncommitted; no push/PR/merge. User handles integration. Next: **Task08 — Branching and exports**.
 
 ## Current phase
+
+Command0.6 edits existing9:16 override maps atomically with exact undo, preserving base layers/other aspects/document version. Studio adds aspect previews, portrait-only gestures/numeric drafts, safe-area guides and explicit Fit/Save/Cancel. Shared composition rebases keyframe movement; fit evaluates time-zero pose. Independent read-only `/player` shares renderer/clock/audio and opens exact revision manifests or portable local JSON. Export embeds sanitized SVG/PCM outside canonical document fields; API-blocked reopen/playback proved. No new schema version, SQL migration, dependency, AI permission, ZIP/video export or publishing.
+
+Final checks: **674 unit/API tests passed** (404 API,109 schema,161 web),1 legacy hostskip; **94 production desktop/mobile browser cases passed**; **5 development smoke cases passed**. Lint/types/generated drift/build/preservation clean. Fresh whole-branch review's two P2 findings fixed test-first (fit at keyframe0, active-aspect draft/preview split); clean-inspector/nudge and mobile frame/footer/padding regressions also fixed. One batched desktop/mobile visual pass plus correction/confirmation completed. Impeccable context now works; detector returned no findings. Evidence/captures in docs/tasks/task-07-*.
+
+User database remains revision6/history6/schema0.1.0/hash `3a7fc9d7954c5b284c9d6215bf33daace4cef3ea9149b6f405e3bf4d740229ab`; no project commands sent. All mutations used isolated databases/assets. Read-only revision6 manifest has seven embedded assets. Final HTTP200 preview: web http://127.0.0.1:3000/ session72760, API http://127.0.0.1:8000/ session58633. Temporary visual/test servers stopped; viewport reset. Use9:16 → Fit subjects → review → Save, or Player / Export JSON. Existing Python3.12 override remains; RTK works; Edge used locally, Chromium retained for CI with expanded smoke. Remote CI has not run.
+
+## Previous phase — Task 06
+
+Task06 was committed/pushed by the user as32912ca before Task07; earlier uncommitted Task06 notes are historical. Plan: docs/superpowers/plans/2026-11-12-task-06-ai-proposals.md; evidence: docs/tasks/task-06-verification.md.
 
 Implemented an offline provider protocol/mock, selected-node context, strict bounded JSON parsing, explicit scope/operation permissions, exact field diffs and persisted approve/reject review records. Human `approveProposal` command0.5 applies only stored/revalidated operations atomically as one revision/undo/audit entry. Generation/rejection do not change canon; stale approval requires reload/regeneration. Decisions survive restart and remain historical after undo. Alembic0002 adds a proposal side-table; document0.1/0.2/0.3 schemas/types, fixture and original kit stay unchanged. No cloud SDK, key, network call or new runtime dependency. The mock follows three chosen scenarios; message text is inert.
 
@@ -123,7 +133,7 @@ On 11 November 2026, the user requested connection to https://github.com/ItsMeSo
 
 ## Resume
 
-Read this file, PRODUCT.md and the selected design specification before changes. Task06 is complete; next is the kit's Task07 — Aspect-ratio & player. Read the ordered board and canonical-state architecture before implementation. Preserve SQLite ownership, revision-bound analysis and separate selection/drafts/playback/audio. AI output must remain proposals until explicit review; no unreviewed writes. Fixture and seed overview stay immutable. Dialogue checking remains an unsaved draft tool because this document version has no attributed lines. Keep landing refinements in landing-page/ and the frozen archive unchanged. Update this context at milestones and handoff.
+Read this file, PRODUCT.md and the selected design specification before changes. Task07 is complete; next is the kit's Task08 — Branching and exports. Read the ordered board and canonical-state architecture before implementation. Preserve SQLite ownership, revision-bound analysis, portrait/base separation and separate selection/drafts/playback/audio. AI output must remain proposals until explicit review; no unreviewed writes. Fixture and seed overview stay immutable. Dialogue checking remains an unsaved draft tool because this document version has no attributed lines. Keep landing refinements in landing-page/ and the frozen archive unchanged. Update this context at milestones and handoff.
 
 ## Task 01 verification and handoff
 

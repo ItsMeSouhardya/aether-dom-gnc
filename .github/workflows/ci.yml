@@ -28,7 +28,7 @@ jobs:
       - run: pnpm test:e2e
         env:
           CI: 'true'
-      - run: pnpm exec playwright test --project desktop --grep 'effect replay|explicit audio gesture|scoped mock preview'
+      - run: pnpm exec playwright test --project desktop --grep 'effect replay|explicit audio gesture|scoped mock preview|edits portrait overrides|exports the saved manifest'
         env:
           CI: 'true'
           AETHER_E2E_DEV: '1'

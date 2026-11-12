@@ -7,6 +7,7 @@ for (const [source, target, title] of [
   ['cdom.v0.3.schema.json', 'cdom-v3.generated.ts', 'CdomDocumentV3'],
   ['svg.schema.json', 'svg.generated.ts', 'SvgAsset'],
   ['command.schema.json', 'command.generated.ts', 'CdomCommand'],
+  ['player-manifest.schema.json', 'player-manifest.generated.ts', 'PlayerManifestWire'],
   ['analysis.schema.json', 'analysis.generated.ts', 'DocumentAnalysis'],
   ['proposal.schema.json', 'proposal.generated.ts', 'Proposal'],
   ['proposal-request.schema.json', 'proposal-request.generated.ts', 'ProposalRequest'],
@@ -16,7 +17,7 @@ for (const [source, target, title] of [
   const compiled = await compile({ ...schema, title }, title, {
     bannerComment: `/* Generated from ${source}. Run pnpm --filter @aether-dom/schema types:generate. */`,
     style: { singleQuote: true, semi: true },
-    ...(source.startsWith('proposal') ? { ignoreMinAndMaxItems: true } : {}),
+    ...(source.startsWith('proposal') || source.startsWith('player-manifest') ? { ignoreMinAndMaxItems: true } : {}),
   });
   // The generator's `{}` means any non-nullish value in TypeScript, whereas
   // approveProposal requires an object with no keys. Keep this correction local

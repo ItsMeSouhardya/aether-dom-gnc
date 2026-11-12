@@ -72,6 +72,7 @@ export function validateSvgAsset(value: unknown): { valid: true; asset: SvgAsset
   if (value.root.tag !== 'svg') return fail('SVG root required');
   while (stack.length) {
     const {node,depth} = stack.pop()!;
+    if (node.tag === 'svg' && depth > 1) return fail('Nested SVG viewports are unsupported');
     const textBytes = new TextEncoder().encode(node.text).length;
     textSize += textBytes;
     if (++count > 512 || depth > 16 || textSize > 262144 || textBytes > 16384 || ids.has(node.id) || !/^[A-Za-z_][A-Za-z0-9_.:-]{0,127}$/.test(node.id)) return fail('SVG tree exceeds bounds or has duplicate IDs');

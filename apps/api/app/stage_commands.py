@@ -20,11 +20,34 @@ def apply_stage_operation(
     document: dict[str, Any], operation: dict[str, Any], asset_store: "SvgAssetStore | None",
 ) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any], list[str]]:
     result = copy.deepcopy(document)
-    if result["schemaVersion"] == "0.1.0":
+    if result["schemaVersion"] == "0.1.0" and operation["op"] != "setShotLayoutOverride":
         result["schemaVersion"] = "0.2.0"
     op, target, args = operation["op"], operation["targetId"], operation["args"]
     changed = [target]
-    if op == "setShotCamera":
+    if op == "setShotLayoutOverride":
+        shot = _find(result, "shots", target)
+        transforms = args["layerTransforms"]
+        overrides = shot.get("layoutOverrides", {})
+        previous = overrides.get("9:16")
+        for layer_id in transforms or {}:
+            layer = _find(result, "layers", layer_id)
+            if (layer["shotId"] != target or shot["layerIds"].count(layer_id) != 1
+                    or any(layer_id in other["layerIds"] for other in result["shots"]
+                           if other is not shot)):
+                raise CommandError(422, "INVALID_LAYER_MEMBERSHIP",
+                                   "Portrait layers must be uniquely owned and listed by the shot")
+        if transforms is None:
+            if previous is None:
+                raise CommandError(422, "NO_CHANGE", "The portrait override is already absent")
+            del overrides["9:16"]
+        else:
+            replacement = {"layerTransforms": copy.deepcopy(transforms)}
+            if previous == replacement:
+                raise CommandError(422, "NO_CHANGE", "The portrait override is unchanged")
+            shot.setdefault("layoutOverrides", {})["9:16"] = replacement
+        changed.extend((previous or {}).get("layerTransforms", {}))
+        changed.extend(transforms or {})
+    elif op == "setShotCamera":
         shot = _find(result, "shots", target)
         shot["camera"] = copy.deepcopy(args["camera"])
     elif op == "setLayerAppearance":

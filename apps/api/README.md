@@ -90,3 +90,24 @@ $env:DISABLE_SQLALCHEMY_CEXT = '1'
 .\.venv\Scripts\python.exe -m pip install --force-reinstall --no-cache-dir --no-binary sqlalchemy sqlalchemy==2.1.8
 Remove-Item Env:DISABLE_SQLALCHEMY_CEXT
 ```
+# Task07 player manifest boundary
+
+`GET /api/v1/projects/{projectId}/branches/{branchId}/player-manifest?revision=N`
+returns an exact immutable saved snapshot plus embedded sanitized SVG and bounded
+base64 PCM16 WAV. Omitting revision captures one head snapshot. `download=1`
+returns the identical validated object as attachment `aether-dom-rN.cdom.json`.
+Responses use `Cache-Control: no-store`; no history, proposals, environment data,
+export jobs, or canonical writes enter this path. All asset reads remain contained
+local safe-reader operations; external URIs are never fetched. Missing, unsafe,
+unsupported, unknown-rights, or oversized media fails atomically with actionable422.
+
+The wrapper shares `packages/schema/player-manifest.schema.json`, membership and
+identity checks, and the cross-language fixture cases. Limits are32MiB JSON,
+64 media entries,8MiB per WAV, depth32, and200000 JSON nodes, with conservative
+numeric serialization allowance. The unchanged canonical version lives inside
+`document`; only the manifest contains embedded media.
+
+Human command0.6 `setShotLayoutOverride` replaces/removes one shot's9:16 transform
+map atomically, preserving base layers, other aspect maps, and document version.
+It uses the existing optimistic revision/idempotency/history transaction and exact
+private snapshot inverse. A no-op or foreign/ambiguous layer target is rejected.

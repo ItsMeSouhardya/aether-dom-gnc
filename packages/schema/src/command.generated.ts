@@ -115,6 +115,23 @@ export type CdomCommand =
       targetId: string;
       args: Record<string, never>;
       [k: string]: unknown;
+    })
+  | (Envelope & {
+      op: 'setShotLayoutOverride';
+      targetId: string;
+      args: {
+        aspectRatio: '9:16';
+        layerTransforms: {
+          [k: string]: {
+            x: number;
+            y: number;
+            z: number;
+            scale: number;
+            rotationDeg: number;
+          };
+        } | null;
+      };
+      [k: string]: unknown;
     });
 
 export interface Envelope {

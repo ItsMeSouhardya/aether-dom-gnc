@@ -91,7 +91,8 @@ def apply_operation(
         inverse = {**operation, "args": {"document": copy.deepcopy(document),
                                         "changedEntityIds": changed}}
         return result, copy.deepcopy(operation), inverse, changed
-    if op in {"setShotCamera", "setLayerAppearance", "importSvgLayer", "editSvgElement",
+    if op in {"setShotLayoutOverride", "setShotCamera", "setLayerAppearance",
+              "importSvgLayer", "editSvgElement",
               "setLayerKeyframe", "deleteLayerKeyframe"}:
         from app.stage_commands import apply_stage_operation
         return apply_stage_operation(document, operation, asset_store)

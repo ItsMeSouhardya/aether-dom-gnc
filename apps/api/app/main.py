@@ -1,3 +1,4 @@
+import re
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -109,6 +110,32 @@ def create_app(
         return Response(content=raw, media_type="audio/wav", headers={
             "Cache-Control": "no-store", "Content-Length": str(len(raw)),
         })
+
+    @app.get("/api/v1/projects/{project_id}/branches/{branch_id}/player-manifest")
+    def player_manifest(project_id: str, branch_id: str, request: Request) -> JSONResponse:
+        query = list(request.query_params.multi_items())
+        if (any(key not in {"revision", "download"} for key, _ in query)
+                or len({key for key, _ in query}) != len(query)
+                or any(not re.fullmatch(r"[A-Za-z0-9_-]{1,128}", identity)
+                       for identity in (project_id, branch_id))):
+            raise CommandError(422, "INVALID_MANIFEST_REQUEST",
+                               "Invalid manifest identity or query")
+        revision_text = request.query_params.get("revision")
+        download = request.query_params.get("download")
+        if ((revision_text is not None and (not re.fullmatch(r"0|[1-9][0-9]{0,15}", revision_text)
+                                           or int(revision_text) > 9007199254740991))
+                or (download is not None and download != "1")):
+            raise CommandError(422, "INVALID_MANIFEST_REQUEST", "Invalid revision or download flag")
+        manifest = repository.get_player_manifest(
+            project_id, branch_id, int(revision_text) if revision_text is not None else None,
+        )
+        headers = {"Cache-Control": "no-store"}
+        if download:
+            revision = manifest["document"]["project"]["revision"]
+            headers["Content-Disposition"] = (
+                f'attachment; filename="aether-dom-r{revision}.cdom.json"'
+            )
+        return JSONResponse(content=manifest, headers=headers)
 
     @app.post("/api/v1/projects/{project_id}/branches/{branch_id}/commands")
     def execute(

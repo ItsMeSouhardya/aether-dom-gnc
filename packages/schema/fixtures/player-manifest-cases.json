@@ -1,0 +1,367 @@
+[
+  {
+    "name": "valid",
+    "path": [],
+    "valid": true
+  },
+  {
+    "name": "missing media",
+    "path": [
+      "assets"
+    ],
+    "value": [
+      {
+        "assetId": "asset_rooftops",
+        "kind": "svg",
+        "svg": {
+          "assetId": "asset_rooftops",
+          "uri": "assets/fixtures/rooftops.svg",
+          "sourceUri": "assets/fixtures/rooftops.svg",
+          "viewBox": {
+            "x": 0,
+            "y": 0,
+            "width": 100,
+            "height": 100
+          },
+          "root": {
+            "tag": "svg",
+            "id": "root",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "tag": "rect",
+                "id": "body",
+                "attributes": {
+                  "width": "100",
+                  "height": "100",
+                  "fill": "#abc"
+                },
+                "text": "",
+                "children": []
+              }
+            ]
+          }
+        }
+      },
+      {
+        "assetId": "asset_kael",
+        "kind": "svg",
+        "svg": {
+          "assetId": "asset_kael",
+          "uri": "assets/fixtures/kael.svg",
+          "sourceUri": "assets/fixtures/kael.svg",
+          "viewBox": {
+            "x": 0,
+            "y": 0,
+            "width": 100,
+            "height": 100
+          },
+          "root": {
+            "tag": "svg",
+            "id": "root",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "tag": "rect",
+                "id": "body",
+                "attributes": {
+                  "width": "100",
+                  "height": "100",
+                  "fill": "#abc"
+                },
+                "text": "",
+                "children": []
+              }
+            ]
+          }
+        }
+      },
+      {
+        "assetId": "asset_vance",
+        "kind": "svg",
+        "svg": {
+          "assetId": "asset_vance",
+          "uri": "assets/fixtures/vance.svg",
+          "sourceUri": "assets/fixtures/vance.svg",
+          "viewBox": {
+            "x": 0,
+            "y": 0,
+            "width": 100,
+            "height": 100
+          },
+          "root": {
+            "tag": "svg",
+            "id": "root",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "tag": "rect",
+                "id": "body",
+                "attributes": {
+                  "width": "100",
+                  "height": "100",
+                  "fill": "#abc"
+                },
+                "text": "",
+                "children": []
+              }
+            ]
+          }
+        }
+      },
+      {
+        "assetId": "asset_sign",
+        "kind": "svg",
+        "svg": {
+          "assetId": "asset_sign",
+          "uri": "assets/fixtures/neon_sign.svg",
+          "sourceUri": "assets/fixtures/neon_sign.svg",
+          "viewBox": {
+            "x": 0,
+            "y": 0,
+            "width": 100,
+            "height": 100
+          },
+          "root": {
+            "tag": "svg",
+            "id": "root",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "tag": "rect",
+                "id": "body",
+                "attributes": {
+                  "width": "100",
+                  "height": "100",
+                  "fill": "#abc"
+                },
+                "text": "",
+                "children": []
+              }
+            ]
+          }
+        }
+      },
+      {
+        "assetId": "asset_ambient",
+        "kind": "audio",
+        "mimeType": "audio/wav",
+        "dataBase64": "UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQIAAAAAAA=="
+      },
+      {
+        "assetId": "asset_tension",
+        "kind": "audio",
+        "mimeType": "audio/wav",
+        "dataBase64": "UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQIAAAAAAA=="
+      }
+    ],
+    "valid": false
+  },
+  {
+    "name": "duplicate media",
+    "path": [
+      "assets",
+      1
+    ],
+    "value": {
+      "assetId": "asset_rooftops",
+      "kind": "svg",
+      "svg": {
+        "assetId": "asset_rooftops",
+        "uri": "assets/fixtures/rooftops.svg",
+        "sourceUri": "assets/fixtures/rooftops.svg",
+        "viewBox": {
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 100
+        },
+        "root": {
+          "tag": "svg",
+          "id": "root",
+          "attributes": {},
+          "text": "",
+          "children": [
+            {
+              "tag": "rect",
+              "id": "body",
+              "attributes": {
+                "width": "100",
+                "height": "100",
+                "fill": "#abc"
+              },
+              "text": "",
+              "children": []
+            }
+          ]
+        }
+      }
+    },
+    "valid": false
+  },
+  {
+    "name": "foreign SVG identity",
+    "path": [
+      "assets",
+      0,
+      "svg",
+      "assetId"
+    ],
+    "value": "asset_kael",
+    "valid": false
+  },
+  {
+    "name": "mismatched URI",
+    "path": [
+      "assets",
+      0,
+      "svg",
+      "uri"
+    ],
+    "value": "assets/other.svg",
+    "valid": false
+  },
+  {
+    "name": "unknown rights",
+    "path": [
+      "document",
+      "assets",
+      0,
+      "rights"
+    ],
+    "value": "unknown",
+    "valid": false
+  },
+  {
+    "name": "duplicate canonical IDs",
+    "path": [
+      "document",
+      "characters",
+      0,
+      "id"
+    ],
+    "value": "layer_kael",
+    "valid": false
+  },
+  {
+    "name": "missing layer member",
+    "path": [
+      "document",
+      "shots",
+      0,
+      "layerIds"
+    ],
+    "value": [
+      "layer_kael",
+      "layer_vance",
+      "layer_sign"
+    ],
+    "valid": false
+  },
+  {
+    "name": "foreign layer owner",
+    "path": [
+      "document",
+      "layers",
+      0,
+      "shotId"
+    ],
+    "value": "missing",
+    "valid": false
+  },
+  {
+    "name": "unsafe SVG attribute",
+    "path": [
+      "assets",
+      0,
+      "svg",
+      "root",
+      "children",
+      0,
+      "attributes",
+      "fill"
+    ],
+    "value": "url(https://example.test)",
+    "valid": false
+  },
+  {
+    "name": "unsafe SVG node",
+    "path": [
+      "assets",
+      0,
+      "svg",
+      "root",
+      "children",
+      0,
+      "tag"
+    ],
+    "value": "script",
+    "valid": false
+  },
+  {
+    "name": "nested SVG viewport",
+    "path": [
+      "assets",
+      0,
+      "svg",
+      "root",
+      "children",
+      0
+    ],
+    "value": {
+      "tag": "svg",
+      "id": "nested",
+      "attributes": {},
+      "text": "",
+      "children": []
+    },
+    "valid": false
+  },
+  {
+    "name": "invalid WAV",
+    "path": [
+      "assets",
+      4,
+      "dataBase64"
+    ],
+    "value": "AAAA",
+    "valid": false
+  },
+  {
+    "name": "noncanonical base64",
+    "path": [
+      "assets",
+      4,
+      "dataBase64"
+    ],
+    "value": "UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQIAAAAAAA==\n",
+    "valid": false
+  },
+  {
+    "name": "unresolved binding",
+    "path": [
+      "document",
+      "bindings",
+      0,
+      "source",
+      "entityId"
+    ],
+    "value": "missing",
+    "valid": false
+  },
+  {
+    "name": "mismatched source URI",
+    "path": [
+      "assets",
+      0,
+      "svg",
+      "sourceUri"
+    ],
+    "value": "assets/other.svg",
+    "valid": false
+  }
+]

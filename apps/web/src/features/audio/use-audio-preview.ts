@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useMemo, useState, useSyncExternalStore } from 'react';
-import { createAudioPreview } from './engine';
+import { createAudioPreview, type AudioDependencies } from './engine';
 import type { Playback } from '../stage/playback';
 import type { AudioFrame, AudioPreview, AudioSettings, AudioStatus, AudioUiSettings } from './types';
 
@@ -8,7 +8,7 @@ const off: AudioStatus = { state: 'off', enabled: false, message: 'Enable audio 
 const silent: AudioFrame = { level: 0, tracks: [] };
 
 /** A stable UI handle; effect replay replaces its disposable engine, not the handle. */
-function audioSession(playback: Playback): AudioPreview {
+function audioSession(playback: Playback, dependencies?: AudioDependencies): AudioPreview {
   let engine: AudioPreview | null = null;
   let unsubStatus: (() => void) | null = null, unsubFrame: (() => void) | null = null;
   const listeners = new Set<() => void>(), frames = new Set<(frame: AudioFrame) => void>();
@@ -18,7 +18,7 @@ function audioSession(playback: Playback): AudioPreview {
     disable: () => engine?.disable(),
     update(settings) {
       if (engine) { engine.update(settings); return; }
-      engine = createAudioPreview(playback, settings);
+      engine = createAudioPreview(playback, settings, dependencies);
       unsubStatus = engine.subscribe(publish);
       unsubFrame = engine.subscribeFrame(frame => { for (const listener of frames) listener(frame); });
       publish();
@@ -37,8 +37,8 @@ function audioSession(playback: Playback): AudioPreview {
   };
 }
 
-export function useAudioPreview(playback: Playback, settings: AudioSettings) {
-  const runtime = useMemo(() => audioSession(playback), [playback]);
+export function useAudioPreview(playback: Playback, settings: AudioSettings, dependencies?: AudioDependencies) {
+  const runtime = useMemo(() => audioSession(playback, dependencies), [playback, dependencies]);
   useEffect(() => { runtime.update(settings); }, [runtime, settings]);
   useEffect(() => () => runtime.dispose(), [runtime]);
   return runtime;

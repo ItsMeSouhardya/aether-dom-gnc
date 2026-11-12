@@ -141,6 +141,19 @@ class Repository:
                 "sourceUri": asset.get("sourceUri", asset["uri"]),
                 **self.asset_store.read_svg(asset["uri"])}
 
+    def get_player_manifest(
+        self, project_id: str, branch_id: str, revision: int | None = None,
+    ) -> dict[str, Any]:
+        from app.player_manifest import build_player_manifest
+        if revision is not None and (isinstance(revision, bool) or not isinstance(revision, int)
+                                     or not 0 <= revision <= 9007199254740991):
+            raise CommandError(422, "INVALID_REVISION",
+                               "Revision must be a nonnegative safe integer")
+        document = self.get(project_id, branch_id)["document"] if revision is None else (
+            self.revision_document(project_id, branch_id, revision)
+        )
+        return build_player_manifest(document, self.asset_root, self.asset_store)
+
     def get_audio_asset(
         self, project_id: str, branch_id: str, asset_id: str, revision: int | None = None,
     ) -> bytes:

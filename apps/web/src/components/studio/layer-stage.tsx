@@ -13,14 +13,17 @@ import { SvgContent } from '../stage/svg-content';
 import { CameraEditor, SvgImport } from '../stage/stage-editors';
 import type { AudioPreview } from '@/features/audio/types';
 import { AudioGlow } from '../audio/audio-glow';
+import { composeLayers, compositionCamera, type Aspect } from '@/features/stage/composition';
+import type { LayoutPreview } from '../stage/layout-editor';
 
 export type StageMode = 'layout' | 'animation' | 'svg';
 type Props = { document: CdomDocument; selection: StudioSelection; dispatch: (action: SelectionAction) => void; assets: Record<string, AssetState>;
   playback: Playback; mode: StageMode; setMode: (mode: StageMode) => void; selectedElement: string | null; selectElement: (id: string) => void;
-  busy: boolean; blocked: boolean; run: (operation: CommandOperation, reason: string, revision?: number) => Promise<boolean>; audio: AudioPreview; reactiveGlow: boolean };
+  busy: boolean; blocked: boolean; run: (operation: CommandOperation, reason: string, revision?: number) => Promise<boolean>; audio: AudioPreview; reactiveGlow: boolean;
+  aspect: Aspect; onAspectChange: (aspect: Aspect) => void; layoutPreview: LayoutPreview | null };
 type Drag = { id: string; pointerId: number; startX: number; startY: number; transform: Transform; revision: number; draft: Transform };
 
-export function LayerStage({ document, selection, dispatch, assets, playback, mode, setMode, selectedElement, selectElement, busy, blocked, run, audio, reactiveGlow }: Props) {
+export function LayerStage({ document, selection, dispatch, assets, playback, mode, setMode, selectedElement, selectElement, busy, blocked, run, audio, reactiveGlow, aspect, onAspectChange, layoutPreview }: Props) {
   const shot = document.shots.find(shot => shot.id === selection.shotId);
   const scene = document.scenes.find(scene => scene.id === selection.sceneId);
   const layers = getShotLayers(document, shot?.id ?? null);
@@ -32,7 +35,9 @@ export function LayerStage({ document, selection, dispatch, assets, playback, mo
   const [renderer, setRenderer] = useState<'webgl2' | 'svg'>('svg');
   const [editor, setEditor] = useState<'camera' | 'import' | null>(null);
   const preview = useSyncExternalStore(playback.subscribe, playback.getSnapshot, playback.getSnapshot);
-  const locked = busy || blocked || mode !== 'layout';
+  const locked = busy || blocked || mode !== 'layout' || layoutPreview !== null;
+  const visualShot = shot && layoutPreview?.shotId === shot.id ? { ...shot, layoutOverrides: { ...shot.layoutOverrides, '9:16': { layerTransforms: layoutPreview.layerTransforms ?? {} } } } : shot;
+  const camera = shot ? compositionCamera(shot, aspect) : null;
   useEffect(() => {
     const element = canvas.current;
     if (!element) return;
@@ -40,12 +45,19 @@ export function LayerStage({ document, selection, dispatch, assets, playback, mo
     observer.observe(element); return () => observer.disconnect();
   }, [shot?.id]);
   const cancelDrag = () => { if (drag.current) audio.setLayerDraft(drag.current.id, null); drag.current = null; setDraft(null); };
-  const renderLayers = layers.map(layer => {
+  useEffect(() => () => { if (drag.current) audio.setLayerDraft(drag.current.id, null); }, [audio]);
+  const saveTransform = (id: string, transform: Transform, reason: string, revision: number) => {
+    if (!shot) return;
+    if (aspect === '9:16') void run({ op: 'setShotLayoutOverride', targetId: shot.id, args: { aspectRatio: '9:16', layerTransforms: { ...shot.layoutOverrides['9:16']?.layerTransforms, [id]: transform } } }, reason, revision);
+    else void run({ op: 'setLayerTransform', targetId: id, args: transform }, reason, revision);
+  };
+  const composed = visualShot ? composeLayers(layers, visualShot, aspect) : layers;
+  const renderLayers = composed.map(layer => {
     const asset = document.assets.find(asset => asset.id === layer.assetId);
     return { ...layer, transform: draft?.id === layer.id ? draft.transform : layer.transform, svg: asset ? assets[assetKey(asset)]?.svg ?? null : null };
   });
   const rendered = stageRenderPlan(renderLayers, preview.timeMs, mode === 'animation');
-  const ratio = shot ? { '16:9': 16 / 9, '9:16': 9 / 16, '1:1': 1 }[shot.camera.aspectRatio] : 16 / 9;
+  const ratio = { '16:9': 16 / 9, '9:16': 9 / 16, '1:1': 1 }[aspect];
   const selectedAsset = document.assets.find(asset => asset.id === selected?.assetId);
   const svgReady = selectedAsset && assets[assetKey(selectedAsset)]?.svg;
   const pending = layers.some(layer => { const asset = document.assets.find(asset => asset.id === layer.assetId); return asset?.kind === 'svg' && !assets[assetKey(asset)]; });
@@ -54,11 +66,13 @@ export function LayerStage({ document, selection, dispatch, assets, playback, mo
   }}>
     <div className="stage-toolbar"><div><h2>{scene?.title ?? 'Stage'}</h2><span>2.5D · {renderer === 'webgl2' ? 'WebGL2' : 'SVG fallback'}</span></div>
       {shot ? <div className="stage-tools">
+        <button className="studio-button" aria-label="Preview 16:9" aria-pressed={aspect === '16:9'} onClick={() => { if (aspect !== '16:9') { cancelDrag(); onAspectChange('16:9'); } }}>16:9</button>
+        <button className="studio-button" aria-label="Preview 9:16" aria-pressed={aspect === '9:16'} onClick={() => { if (aspect !== '9:16') { cancelDrag(); onAspectChange('9:16'); } }}>9:16</button>
         <button className="studio-button" aria-label="Layout mode" aria-pressed={mode === 'layout'} onClick={() => { cancelDrag(); setMode('layout'); }}>Layout</button>
         <button className="studio-button" aria-label="Animation mode" aria-pressed={mode === 'animation'} onClick={() => { cancelDrag(); setMode('animation'); }}>Animate</button>
-        <button className="studio-button" disabled={busy || blocked} onClick={() => { cancelDrag(); playback.pause(); setEditor('camera'); }}>Camera</button>
-        <button className="studio-button" disabled={busy || blocked} onClick={() => { cancelDrag(); playback.pause(); setEditor('import'); }}>Import SVG</button>
-        {svgReady ? <button className="studio-button" aria-pressed={mode === 'svg'} onClick={() => { cancelDrag(); playback.pause(); setMode('svg'); }}>Edit SVG</button> : null}
+        <button className="studio-button" disabled={busy || blocked || aspect === '9:16'} onClick={() => { cancelDrag(); playback.pause(); setEditor('camera'); }}>Camera</button>
+        <button className="studio-button" disabled={busy || blocked || aspect === '9:16'} onClick={() => { cancelDrag(); playback.pause(); setEditor('import'); }}>Import SVG</button>
+        {svgReady && aspect !== '9:16' ? <button className="studio-button" aria-pressed={mode === 'svg'} onClick={() => { cancelDrag(); playback.pause(); setMode('svg'); }}>Edit SVG</button> : null}
       </div> : <span>No shot selected</span>}</div>
     {shot ? <>
       {editor ? <div className="stage-editor" key={`${shot.id}:${editor}`}>
@@ -66,10 +80,11 @@ export function LayerStage({ document, selection, dispatch, assets, playback, mo
           : <SvgImport document={document} shotId={shot.id} run={run} busy={busy} blocked={blocked} onClose={() => setEditor(null)} />}
       </div> : null}
       <div className="stage-workspace"><div ref={canvas} className="stage-canvas stage-canvas-live" style={{ aspectRatio: ratio, width: `min(100cqw, calc(100cqh * ${ratio}))` }} role="group" aria-label="Shot layout blockout">
-        <GpuStage width={size.width} height={size.height} camera={shot.camera} layers={renderLayers} playback={playback} animate={mode === 'animation'} hiddenLayerId={mode === 'svg' ? selection.layerId : null} onMode={setRenderer} />
+        <GpuStage width={size.width} height={size.height} camera={camera!} layers={renderLayers} playback={playback} animate={mode === 'animation'} hiddenLayerId={mode === 'svg' ? selection.layerId : null} onMode={setRenderer} />
+        {aspect === '9:16' ? <div className="stage-safe-area" aria-label="Subject safe area guides" /> : null}
         <svg className="stage-overlay" width="100%" height="100%" viewBox={`0 0 ${size.width || 1} ${size.height || 1}`} aria-label="Editable shot layers">
           {rendered.map(layer => {
-            const p = projectLayer(layer.transform, shot.camera, size, layer.svg?.viewBox ?? { x: 0, y: 0, width: 130, height: 200 });
+            const p = projectLayer(layer.transform, camera!, size, layer.svg?.viewBox ?? { x: 0, y: 0, width: 130, height: 200 });
             if (!p) return null;
             const name = layerName(document, layers.find(item => item.id === layer.id)!), isSelected = selection.layerId === layer.id, isolated = mode === 'svg' && isSelected;
             return <g key={layer.id} role="button" tabIndex={0} aria-label={`Select stage layer ${name}`} aria-pressed={isSelected} className="stage-hit" style={{ cursor: locked ? 'pointer' : 'grab' }}
@@ -82,7 +97,7 @@ export function LayerStage({ document, selection, dispatch, assets, playback, mo
               }} onPointerMove={event => {
                 const active = drag.current;
                 if (!active || active.id !== layer.id || active.pointerId !== event.pointerId) return;
-                const delta = unprojectDelta(event.clientX - active.startX, event.clientY - active.startY, active.transform.z, shot.camera, size);
+                const delta = unprojectDelta(event.clientX - active.startX, event.clientY - active.startY, active.transform.z, camera!, size);
                 if (delta) { active.draft = { ...active.transform, x: active.transform.x + delta.x, y: active.transform.y + delta.y }; setDraft({ id: active.id, transform: active.draft }); audio.setLayerDraft(active.id, active.draft); }
               }} onPointerUp={event => {
                 const active = drag.current;
@@ -90,15 +105,15 @@ export function LayerStage({ document, selection, dispatch, assets, playback, mo
                 cancelDrag();
                 if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
                 if (active.revision !== document.project.revision || busy || blocked) return;
-                if (active.draft.x !== active.transform.x || active.draft.y !== active.transform.y) void run({ op: 'setLayerTransform', targetId: active.id, args: { x: active.draft.x, y: active.draft.y } }, `Move ${name}`, active.revision);
+                if (active.draft.x !== active.transform.x || active.draft.y !== active.transform.y) saveTransform(active.id, active.draft, `Move ${name}${aspect === '9:16' ? ' in portrait' : ''}`, active.revision);
               }} onPointerCancel={cancelDrag} onLostPointerCapture={cancelDrag} onClick={() => dispatch({ type: 'select-layer', id: layer.id })}
               onKeyDown={event => {
                 if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); dispatch({ type: 'select-layer', id: layer.id }); }
                 if (locked || !['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) return;
-                event.preventDefault(); const step = event.shiftKey ? .25 : .05;
+                event.preventDefault(); dispatch({ type: 'select-layer', id: layer.id }); const step = event.shiftKey ? .25 : .05;
                 const x = layer.transform.x + (event.key === 'ArrowLeft' ? -step : event.key === 'ArrowRight' ? step : 0);
                 const y = layer.transform.y + (event.key === 'ArrowDown' ? -step : event.key === 'ArrowUp' ? step : 0);
-                void run({ op: 'setLayerTransform', targetId: layer.id, args: { x, y } }, `Move ${name}`, document.project.revision);
+                saveTransform(layer.id, { ...layer.transform, x, y }, `Move ${name}${aspect === '9:16' ? ' in portrait' : ''}`, document.project.revision);
               }}>
               <rect className="stage-hit-bounds" x={-p.width / 2} y={-p.height / 2} width={p.width} height={p.height} fill="transparent" />
               {(renderer === 'svg' || isolated) && layer.svg ? <svg x={-p.width / 2} y={-p.height / 2} width={p.width} height={p.height} viewBox={`${layer.svg.viewBox.x} ${layer.svg.viewBox.y} ${layer.svg.viewBox.width} ${layer.svg.viewBox.height}`} opacity={layer.opacity ?? 1} pointerEvents={isolated ? 'auto' : 'none'}>
@@ -112,10 +127,10 @@ export function LayerStage({ document, selection, dispatch, assets, playback, mo
         </svg>
         {layers.length === 0 ? <div className="stage-empty"><h3>No layers in this shot</h3><p>Import an SVG to begin composing.</p></div> : null}
       </div></div>
-      <div className="stage-caption"><span>{pending ? 'Loading SVG assets…' : `${shot.camera.aspectRatio} · ${mode === 'animation' ? 'Animation preview' : mode === 'svg' ? 'Select a source element' : 'Drag to move · Arrow keys to nudge'}`}</span>
+      <div className="stage-caption"><span>{pending ? 'Loading SVG assets…' : `${aspect} · ${layoutPreview ? 'Unsaved portrait draft' : mode === 'animation' ? 'Animation preview' : mode === 'svg' ? 'Select a source element' : 'Drag to move · Arrow keys to nudge'}`}</span>
         {selected ? <div className="stage-tools">{(['backward', 'forward'] as const).map(direction => {
-          const z = nextLayerDepth(layers, selected.id, direction);
-          return <button key={direction} className="studio-button" disabled={locked || z === null} onClick={() => { if (z !== null) void run({ op: 'setLayerTransform', targetId: selected.id, args: { z } }, `Reorder ${layerName(document, selected)}`, document.project.revision); }}>{direction === 'forward' ? 'Bring forward' : 'Send backward'}</button>;
+          const z = nextLayerDepth(composed, selected.id, direction), transform = composed.find(layer => layer.id === selected.id)!.transform;
+          return <button key={direction} className="studio-button" disabled={locked || z === null} onClick={() => { if (z !== null) saveTransform(selected.id, { ...transform, z }, `Reorder ${layerName(document, selected)}`, document.project.revision); }}>{direction === 'forward' ? 'Bring forward' : 'Send backward'}</button>;
         })}</div> : null}
       </div>
     </> : <div className="stage-empty"><h3>{scene ? 'No shots in this scene' : 'No shot selected'}</h3><p>Choose a shot in the project explorer to view its layers.</p></div>}
