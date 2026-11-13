@@ -118,6 +118,7 @@ def test_migration_from_0002_preserves_canonical_and_proposal_tables(repository)
     repository.close()
     with sqlite3.connect(path) as connection:
         connection.execute("DROP TABLE branch_forks")
+        connection.execute("DROP TABLE jobs")
         connection.execute("UPDATE alembic_version SET version_num = '0002'")
         before = {table: connection.execute(f"SELECT * FROM {table}").fetchall()
                   for table in ("branches", "snapshots", "commands", "agent_proposals")}
@@ -126,7 +127,7 @@ def test_migration_from_0002_preserves_canonical_and_proposal_tables(repository)
     try:
         with sqlite3.connect(path) as connection:
             assert connection.execute("SELECT version_num FROM alembic_version").fetchone() == (
-                "0003",
+                "0004",
             )
             for table, rows in before.items():
                 assert connection.execute(f"SELECT * FROM {table}").fetchall() == rows

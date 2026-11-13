@@ -28,7 +28,7 @@ jobs:
       - run: pnpm test:e2e
         env:
           CI: 'true'
-      - run: pnpm exec playwright test --project desktop --grep 'effect replay|explicit audio gesture|scoped mock preview|edits portrait overrides|exports the saved manifest|forks and switches|records a real portrait'
+      - run: pnpm exec playwright test --project desktop --grep 'effect replay|explicit audio gesture|scoped mock preview|edits portrait overrides|exports the saved manifest|forks and switches|records a real portrait|queues durably|unknown enqueue'
         env:
           CI: 'true'
           AETHER_E2E_DEV: '1'

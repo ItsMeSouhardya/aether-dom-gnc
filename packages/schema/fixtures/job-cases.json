@@ -1,0 +1,1010 @@
+[
+  {
+    "name": "queued",
+    "value": {
+      "jobId": "job_one",
+      "projectId": "proj_neon_shogun",
+      "branchId": "branch_main",
+      "baseRevision": 0,
+      "request": {
+        "requestId": "req_one",
+        "expectedRevision": 0,
+        "scopeIds": [
+          "layer_kael"
+        ],
+        "allowedOps": [
+          "setLayerPose"
+        ],
+        "intent": "repair_pose",
+        "message": ""
+      },
+      "inputHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "provider": "local_mock",
+      "modelVersion": "deterministic-demo-v1",
+      "estimatedCost": {
+        "amount": 0,
+        "currency": "USD"
+      },
+      "actualCost": null,
+      "status": "queued",
+      "attempt": 0,
+      "maxAttempts": 3,
+      "progress": 0,
+      "createdAt": "2026-11-13T00:00:00+00:00",
+      "updatedAt": "2026-11-13T00:00:00+00:00",
+      "leaseExpiresAt": null,
+      "nextAttemptAt": null,
+      "error": null,
+      "result": null
+    },
+    "valid": true
+  },
+  {
+    "name": "running",
+    "value": {
+      "jobId": "job_one",
+      "projectId": "proj_neon_shogun",
+      "branchId": "branch_main",
+      "baseRevision": 0,
+      "request": {
+        "requestId": "req_one",
+        "expectedRevision": 0,
+        "scopeIds": [
+          "layer_kael"
+        ],
+        "allowedOps": [
+          "setLayerPose"
+        ],
+        "intent": "repair_pose",
+        "message": ""
+      },
+      "inputHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "provider": "local_mock",
+      "modelVersion": "deterministic-demo-v1",
+      "estimatedCost": {
+        "amount": 0,
+        "currency": "USD"
+      },
+      "actualCost": null,
+      "status": "running",
+      "attempt": 1,
+      "maxAttempts": 3,
+      "progress": 10,
+      "createdAt": "2026-11-13T00:00:00+00:00",
+      "updatedAt": "2026-11-13T00:00:00+00:00",
+      "leaseExpiresAt": "2026-11-13T00:00:30Z",
+      "nextAttemptAt": null,
+      "error": null,
+      "result": null
+    },
+    "valid": true
+  },
+  {
+    "name": "succeeded",
+    "value": {
+      "jobId": "job_one",
+      "projectId": "proj_neon_shogun",
+      "branchId": "branch_main",
+      "baseRevision": 0,
+      "request": {
+        "requestId": "req_one",
+        "expectedRevision": 0,
+        "scopeIds": [
+          "layer_kael"
+        ],
+        "allowedOps": [
+          "setLayerPose"
+        ],
+        "intent": "repair_pose",
+        "message": ""
+      },
+      "inputHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "provider": "local_mock",
+      "modelVersion": "deterministic-demo-v1",
+      "estimatedCost": {
+        "amount": 0,
+        "currency": "USD"
+      },
+      "actualCost": {
+        "amount": 0,
+        "currency": "USD"
+      },
+      "status": "succeeded",
+      "attempt": 1,
+      "maxAttempts": 3,
+      "progress": 100,
+      "createdAt": "2026-11-13T00:00:00+00:00",
+      "updatedAt": "2026-11-13T00:00:00+00:00",
+      "leaseExpiresAt": null,
+      "nextAttemptAt": null,
+      "error": null,
+      "result": {
+        "kind": "proposal",
+        "proposalId": "proposal_one",
+        "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "expired retryable",
+    "value": {
+      "jobId": "job_one",
+      "projectId": "proj_neon_shogun",
+      "branchId": "branch_main",
+      "baseRevision": 0,
+      "request": {
+        "requestId": "req_one",
+        "expectedRevision": 0,
+        "scopeIds": [
+          "layer_kael"
+        ],
+        "allowedOps": [
+          "setLayerPose"
+        ],
+        "intent": "repair_pose",
+        "message": ""
+      },
+      "inputHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "provider": "local_mock",
+      "modelVersion": "deterministic-demo-v1",
+      "estimatedCost": {
+        "amount": 0,
+        "currency": "USD"
+      },
+      "actualCost": {
+        "amount": 0,
+        "currency": "USD"
+      },
+      "status": "failed",
+      "attempt": 1,
+      "maxAttempts": 3,
+      "progress": 0,
+      "createdAt": "2026-11-13T00:00:00+00:00",
+      "updatedAt": "2026-11-13T00:00:00+00:00",
+      "leaseExpiresAt": null,
+      "nextAttemptAt": null,
+      "error": {
+        "code": "LEASE_EXPIRED",
+        "message": "Worker lease expired",
+        "retryable": true
+      },
+      "result": null
+    },
+    "valid": true
+  },
+  {
+    "name": "automatic retry",
+    "value": {
+      "jobId": "job_one",
+      "projectId": "proj_neon_shogun",
+      "branchId": "branch_main",
+      "baseRevision": 0,
+      "request": {
+        "requestId": "req_one",
+        "expectedRevision": 0,
+        "scopeIds": [
+          "layer_kael"
+        ],
+        "allowedOps": [
+          "setLayerPose"
+        ],
+        "intent": "repair_pose",
+        "message": ""
+      },
+      "inputHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "provider": "local_mock",
+      "modelVersion": "deterministic-demo-v1",
+      "estimatedCost": {
+        "amount": 0,
+        "currency": "USD"
+      },
+      "actualCost": {
+        "amount": 0,
+        "currency": "USD"
+      },
+      "status": "failed",
+      "attempt": 1,
+      "maxAttempts": 3,
+      "progress": 0,
+      "createdAt": "2026-11-13T00:00:00+00:00",
+      "updatedAt": "2026-11-13T00:00:00+00:00",
+      "leaseExpiresAt": null,
+      "nextAttemptAt": "2026-11-13T00:00:02Z",
+      "error": {
+        "code": "LEASE_EXPIRED",
+        "message": "Worker lease expired",
+        "retryable": true
+      },
+      "result": null
+    },
+    "valid": true
+  },
+  {
+    "name": "cancelled",
+    "value": {
+      "jobId": "job_one",
+      "projectId": "proj_neon_shogun",
+      "branchId": "branch_main",
+      "baseRevision": 0,
+      "request": {
+        "requestId": "req_one",
+        "expectedRevision": 0,
+        "scopeIds": [
+          "layer_kael"
+        ],
+        "allowedOps": [
+          "setLayerPose"
+        ],
+        "intent": "repair_pose",
+        "message": ""
+      },
+      "inputHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "provider": "local_mock",
+      "modelVersion": "deterministic-demo-v1",
+      "estimatedCost": {
+        "amount": 0,
+        "currency": "USD"
+      },
+      "actualCost": null,
+      "status": "cancelled",
+      "attempt": 0,
+      "maxAttempts": 3,
+      "progress": 0,
+      "createdAt": "2026-11-13T00:00:00+00:00",
+      "updatedAt": "2026-11-13T00:00:00+00:00",
+      "leaseExpiresAt": null,
+      "nextAttemptAt": null,
+      "error": {
+        "code": "CANCELLED",
+        "message": "Cancelled by creator",
+        "retryable": false
+      },
+      "result": null
+    },
+    "valid": true
+  },
+  {
+    "name": "scalar supplementary text",
+    "value": {
+      "jobId": "job_one",
+      "projectId": "proj_neon_shogun",
+      "branchId": "branch_main",
+      "baseRevision": 0,
+      "request": {
+        "requestId": "req_one",
+        "expectedRevision": 0,
+        "scopeIds": [
+          "layer_kael"
+        ],
+        "allowedOps": [
+          "setLayerPose"
+        ],
+        "intent": "repair_pose",
+        "message": "A🚀 Indic क"
+      },
+      "inputHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "provider": "local_mock",
+      "modelVersion": "deterministic-demo-v1",
+      "estimatedCost": {
+        "amount": 0,
+        "currency": "USD"
+      },
+      "actualCost": null,
+      "status": "queued",
+      "attempt": 0,
+      "maxAttempts": 3,
+      "progress": 0,
+      "createdAt": "2026-11-13T00:00:00+00:00",
+      "updatedAt": "2026-11-13T00:00:00+00:00",
+      "leaseExpiresAt": null,
+      "nextAttemptAt": null,
+      "error": null,
+      "result": null
+    },
+    "valid": true
+  },
+  {
+    "name": "wrong base",
+    "value": {
+      "jobId": "job_one",
+      "projectId": "proj_neon_shogun",
+      "branchId": "branch_main",
+      "baseRevision": 1,
+      "request": {
+        "requestId": "req_one",
+        "expectedRevision": 0,
+        "scopeIds": [
+          "layer_kael"
+        ],
+        "allowedOps": [
+          "setLayerPose"
+        ],
+        "intent": "repair_pose",
+        "message": ""
+      },
+      "inputHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "provider": "local_mock",
+      "modelVersion": "deterministic-demo-v1",
+      "estimatedCost": {
+        "amount": 0,
+        "currency": "USD"
+      },
+      "actualCost": null,
+      "status": "queued",
+      "attempt": 0,
+      "maxAttempts": 3,
+      "progress": 0,
+      "createdAt": "2026-11-13T00:00:00+00:00",
+      "updatedAt": "2026-11-13T00:00:00+00:00",
+      "leaseExpiresAt": null,
+      "nextAttemptAt": null,
+      "error": null,
+      "result": null
+    },
+    "valid": false
+  },
+  {
+    "name": "result on queued",
+    "value": {
+      "jobId": "job_one",
+      "projectId": "proj_neon_shogun",
+      "branchId": "branch_main",
+      "baseRevision": 0,
+      "request": {
+        "requestId": "req_one",
+        "expectedRevision": 0,
+        "scopeIds": [
+          "layer_kael"
+        ],
+        "allowedOps": [
+          "setLayerPose"
+        ],
+        "intent": "repair_pose",
+        "message": ""
+      },
+      "inputHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "provider": "local_mock",
+      "modelVersion": "deterministic-demo-v1",
+      "estimatedCost": {
+        "amount": 0,
+        "currency": "USD"
+      },
+      "actualCost": null,
+      "status": "queued",
+      "attempt": 0,
+      "maxAttempts": 3,
+      "progress": 0,
+      "createdAt": "2026-11-13T00:00:00+00:00",
+      "updatedAt": "2026-11-13T00:00:00+00:00",
+      "leaseExpiresAt": null,
+      "nextAttemptAt": null,
+      "error": null,
+      "result": {
+        "kind": "proposal",
+        "proposalId": "proposal_one",
+        "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      }
+    },
+    "valid": false
+  },
+  {
+    "name": "unclaimed running",
+    "value": {
+      "jobId": "job_one",
+      "projectId": "proj_neon_shogun",
+      "branchId": "branch_main",
+      "baseRevision": 0,
+      "request": {
+        "requestId": "req_one",
+        "expectedRevision": 0,
+        "scopeIds": [
+          "layer_kael"
+        ],
+        "allowedOps": [
+          "setLayerPose"
+        ],
+        "intent": "repair_pose",
+        "message": ""
+      },
+      "inputHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "provider": "local_mock",
+      "modelVersion": "deterministic-demo-v1",
+      "estimatedCost": {
+        "amount": 0,
+        "currency": "USD"
+      },
+      "actualCost": null,
+      "status": "running",
+      "attempt": 0,
+      "maxAttempts": 3,
+      "progress": 0,
+      "createdAt": "2026-11-13T00:00:00+00:00",
+      "updatedAt": "2026-11-13T00:00:00+00:00",
+      "leaseExpiresAt": null,
+      "nextAttemptAt": null,
+      "error": null,
+      "result": null
+    },
+    "valid": false
+  },
+  {
+    "name": "bad calendar",
+    "value": {
+      "jobId": "job_one",
+      "projectId": "proj_neon_shogun",
+      "branchId": "branch_main",
+      "baseRevision": 0,
+      "request": {
+        "requestId": "req_one",
+        "expectedRevision": 0,
+        "scopeIds": [
+          "layer_kael"
+        ],
+        "allowedOps": [
+          "setLayerPose"
+        ],
+        "intent": "repair_pose",
+        "message": ""
+      },
+      "inputHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "provider": "local_mock",
+      "modelVersion": "deterministic-demo-v1",
+      "estimatedCost": {
+        "amount": 0,
+        "currency": "USD"
+      },
+      "actualCost": null,
+      "status": "queued",
+      "attempt": 0,
+      "maxAttempts": 3,
+      "progress": 0,
+      "createdAt": "2026-02-30T00:00:00Z",
+      "updatedAt": "2026-11-13T00:00:00+00:00",
+      "leaseExpiresAt": null,
+      "nextAttemptAt": null,
+      "error": null,
+      "result": null
+    },
+    "valid": false
+  },
+  {
+    "name": "year zero",
+    "value": {
+      "jobId": "job_one",
+      "projectId": "proj_neon_shogun",
+      "branchId": "branch_main",
+      "baseRevision": 0,
+      "request": {
+        "requestId": "req_one",
+        "expectedRevision": 0,
+        "scopeIds": [
+          "layer_kael"
+        ],
+        "allowedOps": [
+          "setLayerPose"
+        ],
+        "intent": "repair_pose",
+        "message": ""
+      },
+      "inputHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "provider": "local_mock",
+      "modelVersion": "deterministic-demo-v1",
+      "estimatedCost": {
+        "amount": 0,
+        "currency": "USD"
+      },
+      "actualCost": null,
+      "status": "queued",
+      "attempt": 0,
+      "maxAttempts": 3,
+      "progress": 0,
+      "createdAt": "0000-01-01T00:00:00Z",
+      "updatedAt": "2026-11-13T00:00:00+00:00",
+      "leaseExpiresAt": null,
+      "nextAttemptAt": null,
+      "error": null,
+      "result": null
+    },
+    "valid": false
+  },
+  {
+    "name": "backwards microseconds",
+    "value": {
+      "jobId": "job_one",
+      "projectId": "proj_neon_shogun",
+      "branchId": "branch_main",
+      "baseRevision": 0,
+      "request": {
+        "requestId": "req_one",
+        "expectedRevision": 0,
+        "scopeIds": [
+          "layer_kael"
+        ],
+        "allowedOps": [
+          "setLayerPose"
+        ],
+        "intent": "repair_pose",
+        "message": ""
+      },
+      "inputHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "provider": "local_mock",
+      "modelVersion": "deterministic-demo-v1",
+      "estimatedCost": {
+        "amount": 0,
+        "currency": "USD"
+      },
+      "actualCost": null,
+      "status": "queued",
+      "attempt": 0,
+      "maxAttempts": 3,
+      "progress": 0,
+      "createdAt": "2026-11-13T00:00:00.000002Z",
+      "updatedAt": "2026-11-13T00:00:00.000001Z",
+      "leaseExpiresAt": null,
+      "nextAttemptAt": null,
+      "error": null,
+      "result": null
+    },
+    "valid": false
+  },
+  {
+    "name": "expired microsecond lease",
+    "value": {
+      "jobId": "job_one",
+      "projectId": "proj_neon_shogun",
+      "branchId": "branch_main",
+      "baseRevision": 0,
+      "request": {
+        "requestId": "req_one",
+        "expectedRevision": 0,
+        "scopeIds": [
+          "layer_kael"
+        ],
+        "allowedOps": [
+          "setLayerPose"
+        ],
+        "intent": "repair_pose",
+        "message": ""
+      },
+      "inputHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "provider": "local_mock",
+      "modelVersion": "deterministic-demo-v1",
+      "estimatedCost": {
+        "amount": 0,
+        "currency": "USD"
+      },
+      "actualCost": null,
+      "status": "running",
+      "attempt": 1,
+      "maxAttempts": 3,
+      "progress": 0,
+      "createdAt": "2026-11-13T00:00:00+00:00",
+      "updatedAt": "2026-11-13T00:00:00.000002Z",
+      "leaseExpiresAt": "2026-11-13T00:00:00.000001Z",
+      "nextAttemptAt": null,
+      "error": null,
+      "result": null
+    },
+    "valid": false
+  },
+  {
+    "name": "live microsecond lease",
+    "value": {
+      "jobId": "job_one",
+      "projectId": "proj_neon_shogun",
+      "branchId": "branch_main",
+      "baseRevision": 0,
+      "request": {
+        "requestId": "req_one",
+        "expectedRevision": 0,
+        "scopeIds": [
+          "layer_kael"
+        ],
+        "allowedOps": [
+          "setLayerPose"
+        ],
+        "intent": "repair_pose",
+        "message": ""
+      },
+      "inputHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "provider": "local_mock",
+      "modelVersion": "deterministic-demo-v1",
+      "estimatedCost": {
+        "amount": 0,
+        "currency": "USD"
+      },
+      "actualCost": null,
+      "status": "running",
+      "attempt": 1,
+      "maxAttempts": 3,
+      "progress": 0,
+      "createdAt": "2026-11-13T00:00:00+00:00",
+      "updatedAt": "2026-11-13T00:00:00.000002Z",
+      "leaseExpiresAt": "2026-11-13T00:00:00.000003Z",
+      "nextAttemptAt": null,
+      "error": null,
+      "result": null
+    },
+    "valid": true
+  },
+  {
+    "name": "finite overflow",
+    "value": {
+      "jobId": "job_one",
+      "projectId": "proj_neon_shogun",
+      "branchId": "branch_main",
+      "baseRevision": 0,
+      "request": {
+        "requestId": "req_one",
+        "expectedRevision": 0,
+        "scopeIds": [
+          "layer_kael"
+        ],
+        "allowedOps": [
+          "setLayerPose"
+        ],
+        "intent": "repair_pose",
+        "message": ""
+      },
+      "inputHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "provider": "local_mock",
+      "modelVersion": "deterministic-demo-v1",
+      "estimatedCost": {
+        "amount": 0,
+        "currency": "USD"
+      },
+      "actualCost": null,
+      "status": "queued",
+      "attempt": 0,
+      "maxAttempts": 3,
+      "progress": 1e+100,
+      "createdAt": "2026-11-13T00:00:00+00:00",
+      "updatedAt": "2026-11-13T00:00:00+00:00",
+      "leaseExpiresAt": null,
+      "nextAttemptAt": null,
+      "error": null,
+      "result": null
+    },
+    "valid": false
+  },
+  {
+    "name": "surrogate",
+    "value": {
+      "jobId": "job_one",
+      "projectId": "proj_neon_shogun",
+      "branchId": "branch_main",
+      "baseRevision": 0,
+      "request": {
+        "requestId": "req_one",
+        "expectedRevision": 0,
+        "scopeIds": [
+          "layer_kael"
+        ],
+        "allowedOps": [
+          "setLayerPose"
+        ],
+        "intent": "repair_pose",
+        "message": ""
+      },
+      "inputHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "provider": "local_mock",
+      "modelVersion": "\ud800",
+      "estimatedCost": {
+        "amount": 0,
+        "currency": "USD"
+      },
+      "actualCost": null,
+      "status": "queued",
+      "attempt": 0,
+      "maxAttempts": 3,
+      "progress": 0,
+      "createdAt": "2026-11-13T00:00:00+00:00",
+      "updatedAt": "2026-11-13T00:00:00+00:00",
+      "leaseExpiresAt": null,
+      "nextAttemptAt": null,
+      "error": null,
+      "result": null
+    },
+    "valid": false
+  },
+  {
+    "name": "prototype key",
+    "value": {
+      "jobId": "job_one",
+      "projectId": "proj_neon_shogun",
+      "branchId": "branch_main",
+      "baseRevision": 0,
+      "request": {
+        "requestId": "req_one",
+        "expectedRevision": 0,
+        "scopeIds": [
+          "layer_kael"
+        ],
+        "allowedOps": [
+          "setLayerPose"
+        ],
+        "intent": "repair_pose",
+        "message": "",
+        "constructor": "forged"
+      },
+      "inputHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "provider": "local_mock",
+      "modelVersion": "deterministic-demo-v1",
+      "estimatedCost": {
+        "amount": 0,
+        "currency": "USD"
+      },
+      "actualCost": null,
+      "status": "queued",
+      "attempt": 0,
+      "maxAttempts": 3,
+      "progress": 0,
+      "createdAt": "2026-11-13T00:00:00+00:00",
+      "updatedAt": "2026-11-13T00:00:00+00:00",
+      "leaseExpiresAt": null,
+      "nextAttemptAt": null,
+      "error": null,
+      "result": null
+    },
+    "valid": false
+  },
+  {
+    "name": "cost",
+    "value": {
+      "jobId": "job_one",
+      "projectId": "proj_neon_shogun",
+      "branchId": "branch_main",
+      "baseRevision": 0,
+      "request": {
+        "requestId": "req_one",
+        "expectedRevision": 0,
+        "scopeIds": [
+          "layer_kael"
+        ],
+        "allowedOps": [
+          "setLayerPose"
+        ],
+        "intent": "repair_pose",
+        "message": ""
+      },
+      "inputHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "provider": "local_mock",
+      "modelVersion": "deterministic-demo-v1",
+      "estimatedCost": {
+        "amount": 0.01,
+        "currency": "USD"
+      },
+      "actualCost": null,
+      "status": "queued",
+      "attempt": 0,
+      "maxAttempts": 3,
+      "progress": 0,
+      "createdAt": "2026-11-13T00:00:00+00:00",
+      "updatedAt": "2026-11-13T00:00:00+00:00",
+      "leaseExpiresAt": null,
+      "nextAttemptAt": null,
+      "error": null,
+      "result": null
+    },
+    "valid": false
+  },
+  {
+    "name": "attempt exhaustion",
+    "value": {
+      "jobId": "job_one",
+      "projectId": "proj_neon_shogun",
+      "branchId": "branch_main",
+      "baseRevision": 0,
+      "request": {
+        "requestId": "req_one",
+        "expectedRevision": 0,
+        "scopeIds": [
+          "layer_kael"
+        ],
+        "allowedOps": [
+          "setLayerPose"
+        ],
+        "intent": "repair_pose",
+        "message": ""
+      },
+      "inputHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "provider": "local_mock",
+      "modelVersion": "deterministic-demo-v1",
+      "estimatedCost": {
+        "amount": 0,
+        "currency": "USD"
+      },
+      "actualCost": {
+        "amount": 0,
+        "currency": "USD"
+      },
+      "status": "failed",
+      "attempt": 3,
+      "maxAttempts": 3,
+      "progress": 0,
+      "createdAt": "2026-11-13T00:00:00+00:00",
+      "updatedAt": "2026-11-13T00:00:00+00:00",
+      "leaseExpiresAt": null,
+      "nextAttemptAt": null,
+      "error": {
+        "code": "LEASE_EXPIRED",
+        "message": "Worker lease expired",
+        "retryable": true
+      },
+      "result": null
+    },
+    "valid": false
+  },
+  {
+    "name": "automatic exhausted",
+    "value": {
+      "jobId": "job_one",
+      "projectId": "proj_neon_shogun",
+      "branchId": "branch_main",
+      "baseRevision": 0,
+      "request": {
+        "requestId": "req_one",
+        "expectedRevision": 0,
+        "scopeIds": [
+          "layer_kael"
+        ],
+        "allowedOps": [
+          "setLayerPose"
+        ],
+        "intent": "repair_pose",
+        "message": ""
+      },
+      "inputHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "provider": "local_mock",
+      "modelVersion": "deterministic-demo-v1",
+      "estimatedCost": {
+        "amount": 0,
+        "currency": "USD"
+      },
+      "actualCost": {
+        "amount": 0,
+        "currency": "USD"
+      },
+      "status": "failed",
+      "attempt": 3,
+      "maxAttempts": 3,
+      "progress": 0,
+      "createdAt": "2026-11-13T00:00:00+00:00",
+      "updatedAt": "2026-11-13T00:00:00+00:00",
+      "leaseExpiresAt": null,
+      "nextAttemptAt": "2026-11-13T00:00:02Z",
+      "error": {
+        "code": "LEASE_EXPIRED",
+        "message": "Worker lease expired",
+        "retryable": true
+      },
+      "result": null
+    },
+    "valid": false
+  },
+  {
+    "name": "terminal retryable",
+    "value": {
+      "jobId": "job_one",
+      "projectId": "proj_neon_shogun",
+      "branchId": "branch_main",
+      "baseRevision": 0,
+      "request": {
+        "requestId": "req_one",
+        "expectedRevision": 0,
+        "scopeIds": [
+          "layer_kael"
+        ],
+        "allowedOps": [
+          "setLayerPose"
+        ],
+        "intent": "repair_pose",
+        "message": ""
+      },
+      "inputHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "provider": "local_mock",
+      "modelVersion": "deterministic-demo-v1",
+      "estimatedCost": {
+        "amount": 0,
+        "currency": "USD"
+      },
+      "actualCost": null,
+      "status": "stale",
+      "attempt": 0,
+      "maxAttempts": 3,
+      "progress": 0,
+      "createdAt": "2026-11-13T00:00:00+00:00",
+      "updatedAt": "2026-11-13T00:00:00+00:00",
+      "leaseExpiresAt": null,
+      "nextAttemptAt": null,
+      "error": {
+        "code": "STALE_BASE",
+        "message": "Stale",
+        "retryable": true
+      },
+      "result": null
+    },
+    "valid": false
+  },
+  {
+    "name": "invalid route",
+    "value": {
+      "jobId": "job_one",
+      "projectId": "proj_neon_shogun",
+      "branchId": "branch_main\n",
+      "baseRevision": 0,
+      "request": {
+        "requestId": "req_one",
+        "expectedRevision": 0,
+        "scopeIds": [
+          "layer_kael"
+        ],
+        "allowedOps": [
+          "setLayerPose"
+        ],
+        "intent": "repair_pose",
+        "message": ""
+      },
+      "inputHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "provider": "local_mock",
+      "modelVersion": "deterministic-demo-v1",
+      "estimatedCost": {
+        "amount": 0,
+        "currency": "USD"
+      },
+      "actualCost": null,
+      "status": "queued",
+      "attempt": 0,
+      "maxAttempts": 3,
+      "progress": 0,
+      "createdAt": "2026-11-13T00:00:00+00:00",
+      "updatedAt": "2026-11-13T00:00:00+00:00",
+      "leaseExpiresAt": null,
+      "nextAttemptAt": null,
+      "error": null,
+      "result": null
+    },
+    "valid": false
+  },
+  {
+    "name": "oversize escaped request",
+    "value": {
+      "jobId": "job_one",
+      "projectId": "proj_neon_shogun",
+      "branchId": "branch_main",
+      "baseRevision": 0,
+      "request": {
+        "requestId": "req_one",
+        "expectedRevision": 0,
+        "scopeIds": [
+          "layer_kael"
+        ],
+        "allowedOps": [
+          "setLayerPose"
+        ],
+        "intent": "repair_pose",
+        "message": "\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000"
+      },
+      "inputHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "provider": "local_mock",
+      "modelVersion": "deterministic-demo-v1",
+      "estimatedCost": {
+        "amount": 0,
+        "currency": "USD"
+      },
+      "actualCost": null,
+      "status": "queued",
+      "attempt": 0,
+      "maxAttempts": 3,
+      "progress": 0,
+      "createdAt": "2026-11-13T00:00:00+00:00",
+      "updatedAt": "2026-11-13T00:00:00+00:00",
+      "leaseExpiresAt": null,
+      "nextAttemptAt": null,
+      "error": null,
+      "result": null
+    },
+    "valid": false
+  }
+]

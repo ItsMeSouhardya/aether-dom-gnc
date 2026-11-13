@@ -530,6 +530,7 @@ def test_migration_from_0001_preserves_all_snapshots_and_command_audit(tmp_path:
     # Model an existing pre-proposal database without modifying canonical tables.
     with sqlite3.connect(path) as connection:
         connection.execute("DROP TABLE branch_forks")
+        connection.execute("DROP TABLE jobs")
         connection.execute("DROP TABLE agent_proposals")
         connection.execute("UPDATE alembic_version SET version_num = '0001'")
         old_tables = {
@@ -543,7 +544,7 @@ def test_migration_from_0001_preserves_all_snapshots_and_command_audit(tmp_path:
         assert reopened.list_proposals(PROJECT, BRANCH) == []
         with sqlite3.connect(path) as connection:
             assert connection.execute("SELECT version_num FROM alembic_version").fetchone() == (
-                "0003",
+                "0004",
             )
             for table, rows in old_tables.items():
                 assert connection.execute(f"SELECT * FROM {table}").fetchall() == rows

@@ -1,6 +1,6 @@
 # AETHER-DOM
 
-A local-first creative IDE for semantic, cross-modal storytelling. **Task08 — Branching and exports** adds isolated forks, branch switching, read-only three-way comparison and bounded WebM previews. The selected Afterlight v2 landing page remains separate and unchanged.
+A local-first creative IDE for semantic, cross-modal storytelling. **Task09 — Durable jobs** adds leased local proposal work, recovery and a dedicated Jobs inspector. Isolated branches, three-way comparison and WebM preview remain available. The selected Afterlight v2 landing page remains separate and unchanged.
 
 ## Local setup — Windows PowerShell
 
@@ -23,6 +23,33 @@ pnpm dev:api
 ```powershell
 pnpm dev
 ```
+
+For durable mock proposals, start a third terminal at the project root:
+
+```powershell
+pnpm jobs:worker
+```
+
+If PowerShell cannot find `pnpm`, run the worker directly with Node from the same
+project root: `node .\tools\api.mjs worker`. It uses the same Python/database
+configuration and needs no package-manager command. This host's pnpm is bundled
+with Codex and is absent from ordinary PowerShell PATH; Node is on that PATH.
+The worker normally waits quietly for queued jobs; Ctrl+C stops it.
+
+Choose a layer or shot, open **Jobs**, choose a scenario and **Queue mock job**.
+The separate worker captures no browser drafts and calls no remote provider.
+Without a worker, queued jobs remain saved and waiting. **Refresh jobs** checks
+history; **Cancel job** stops queued/running/retryable work. After a worker
+restart, expired leases become explicit retryable failures while attempts remain.
+Use **Retry job** to recover; each job permits at most three claimed attempts.
+
+On success, choose **Review result** for the captured scope and exact field diff.
+**Approve proposal** is the existing revision-checked human command; queuing,
+progress, completion, cancellation and rejection never change creative canon.
+Stale work cannot apply. The zero-cost mock supports the same three deterministic
+scenarios as Proposals; freeform messages remain inert. Existing synchronous
+Proposals still work without a worker. Stop the worker with Ctrl+C. For one pass,
+run `pnpm jobs:worker --once`; polling/lease bounds are documented in the API README.
 
 Open [the local studio](http://127.0.0.1:3000/). The API seeds Neon Shogun once, then loads its saved branch. Choose a scene/shot in **Project**, then select Kael, Vance or another layer in **Layers** or on the stage. The inspector shows authored X/Y/Z, scale, rotation, pose and source references. Choose **Edit transform**, change values, then **Save transform** to commit them locally; **Cancel** discards the draft. **Undo**, **Redo** and **Change history** use the persisted command history. Reload resets temporary selection and reads the saved branch. The [seed overview](http://127.0.0.1:3000/document) remains a read-only reference to the original revision-0 fixture.
 
@@ -131,4 +158,4 @@ Open [Afterlight v2](http://localhost:4173/). Stop its dev server before preview
 - `design_archive/`, `design_specifications/vendor/` — preserved references.
 - `aether_dom_codex_kit/`, `initial_first_plan_provided/`, `design_inspirations/` — preserved original specifications and source material.
 
-Next: **Task06 — AI proposals**, following the ordered kit board and canonical-state boundaries. WebGPU and advanced rigs/Bezier editing remain deferred.
+Next: **Task10 — Asset provenance and commercial-use policy**, following the ordered kit board and canonical-state boundaries. WebGPU and advanced rigs/Bezier editing remain deferred.

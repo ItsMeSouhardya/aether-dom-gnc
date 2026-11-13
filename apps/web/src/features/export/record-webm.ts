@@ -1,6 +1,7 @@
 import type { PlayerManifest } from '@aether-dom/schema';
 import { chooseWebMCodec, planWebM, WEBM_MAX_BYTES, webMFrame, type WebMOptions } from './webm-plan';
 import { prepareWebMAudio } from './webm-audio';
+import { abortable } from './abortable';
 export type WebMNative = {
   createCanvas: () => HTMLCanvasElement; createImage: () => HTMLImageElement;
   createRecorder: (stream: MediaStream, options: MediaRecorderOptions) => MediaRecorder;
@@ -11,6 +12,9 @@ export type WebMNative = {
 const aborted = () => new DOMException('Recording canceled. No partial file was saved.', 'AbortError');
 export class EmptyWebMError extends Error {
   constructor() { super('The browser recorder returned no encoded video. Trying bounded local frame encoding.'); this.name = 'EmptyWebMError'; }
+}
+export class IncompleteWebMError extends EmptyWebMError {
+  constructor() { super(); this.name = 'IncompleteWebMError'; this.message = 'The browser returned incomplete audio. Trying bounded local frame encoding.'; }
 }
 
 export function webMSupport(): { codec: string | null; message: string } {
@@ -127,6 +131,19 @@ export function createWebMRecorder(native: WebMNative) {
           }, plan.durationMs);
         } catch (error) { fail(error instanceof Error ? error : new Error('WebM encoding could not start.')); }
       });
+      signal.throwIfAborted();
+      if (audioContext) {
+        // Native encoders can emit nonempty output while dropping the start of
+        // a captured audio stream. Verify the actual bytes before offering them.
+        const decoder = audioContext;
+        try {
+          const decoded = await abortable(blob.arrayBuffer().then(bytes => decoder.decodeAudioData(bytes)), signal, 5000);
+          if (!Number.isFinite(decoded.duration) || Math.abs(decoded.duration * 1000 - plan.durationMs) > 4) throw new IncompleteWebMError();
+        } catch {
+          signal.throwIfAborted();
+          throw new IncompleteWebMError();
+        }
+      }
       signal.throwIfAborted(); options.onProgress?.(1); return blob;
     } finally {
       controller.abort();

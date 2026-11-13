@@ -3,7 +3,8 @@ import { resolve } from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { cpSync, mkdirSync } from 'node:fs';
 
-const databasePath = resolve('data', `e2e-${randomUUID()}.sqlite3`);
+const databasePath = process.env.AETHER_E2E_DATABASE_PATH ?? resolve('data', `e2e-${randomUUID()}.sqlite3`);
+process.env.AETHER_E2E_DATABASE_PATH = databasePath;
 const assetRoot = `${databasePath}.assets`;
 mkdirSync(resolve(assetRoot, 'assets'), { recursive: true });
 cpSync(resolve('assets/fixtures'), resolve(assetRoot, 'assets/fixtures'), { recursive: true });

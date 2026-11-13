@@ -1,6 +1,10 @@
-# Studio surface — Tasks 01–08
+# Studio surface — Tasks 01–09
 
 Mode: **Operate**. This extends the selected Afterlight identity into the product; the landing design remains independent.
+
+Task09: Jobs opens its own inspector beside Proposals, pauses preview and closes competing inspectors. Reuse charcoal/sage/Manrope, existing form rows and proposal review controls. Queue a selected layer/shot scenario with explicit scope/operation/base revision; show the deterministic mock and zero cost plainly. Durable recent history and selected-job details expose status, real phase progress, attempts, recorded cost and recoverable errors. Queued work explains the separate `pnpm jobs:worker` command. Native progress is labelled and supplemented with text; no decorative animation or fabricated time estimate.
+
+Cancel remains available for queued/running and retryable failures, including scheduled automatic retries. Permanent failures retain their diagnostic. A definite enqueue rejection releases the form for fresh work; an unknown outcome retains its request identity across drawer remount/reload until reconciled or retried exactly. Session storage contains only this temporary request, never creative canon. Automatic visible polling waits for the prior request to finish and stops while hidden/unmounted. Review result focuses the existing exact-diff heading; approval stays a revision-checked command. Hash labels distinguish the captured input from the immutable initial proposal artifact; decision metadata can subsequently change. Long IDs wrap, controls remain keyboard/touch accessible and history/service errors offer Refresh jobs.
 
 Task08: Branches opens the inspector, pauses preview and closes competing tools. It lists names with stable IDs/revisions, offers a separate Open branch action and explains draft discard. The fork form identifies its captured source revision, uses an explicit name/Create fork action, reports persistence and retains request identity on unknown-outcome retry. Busy fork/save states block navigation and competing edits. Branch URL changes remount command, selection, playback and audio scope.
 

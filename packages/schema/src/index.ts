@@ -22,6 +22,8 @@ export type { PlayerManifest, PlayerAsset } from './player-manifest';
 export { validateForkBranchCommand, validateBranchList, validateBranchDiff, validateForkResult, validateForkBranchResult } from './branches';
 export type { ForkBranchCommand, BranchList, BranchSummary, BranchChange, ThreeWayDiff, ForkResult, ForkBranchResult } from './branches';
 export type ValidationIssue = { path: string; message: string };
+export { validateJob, validateJobRequest } from './jobs';
+export type { Job, JobRequest } from './jobs';
 export type ValidationResult =
   | { valid: true; document: CdomDocument }
   | { valid: false; issues: ValidationIssue[] };

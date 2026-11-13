@@ -2,7 +2,29 @@
 
 Last updated: 13 November 2026 (Asia/Calcutta).
 
-## Active phase — Later-epic execution board
+## Active phase — Task09 complete
+
+PowerShell follow-up: the user's regular shell cannot resolve `pnpm`; inspection
+confirmed it exists only on Codex's injected runtime PATH, not persisted user/
+machine PATH. Node resolves from `C:\nvm4w\nodejs`. Verified the pnpm-free launcher
+on a reconstructed ordinary PATH: `node .\tools\api.mjs worker --help`, then one
+isolated worker pass. Use `node .\tools\api.mjs worker` in the project root; it
+honors the existing Python override and waits quietly for jobs. README/API docs
+now include this fallback. No global installation or PATH change was made.
+
+The user requested Task09 and all execution rules between Task08/09. Work is on `feat/task-09-durable-jobs`, starting from clean Task08/board commit `ce00a5d`. The user requested the local rename from `codex/task-09-durable-jobs` on13November2026; no remote branch change was performed. Reused the suitable checkout; no new worktree. Plan/ledger: `docs/superpowers/plans/2026-11-13-task-09-durable-jobs.md`. User chose a dedicated Jobs drawer beside Proposals. No commit/push; user handles integration.
+
+Baseline approved suite:790passed (458API,125schema,207web), one existing host skip. Sandboxed API run stalled and was terminated; approved process permissions worked. Original regular user DB was read only: revision25,25commands, one branch, sorted Python JSON SHA256 `6217a55330829d6bac624146856e7995415eb91dc7cd048f9bda6ea02a90fab4`. Snapshot in ignored `data/task09-canon-before.json`. All mutation/browser/worker tests use isolated data.
+
+Implemented side-table0004, strict job contracts, idempotent enqueue, leased/attempt/revision-fenced mock proposal jobs and separate local worker. Jobs UI reuses creator review, persists only pending enqueue identity in sessionStorage/memory and never writes creative canon. Cancellation, bounded retry/backoff, expired-lease recovery and immutable initial artifacts/current decision review are covered. Existing synchronous proposals remain supported. No paid provider, dependency, generated media or document/command version change.
+
+Final checks: **895 tests passed** (518API,162schema,215web), one existing host-limited skip; **120 production desktop/mobile browser cases** and **9 development smoke cases** passed. Lint, strict types,15 generated contracts, build,178-file preservation and diff checks pass. Fresh review's six Important findings and byte-boundary parity issue were fixed with red→green regressions; no deferred finding remains. Added scoped SQL recovery/claim selection so old terminal artifacts are not decoded on every poll;2,001-history regression passes. Broader checks exposed native WebM audio truncation: bounded decoded-duration verification now triggers the existing WebCodecs fallback for incomplete nonempty audio, with unit and actual native decoding evidence. No export dependency/format change.
+
+One desktop/mobile visual pass plus one sage-progress correction/confirmation completed; detector ran once and returned `[]`. Evidence/captures: `docs/tasks/task-09-verification.md`, `task-09-desktop.png`, `task-09-mobile.png`. All test mutations used isolated DB/media. Final regular project remains revision25/history25/one branch with unchanged hash above; its jobs table is empty. Alembic0004 only adds execution storage.
+
+Retained final preview: studio http://127.0.0.1:3001/ (session2234), API http://127.0.0.1:8001/ (session9291). Worker is deliberately not running against the regular project; start `pnpm jobs:worker` in a separate root terminal, then choose Jobs → Queue mock job → Review result. No commit/push/merge/PR; user handles integration. Next ordered task is **Task10 — Asset provenance and commercial-use policy**, when separately requested. Existing Python3.12 override/RTK retained; local Edge used. Remote CI has not run.
+
+## Previous phase — Later-epic execution board
 
 The user requested expansion of the ten **Later epics** in `aether_dom_codex_kit/CODEX_TASKS.md` into ordered execution tasks, after reading all project Markdown. This is a documentation-only milestone: **Tasks 09–29 are planned, not implemented**. Next implementation task: **Task 09 — Durable jobs and provider execution contracts**, when requested separately.
 
@@ -14,7 +36,7 @@ The user explicitly authorized editing the kit board; other original kit files r
 
 Verification: numbering is continuous Task00–29 with no duplicates; all 21 new tasks have dependencies, deliverables, code areas, three unchecked execution steps and acceptance criteria (63 pending steps). All dependency references point backward. All ten original epic areas are covered. Exact prefix/suffix comparison against the original board passed for Tasks00–08 and the initial prompt. Preservation manifest comparison confirms only the board hash changed and the other177 entries stayed identical; `pnpm verify:preserved` passes all178 entries and exact kit schema/fixture copies. Source Markdown inventory remains90; `git diff --check` passes. No application test/build rerun was needed for these documentation/hash-only edits; Task08's application verification below is historical, not a new run. Only the board, this context and its authorized preservation entry changed during this planning request; no commit/push or implementation began.
 
-## Latest implementation — Task08
+## Previous implementation — Task08
 
 **Task08 — Branching and exports is complete** on `feat/task-08-branches-exports`, based on the user's committed/pushed Task07 `bc4c8f0`. Plan/ledger: docs/superpowers/plans/2026-11-13-task-08-branches-exports.md. Evidence and captures: docs/tasks/task-08-verification.md. Changes remain uncommitted/unpushed; user handles integration. This completes the initial ordered task board; the later-epic board above is planning only.
 
@@ -157,7 +179,7 @@ On 11 November 2026, the user requested connection to https://github.com/ItsMeSo
 
 ## Resume
 
-Read this file and the kit's ordered board/master plan before changes; for visual work also read PRODUCT.md and the selected design specification. Task08 is complete; Tasks09–29 are planned only. Next implementation task is Task09 — Durable jobs and provider execution contracts, when separately requested. Preserve SQLite ownership, revision-bound analysis, portrait/base separation and separate selection/drafts/playback/audio. AI output must remain proposals until explicit review; no unreviewed writes. Fixture and seed overview stay immutable. Dialogue checking remains an unsaved draft tool until Task13 implements attributed lines. Keep landing refinements in landing-page/ and the frozen archive unchanged. Update this context at milestones and handoff.
+Read this file and the kit's ordered board/master plan before changes; for visual work also read PRODUCT.md and the selected design specification. Task09 is complete; Tasks10–29 remain planned. Next implementation task is Task10 — Asset provenance and commercial-use policy, when separately requested. Preserve SQLite ownership, revision-bound analysis, portrait/base separation and separate selection/drafts/playback/audio/jobs. AI output must remain proposals until explicit review; no unreviewed writes. Fixture and seed overview stay immutable. Dialogue checking remains an unsaved draft tool until Task13 implements attributed lines. Keep landing refinements in landing-page/ and the frozen archive unchanged. Update this context at milestones and handoff.
 
 ## Task 01 verification and handoff
 
