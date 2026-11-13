@@ -13,13 +13,14 @@ const commands = {
   dev: ['-m', 'uvicorn', 'app.main:app', '--host', '127.0.0.1', '--port', port, '--reload'],
   serve: ['-m', 'uvicorn', 'app.main:app', '--host', '127.0.0.1', '--port', port],
   migrate: ['-m', 'app.migrate'],
+  worker: ['-m', 'app.job_worker', ...process.argv.slice(3)],
   test: ['-m', 'pytest', '-q'],
   lint: ['-m', 'ruff', 'check', '.'],
   typecheck: ['-m', 'mypy'],
 };
 const args = commands[process.argv[2]];
 if (!args || !existsSync(python)) {
-  console.error(!args ? 'Expected dev, serve, migrate, test, lint or typecheck.' : 'Python executable not found. Follow README.md or configure AETHER_PYTHON in .env.api.local.');
+  console.error(!args ? 'Expected dev, serve, migrate, worker, test, lint or typecheck.' : 'Python executable not found. Follow README.md or configure AETHER_PYTHON in .env.api.local.');
   process.exitCode = 1;
 } else {
   const child = spawn(python, args, { cwd: resolve(root, 'apps/api'), stdio: 'inherit' });

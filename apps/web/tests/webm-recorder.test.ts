@@ -111,7 +111,7 @@ describe('native bounded WebM recorder lifecycle', () => {
     const destination = { stream: { getTracks: () => [audioTrack], getAudioTracks: () => [audioTrack] }, disconnect: vi.fn() };
     const node = () => ({ connect: vi.fn(), disconnect: vi.fn(), gain: { setValueAtTime: vi.fn() }, pan: { setValueAtTime: vi.fn() } });
     const audio = { currentTime: 0, resume: vi.fn(async () => {}), close: vi.fn(async () => {}),
-      decodeAudioData: vi.fn(async () => ({ duration: 1, numberOfChannels: 1 })), createMediaStreamDestination: () => destination,
+      decodeAudioData: vi.fn(async (raw: ArrayBuffer) => ({ duration: new Uint8Array(raw)[0] === 0x1a ? .1 : 1, numberOfChannels: 1 })), createMediaStreamDestination: () => destination,
       createGain: node, createStereoPanner: node,
       createBufferSource: () => ({ ...node(), start: vi.fn(), stop: vi.fn() }),
     };
@@ -125,5 +125,23 @@ describe('native bounded WebM recorder lifecycle', () => {
     env.recorder.onstop?.();
     await recording;
     expect(audioTrack.stop).toHaveBeenCalled(); expect(env.track.stop).toHaveBeenCalled(); expect(audio.close).toHaveBeenCalled();
+  });
+
+  it('rejects nonempty native output when its decoded audio is shorter than the authored clip', async () => {
+    const env = setup();
+    const audioTrack = { stop: vi.fn() };
+    const destination = { stream: { getTracks: () => [audioTrack], getAudioTracks: () => [audioTrack] }, disconnect: vi.fn() };
+    const node = () => ({ connect: vi.fn(), disconnect: vi.fn(), gain: { setValueAtTime: vi.fn() }, pan: { setValueAtTime: vi.fn() } });
+    const audio = { currentTime: 0, resume: async () => {}, close: vi.fn(async () => {}),
+      decodeAudioData: async (raw: ArrayBuffer) => ({ duration: new Uint8Array(raw)[0] === 0x1a ? .54 : 1, numberOfChannels: 2 }),
+      createMediaStreamDestination: () => destination, createGain: node, createStereoPanner: node,
+      createBufferSource: () => ({ ...node(), start: vi.fn(), stop: vi.fn() }),
+    };
+    env.native.createAudioContext = () => audio as unknown as AudioContext;
+    let failure: unknown;
+    const recording = env.record(playerFixture(), { ...options, durationMs: 1000, includeAudio: true }).catch(error => { failure = error; });
+    await env.advance(1100); await recording;
+    expect(failure).toBeInstanceOf(Error); expect((failure as Error).message).toMatch(/incomplete/i);
+    expect(audio.close).toHaveBeenCalled(); expect(audioTrack.stop).toHaveBeenCalled();
   });
 });

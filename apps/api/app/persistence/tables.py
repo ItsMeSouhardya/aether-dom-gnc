@@ -54,3 +54,15 @@ branch_forks = Table(
     Column("result", JSON, nullable=False),
     UniqueConstraint("project_id", "branch_id"),
 )
+
+# Mutable execution state and frozen initial result artifacts, outside creative canon.
+jobs = Table(
+    "jobs", metadata,
+    Column("job_id", String, primary_key=True),
+    Column("project_id", String, nullable=False),
+    Column("branch_id", String, nullable=False),
+    Column("request_id", String, nullable=False, unique=True),
+    Column("record", JSON, nullable=False),
+    Column("claim_token", String, nullable=True),
+    Column("artifact", JSON, nullable=True),
+)

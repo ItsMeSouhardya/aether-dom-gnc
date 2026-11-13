@@ -9,6 +9,7 @@
     "dev": "pnpm --filter web dev",
     "dev:web": "pnpm --filter web dev",
     "dev:api": "node tools/api.mjs dev",
+    "jobs:worker": "node tools/api.mjs worker",
     "landing:dev": "node tools/serve.mjs",
     "preview": "node tools/serve.mjs --production",
     "build": "pnpm --filter web build",

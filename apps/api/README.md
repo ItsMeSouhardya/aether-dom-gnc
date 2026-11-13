@@ -129,3 +129,68 @@ Human command0.6 `setShotLayoutOverride` replaces/removes one shot's9:16 transfo
 map atomically, preserving base layers, other aspect maps, and document version.
 It uses the existing optimistic revision/idempotency/history transaction and exact
 private snapshot inverse. A no-op or foreign/ambiguous layer target is rejected.
+
+## Task09 — Durable local proposal jobs
+
+Run `pnpm jobs:worker` in a third root terminal after starting API/web. The launcher
+honors the same `AETHER_PYTHON`, `AETHER_DATABASE_PATH` and `AETHER_ASSET_ROOT` as the
+API. To run one queue pass: `pnpm jobs:worker --once`.
+If `pnpm` is unavailable in ordinary PowerShell, use
+`node .\tools\api.mjs worker` from the root, or append `--once` for one pass.
+The launcher honors `.env.api.local` even when another Python virtual environment
+is active. An idle worker waits quietly; queue work from the Jobs inspector.
+
+Optional flags:
+`--poll-seconds 1` (0.1–60) and `--lease-seconds 30` (1–300). Stop with Ctrl+C.
+Installed startup still needs no cloud key, Redis, Docker or paid provider.
+
+Alembic0004 adds only the `jobs` side table; existing canonical tables, document
+versions and undo/audit data remain unchanged. Each enqueue stores the exact
+validated Task06-shaped request, saved project/branch/base revision, selected-node
+context SHA256, local provider/model and zero estimated cost. Request IDs are
+globally idempotent within jobs: same identity/payload returns the current job;
+different payload/branch returns409. Provider work runs outside SQLite locks.
+
+Under `/api/v1/projects/{project}/branches/{branch}/jobs`:
+
+| Method/resource | Result |
+|---|---|
+| GET collection | `{jobs:[...]}`, newest20 |
+| POST collection | Enqueue `JobRequest`, return `Job` |
+| GET `/{job}` | Current `Job`, with expired/stale recovery |
+| POST `/{job}/cancel` | Empty JSON object; cancel eligible work |
+| POST `/{job}/retry` | Empty JSON object; retry eligible failed attempt |
+| GET `/{job}/result` | Validated current `Proposal` review record |
+
+Fixed identities and query-free resources are required. Writes use bounded UTF-8
+JSON:8192 raw bytes for enqueue,64 for empty decisions. Duplicate/reserved keys,
+nonfinite values, invalid Unicode and oversized/deep JSON are rejected. The Next
+proxy preserves exact raw request text and enforces same-origin JSON writes.
+
+States are `queued`, `running`, `succeeded`, `failed`, `cancelled`, `stale`.
+Claims increment attempts under `BEGIN IMMEDIATE` and install a private random
+fencing token plus lease; at most three attempts may be claimed. Every progress,
+failure and completion verifies token/attempt/state/lease/base revision. Only the
+claimed worker can atomically stage a validated pending proposal and success ref.
+Stages25/75/100 denote verified input/validated proposal/staged result, not elapsed
+time. Tokens and provider-internal data never enter public job records.
+
+Expired leases become explicit retryable failures while budget remains. Provider
+`TimeoutError`/`ConnectionError` schedules bounded2/4-second retry backoff; other
+failures are permanent. Retry can explicitly expedite retryable work. Cancelling
+queued/running or retryable failed work fences late output and removes scheduled
+retry. Permanent/exhausted diagnostics are preserved. Branch advancement makes
+unfinished work stale; enqueue a new job from the latest revision.
+
+The job stores an immutable initial proposal artifact and its SHA256. Result GET
+checks that artifact, then returns the live stored decision fields while requiring
+all creative content/provenance to remain identical. Approval/rejection metadata
+therefore stays current without changing the initial hash. Completion/rejection
+never edit canon; approval uses the existing human `approveProposal` command with
+scope, revision, dry-run, audit and exact undo checks.
+
+Recent reads recover only relevant active rows; worker recovery filters active
+states and claim selection fetches one eligible record. Terminal historical
+artifacts are not fetched/deserialized on every poll or idle worker tick.
+No browser endpoint can run/claim a worker. This task supports only the existing
+deterministic proposal mock; it does not prove a live paid-provider integration.

@@ -34,6 +34,8 @@ Task07 adds authored9:16 overrides with explicit save/undo, subject-safe guides 
 
 Task08 adds human-created isolated forks, URL-based branch switching, read-only three-way authored-field comparison against actual historical common bases, and bounded browser WebM previews from saved/local manifests. Fork lineage/audit is durable; source histories remain unchanged. Conflicts are shown for review without a merge/apply action. MP4, automatic merging, collaborative editing and public distribution are outside this slice.
 
+Task09 adds durable zero-cost local mock proposal jobs, a separate worker and a Jobs inspector. SQLite side-table leases fence late workers; cancellation, bounded retries and expired-lease recovery preserve the captured project/branch/revision and selected-node input hash. Completion stages a reviewable proposal and immutable initial artifact digest. The current review decision remains visible after approval/rejection. Job lifecycle never edits canon; only the existing human approval command can apply a fresh scoped result. The worker must be started explicitly; paid providers and generated media remain future tasks.
+
 ## Brand Commitments
 
 AETHER-DOM. Premium, modern, soothing typography. The user supplied ten references in `design_inspirations/` and requested three distinct landing page versions with an in-page switcher before choosing the final direction.

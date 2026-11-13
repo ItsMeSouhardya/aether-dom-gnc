@@ -140,3 +140,32 @@ per finite number for JavaScript decimal expansion within the same byte budget.
 acceptance. The API finds the actual historical common base; consumers match the
 response project/left/right identities to their request. Comparison is read-only
 and supplies no merge operation or permission to apply nonconflicting changes.
+
+## Task09 — Job execution contracts
+
+`job-request.schema.json`/`JobRequest` retain the exact explicit proposal request:
+requestId, expectedRevision, scopeIds, allowedOps, intent and inert message.
+`job.schema.json`/`Job` add durable project/branch/base identity, input SHA256,
+provider/model, estimated/actual zero-cost metadata, lifecycle state, bounded
+attempts, progress, UTC timestamps, error and initial artifact reference.
+`validateJobRequest` and `validateJob` enforce structural and semantic consistency
+in addition to AJV; Python equivalents consume the same schemas and shared
+`fixtures/job-cases.json`. Generate/check with the existing schema scripts.
+
+Request JSON is bounded by8192 raw UTF-8 bytes,4096 nodes/depth16, with an8176-byte
+compact client request budget matching Python's16-byte reservation for its one
+safe-integer revision. Records are bounded by32768 bytes. Unknown fields,
+reserved object keys, nonfinite numbers, lone surrogates and invalid/inconsistent
+calendar/lease timestamps fail. Supported job IDs are route-safe1–128 characters.
+Max attempts is3; active progress is0–less-than100, successful progress is100.
+Success requires an attempted job, cost and result; retryable failures require
+remaining budget. Cancelled/stale records have no result or scheduled retry.
+
+The sole result kind is `proposal` with proposalId and initial artifact SHA256.
+Jobs never embed a replacement `.cdom` or permission to apply it. Input SHA256
+matches the existing exact selected-node context digest. Hashes use sorted compact
+UTF-8 JSON; the immutable initial proposal hash excludes no original fields.
+Later review metadata is read from the stored proposal, while all nondecision
+content must still match that frozen artifact. Job-result boundaries also reject
+reserved keys inside arbitrary context/diff JSON before exposing review controls.
+Canonical document and command versions remain unchanged.

@@ -12,6 +12,7 @@ from pydantic import BaseModel
 from app.asset_inventory import inspect_assets
 from app.commands import CommandError
 from app.contracts import SCHEMA_VERSION, SUPPORTED_SCHEMA_VERSIONS, load_fixture
+from app.job_routes import job_router
 from app.linter import analyze_document
 from app.proposal_provider import ProposalProvider
 from app.repository import Repository
@@ -189,6 +190,7 @@ def create_app(
             )
         return repository.reject_proposal(project_id, branch_id, proposal_id)
 
+    app.include_router(job_router(repository))
     return app
 
 
