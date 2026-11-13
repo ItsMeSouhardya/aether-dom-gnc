@@ -88,6 +88,27 @@ def create_app(
         response.headers["Cache-Control"] = "no-store"
         return decorate(repository.get(project_id, branch_id))
 
+    @app.get("/api/v1/projects/{project_id}/branches")
+    def branch_list(project_id: str, response: Response) -> dict[str, Any]:
+        response.headers["Cache-Control"] = "no-store"
+        return repository.list_branches(project_id)
+
+    @app.post("/api/v1/projects/{project_id}/branches")
+    def fork_branch(
+        project_id: str, response: Response, payload: Annotated[Any, Body()],
+    ) -> dict[str, Any]:
+        response.headers["Cache-Control"] = "no-store"
+        return repository.fork_branch(project_id, payload)
+
+    @app.get("/api/v1/projects/{project_id}/diff")
+    def branch_diff(project_id: str, request: Request, response: Response) -> dict[str, Any]:
+        pairs = list(request.query_params.multi_items())
+        if len(pairs) != 2 or {key for key, _ in pairs} != {"left", "right"}:
+            raise CommandError(422, "INVALID_BRANCH_QUERY", "Comparison requires left and right")
+        response.headers["Cache-Control"] = "no-store"
+        return repository.diff_branches(project_id, request.query_params["left"],
+                                        request.query_params["right"])
+
     @app.get("/api/v1/projects/{project_id}/branches/{branch_id}/diagnostics")
     def diagnostics(project_id: str, branch_id: str, response: Response) -> dict[str, Any]:
         response.headers["Cache-Control"] = "no-store"

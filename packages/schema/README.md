@@ -88,3 +88,55 @@ Command contract0.6 adds human-only `setShotLayoutOverride` with a shot target a
 `{aspectRatio:'9:16',layerTransforms:Record<string,Transform>|null}`. Transforms
 require all five fields, positive scale, and at most64 uniquely owned layer IDs.
 Null removes the portrait override. Canonical document schemas stay unchanged.
+
+## Branch contracts — Task 08
+
+The independent `fork-branch.schema.json`, `branch-list.schema.json`,
+`branch-diff.schema.json` and `fork-result.schema.json` do not extend any canonical
+document schema or the ordinary command union. Regenerate their TypeScript with
+the existing `types:generate` script; `types:check` checks all old and new outputs.
+
+Public exports are `ForkBranchCommand`, `BranchSummary`, `BranchList`,
+`BranchChange`, `ThreeWayDiff` and `ForkResult` (`ForkBranchResult` is an alias).
+Validators return `{valid:true,command}`, `{valid:true,branchList}`,
+`{valid:true,diff}` and `{valid:true,result}` respectively; failures return
+`{valid:false,issues}`. `validateForkBranchResult` aliases `validateForkResult`.
+All validate without coercion, mutation or default injection.
+
+`ForkBranchCommand` has a human actor, route-safe project/source/new IDs, a saved
+expected revision and a 1–80 scalar non-whitespace name. Command/actor IDs and
+reason retain existing 128/500 scalar bounds. The 8 KiB command boundary rejects
+cycles, excessive nesting, non-finite numbers and unpaired surrogates before
+recursive schema validation. Route patterns include an absolute end guard to
+reject terminal newlines consistently in Python and JavaScript.
+
+`BranchList` contains zero through 64 unique summaries. Each summary has
+`{id,name,parentId,baseRevision,headRevision}`. Validators check parent existence,
+acyclic lineage, revision bounds and that a child's base lies within its parent's
+available lifetime. The API returns 404 for unknown projects and obtains live
+head revisions from SQLite. Branch names may repeat. List JSON is at most 128 KiB.
+
+`ForkResult` contains the original initial summary and immutable receipt
+`{commandId,sourceBranchId,sourceRevision,branchId,actor,reason,createdAt}`.
+The summary's ID/parent/base/head must match that receipt. Its head stays at the
+creation revision on idempotent replay, even if the child has since advanced.
+The browser must additionally match the receipt to its submitted command; load
+the latest child document separately when switching. Result JSON is at most 16 KiB.
+
+`ThreeWayDiff` contains only `{projectId,base,left,right,changes,conflictCount}`;
+revision references are `{branchId,revision}`. Changes identify collection/entity
+and escaped JSON Pointer path, with base/left/right values, explicit presence
+flags and `left_only | right_only | same_change | conflict`. Missing values are
+null plus a false presence flag. Entity additions/deletions use `/`; arrays are
+atomic. Object-key ordering does not change JSON equality. Boolean and numeric
+values remain distinct. Branch metadata, project revision and active identity
+are excluded; `document:/schemaVersion` reports authored version changes.
+
+Comparison validation checks identities, duplicate paths, status/presence
+consistency, conflict count and revision references. Limits are 1 MiB, 4,096 changes,
+depth 32 and 200,000 visited values (including object keys). Python reserves 16 bytes
+per finite number for JavaScript decimal expansion within the same byte budget.
+`fixtures/branch-cases.json` pins shared Unicode, lineage, presence and status
+acceptance. The API finds the actual historical common base; consumers match the
+response project/left/right identities to their request. Comparison is read-only
+and supplies no merge operation or permission to apply nonconflicting changes.

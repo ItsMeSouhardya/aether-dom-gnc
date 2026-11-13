@@ -1,6 +1,6 @@
 """Only branch heads/stacks change; snapshots and command records are append-only."""
 
-from sqlalchemy import JSON, Column, Integer, MetaData, String, Table
+from sqlalchemy import JSON, Column, Integer, MetaData, String, Table, UniqueConstraint
 
 metadata = MetaData()
 branches = Table(
@@ -40,4 +40,17 @@ agent_proposals = Table(
     Column("request_id", String, nullable=False, unique=True),
     Column("request", JSON, nullable=False),
     Column("record", JSON, nullable=False),
+)
+
+# Immutable creation receipts/lineage, never source commands or child undo records.
+branch_forks = Table(
+    "branch_forks", metadata,
+    Column("command_id", String, primary_key=True),
+    Column("project_id", String, nullable=False),
+    Column("branch_id", String, nullable=False),
+    Column("source_branch_id", String, nullable=False),
+    Column("source_revision", Integer, nullable=False),
+    Column("payload", JSON, nullable=False),
+    Column("result", JSON, nullable=False),
+    UniqueConstraint("project_id", "branch_id"),
 )

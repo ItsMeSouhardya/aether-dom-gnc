@@ -1,4 +1,5 @@
 import { validateCdom, validateCommand, validateAnalysis, type DocumentAnalysis, type CdomCommand, type CdomDocument } from '@aether-dom/schema';
+import { safeRouteId } from '../features/studio/scope';
 
 export type CommandReceipt = { commandId: string; revision: number; op: CdomCommand['op']; targetId: string | null; reason: string; createdAt: string; changedEntityIds: string[]; proposalId?: string; provider?: string; modelVersion?: string; approvedBy?: string };
 export type ProjectSnapshot = { document: CdomDocument; history: { canUndo: boolean; canRedo: boolean; entries: CommandReceipt[] }; analysis: DocumentAnalysis };
@@ -54,8 +55,11 @@ async function requestJson(path: string, init?: RequestInit): Promise<unknown> {
   return value;
 }
 
-export async function loadProject(): Promise<ProjectSnapshot> {
-  return parseProjectSnapshot(await requestJson(`${seedProjectBase}/document`));
+export async function loadProject(projectId = 'proj_neon_shogun', branchId = 'branch_main'): Promise<ProjectSnapshot> {
+  if (![projectId, branchId].every(safeRouteId)) throw new Error('The requested branch address is invalid.');
+  const snapshot = parseProjectSnapshot(await requestJson(`${projectBase(projectId, branchId)}/document`));
+  if (snapshot.document.project.id !== projectId || snapshot.document.project.activeBranchId !== branchId) throw new Error('The response does not match the requested branch.');
+  return snapshot;
 }
 
 export async function submitCommand(value: unknown): Promise<CommandResult> {

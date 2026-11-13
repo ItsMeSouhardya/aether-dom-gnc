@@ -1,6 +1,10 @@
-# Studio surface — Tasks 01–07
+# Studio surface — Tasks 01–08
 
 Mode: **Operate**. This extends the selected Afterlight identity into the product; the landing design remains independent.
+
+Task08: Branches opens the inspector, pauses preview and closes competing tools. It lists names with stable IDs/revisions, offers a separate Open branch action and explains draft discard. The fork form identifies its captured source revision, uses an explicit name/Create fork action, reports persistence and retains request identity on unknown-outcome retry. Busy fork/save states block navigation and competing edits. Branch URL changes remount command, selection, playback and audio scope.
+
+Three-way comparison shows the common base/captured heads and readable Common base/Current branch/Compared branch values with explicit conflict/one-sided/matching labels. Arrays are atomic fields; absence differs from null. Results take keyboard focus and scroll into view. No Apply/Merge control exists. Long paths/JSON wrap within bounded blocks, retaining charcoal/sage forms and44px mobile controls.
 
 The creator opens saved Neon Shogun, chooses a scene/shot, selects a layer and inspects its saved transform/references. **Edit transform** opens a separate draft with five numeric fields, its base revision, **Save transform** and **Cancel**. Only a successful validated server response updates the stage and saved outputs. Selection/drafts are temporary; SQLite snapshots are canon.
 

@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { loadProject, submitCommand, ProjectApiError, type ProjectSnapshot } from '@/lib/project-api';
 import { makeCommand, type CommandOperation } from '@/features/commands/draft';
@@ -8,8 +9,8 @@ import { Icon } from './icons';
 
 type State = { kind: 'loading' } | { kind: 'error'; message: string } | { kind: 'ready'; snapshot: ProjectSnapshot };
 
-export default function StudioLoader() {
-  const [state, setState] = useState<State>({ kind: 'loading' });
+export default function StudioLoader({ projectId = 'proj_neon_shogun', branchId = 'branch_main', initialError }: { projectId?: string; branchId?: string; initialError?: string }) {
+  const [state, setState] = useState<State>(() => initialError ? { kind: 'error', message: initialError } : { kind: 'loading' });
   const [attempt, setAttempt] = useState(0);
   const [busy, setBusy] = useState(false);
   const [requiresReload, setRequiresReload] = useState(false);
@@ -18,13 +19,14 @@ export default function StudioLoader() {
   const mounted = useRef(true);
   useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
   useEffect(() => {
+    if (initialError) return;
     let active = true;
-    loadProject().then(
+    loadProject(projectId, branchId).then(
       snapshot => { if (active) setState({ kind: 'ready', snapshot }); },
       (error: unknown) => { if (active) setState({ kind: 'error', message: error instanceof Error ? error.message : 'Unable to load the studio. Try again.' }); },
     );
     return () => { active = false; };
-  }, [attempt]);
+  }, [attempt, projectId, branchId, initialError]);
 
   function reload() {
     if (writing.current) return;
@@ -53,7 +55,7 @@ export default function StudioLoader() {
   if (state.kind === 'ready') return <StudioShell document={state.snapshot.document} history={state.snapshot.history} analysis={state.snapshot.analysis} reload={reload} busy={busy} requiresReload={requiresReload} feedback={feedback} run={run} />;
   return <main id="studio" className="studio studio-connection">
     <header className="studio-header"><div className="studio-wordmark"><Icon name="brand" /><span>AETHER-DOM</span></div><span>Local studio</span></header>
-    <section className="studio-connection-message" aria-busy={state.kind === 'loading'}><h1>{state.kind === 'loading' ? 'Opening studio…' : 'Studio unavailable'}</h1><p role={state.kind === 'error' ? 'alert' : 'status'}>{state.kind === 'loading' ? 'Loading the local document and checking its contract.' : state.message}</p><button className="studio-button" disabled={state.kind === 'loading'} onClick={reload}>{state.kind === 'loading' ? 'Loading document…' : 'Try again'}</button></section>
+    <section className="studio-connection-message" aria-busy={state.kind === 'loading'}><h1>{state.kind === 'loading' ? 'Opening studio…' : 'Studio unavailable'}</h1><p role={state.kind === 'error' ? 'alert' : 'status'}>{state.kind === 'loading' ? 'Loading the local document and checking its contract.' : state.message}</p>{initialError ? <Link className="studio-button" href="/">Studio home</Link> : <button className="studio-button" disabled={state.kind === 'loading'} onClick={reload}>{state.kind === 'loading' ? 'Loading document…' : 'Try again'}</button>}</section>
     {state.kind === 'loading' ? <div className="studio-skeleton" aria-hidden="true"><div /><div /><div /></div> : null}
   </main>;
 }

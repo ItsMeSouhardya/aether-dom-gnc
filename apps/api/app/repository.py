@@ -15,7 +15,7 @@ from sqlalchemy.engine import URL
 from app.audio_assets import read_audio
 from app.commands import CommandError, apply_operation, ensure_valid_document, validate_command
 from app.contracts import load_fixture
-from app.persistence.tables import agent_proposals, branches, commands, snapshots
+from app.persistence.tables import agent_proposals, branch_forks, branches, commands, snapshots
 from app.proposal_domain import (
     apply_proposal,
     prepare_proposal,
@@ -112,6 +112,18 @@ class Repository:
             # BEGIN keeps head, snapshot and history consistent during concurrent writes.
             connection.exec_driver_sql("BEGIN")
             return self._snapshot(connection, self._branch(connection, project_id, branch_id))
+
+    def list_branches(self, project_id: str) -> dict[str, Any]:
+        from app.branch_repository import BranchRepository
+        return BranchRepository(self).list(project_id)
+
+    def fork_branch(self, project_id: str, value: object) -> dict[str, Any]:
+        from app.branch_repository import BranchRepository
+        return BranchRepository(self).fork(project_id, value)
+
+    def diff_branches(self, project_id: str, left: str, right: str) -> dict[str, Any]:
+        from app.branch_repository import BranchRepository
+        return BranchRepository(self).diff(project_id, left, right)
 
     def revision_document(
         self, project_id: str, branch_id: str, revision: int,
@@ -290,6 +302,11 @@ class Repository:
                         409, "COMMAND_ID_REUSED", "Command ID already has another payload",
                     )
                 return dict(previous["result"])
+            if connection.execute(select(branch_forks.c.command_id).where(
+                branch_forks.c.command_id == payload["commandId"],
+            )).first():
+                raise CommandError(409, "COMMAND_ID_REUSED",
+                                   "Command ID already has another payload")
             revision = branch["revision"]
             if payload["expectedRevision"] != revision:
                 raise CommandError(

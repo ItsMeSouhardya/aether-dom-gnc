@@ -1,6 +1,8 @@
-# Player surface — Task 07
+# Player surface — Tasks 07–08
 
 Mode: **Experience**. Let the saved scene lead. Preserve Afterlight charcoal, sage, Manrope and familiar controls; use no decorative effects or marketing claims.
+
+Task08: WebM preview sits below playback, with clip duration, Include audio, Record, progress/Cancel and an explicit Download link on success. It records the saved/local manifest from time zero, pausing preview first. Native encoding is real time; an empty native recording can fall back to bounded WebCodecs encoding. Changing shot/aspect/file or hiding/leaving the page cancels and releases resources. No partial file is offered. Show duration/size/codec/font/glow limits and portable-JSON recovery. No microphone, screen capture or public upload exists.
 
 The header identifies AETHER-DOM/Player, provides Open JSON and Back to studio. Project, branch, exact revision and source appear above the stage alongside native shot/aspect selects. A fitted16:9/9:16 frame leads; the transport offers Play/Pause, seek, elapsed/duration and explicit Enable audio. Volume and reduced-motion-aware glow are temporary. Keyboard frame controls use Space, arrows, Home and End.
 

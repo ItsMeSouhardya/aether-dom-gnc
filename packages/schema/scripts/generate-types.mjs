@@ -11,13 +11,17 @@ for (const [source, target, title] of [
   ['analysis.schema.json', 'analysis.generated.ts', 'DocumentAnalysis'],
   ['proposal.schema.json', 'proposal.generated.ts', 'Proposal'],
   ['proposal-request.schema.json', 'proposal-request.generated.ts', 'ProposalRequest'],
+  ['fork-branch.schema.json', 'fork-branch.generated.ts', 'ForkBranchCommand'],
+  ['branch-list.schema.json', 'branch-list.generated.ts', 'BranchList'],
+  ['branch-diff.schema.json', 'branch-diff.generated.ts', 'ThreeWayDiff'],
+  ['fork-result.schema.json', 'fork-result.generated.ts', 'ForkResult'],
 ]) {
   const outputUrl = new URL(`../src/${target}`, import.meta.url);
   const schema = JSON.parse(await readFile(new URL(`../${source}`, import.meta.url), 'utf8'));
   const compiled = await compile({ ...schema, title }, title, {
     bannerComment: `/* Generated from ${source}. Run pnpm --filter @aether-dom/schema types:generate. */`,
     style: { singleQuote: true, semi: true },
-    ...(source.startsWith('proposal') || source.startsWith('player-manifest') ? { ignoreMinAndMaxItems: true } : {}),
+    ...(source.startsWith('proposal') || source.startsWith('player-manifest') || source.startsWith('branch-') ? { ignoreMinAndMaxItems: true } : {}),
   });
   // The generator's `{}` means any non-nullish value in TypeScript, whereas
   // approveProposal requires an object with no keys. Keep this correction local

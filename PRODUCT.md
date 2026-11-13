@@ -32,6 +32,8 @@ The local API seeds Neon Shogun once and persists snapshots/history. Human comma
 
 Task07 adds authored9:16 overrides with explicit save/undo, subject-safe guides and a fit draft, plus a separate read-only player using the shared composition/renderer/audio runtime. A revision-bound portable JSON bundle embeds sanitized local SVG/PCM media outside canonical document fields; the player can reopen it with the API unavailable. Unknown-rights or missing/unsupported media blocks export. No public publishing, standalone HTML application, video export or general layout optimizer is delivered. Landscape canon and existing document schemas stay preserved.
 
+Task08 adds human-created isolated forks, URL-based branch switching, read-only three-way authored-field comparison against actual historical common bases, and bounded browser WebM previews from saved/local manifests. Fork lineage/audit is durable; source histories remain unchanged. Conflicts are shown for review without a merge/apply action. MP4, automatic merging, collaborative editing and public distribution are outside this slice.
+
 ## Brand Commitments
 
 AETHER-DOM. Premium, modern, soothing typography. The user supplied ten references in `design_inspirations/` and requested three distinct landing page versions with an in-page switcher before choosing the final direction.
