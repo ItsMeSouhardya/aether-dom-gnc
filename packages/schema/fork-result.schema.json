@@ -1,0 +1,20 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "title":"ForkResult", "type":"object", "additionalProperties":false,
+  "required":["branch","receipt"],
+  "$defs":{
+    "routeId":{"type":"string","pattern":"^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$(?![\\s\\S])"},
+    "revision":{"type":"integer","minimum":0,"maximum":9007199254740991},
+    "BranchSummary":{"type":"object","additionalProperties":false,"required":["id","name","parentId","baseRevision","headRevision"],"properties":{
+      "id":{"$ref":"#/$defs/routeId"},"name":{"type":"string","minLength":1,"maxLength":80},
+      "parentId":{"anyOf":[{"$ref":"#/$defs/routeId"},{"type":"null"}]},
+      "baseRevision":{"$ref":"#/$defs/revision"},"headRevision":{"$ref":"#/$defs/revision"}
+    }},
+    "ForkReceipt":{"type":"object","additionalProperties":false,"required":["commandId","sourceBranchId","sourceRevision","branchId","actor","reason","createdAt"],"properties":{
+      "commandId":{"type":"string","minLength":1,"maxLength":128},"sourceBranchId":{"$ref":"#/$defs/routeId"},"sourceRevision":{"$ref":"#/$defs/revision"},"branchId":{"$ref":"#/$defs/routeId"},
+      "actor":{"type":"object","additionalProperties":false,"required":["kind","id"],"properties":{"kind":{"const":"human"},"id":{"type":"string","minLength":1,"maxLength":128}}},
+      "reason":{"type":"string","minLength":1,"maxLength":500},"createdAt":{"type":"string","minLength":1,"maxLength":64}
+    }}
+  },
+  "properties":{"branch":{"$ref":"#/$defs/BranchSummary"},"receipt":{"$ref":"#/$defs/ForkReceipt"}}
+}

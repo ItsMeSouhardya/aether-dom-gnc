@@ -66,8 +66,8 @@ export function LayerStage({ document, selection, dispatch, assets, playback, mo
   }}>
     <div className="stage-toolbar"><div><h2>{scene?.title ?? 'Stage'}</h2><span>2.5D · {renderer === 'webgl2' ? 'WebGL2' : 'SVG fallback'}</span></div>
       {shot ? <div className="stage-tools">
-        <button className="studio-button" aria-label="Preview 16:9" aria-pressed={aspect === '16:9'} onClick={() => { if (aspect !== '16:9') { cancelDrag(); onAspectChange('16:9'); } }}>16:9</button>
-        <button className="studio-button" aria-label="Preview 9:16" aria-pressed={aspect === '9:16'} onClick={() => { if (aspect !== '9:16') { cancelDrag(); onAspectChange('9:16'); } }}>9:16</button>
+        <button className="studio-button" disabled={busy} aria-label="Preview 16:9" aria-pressed={aspect === '16:9'} onClick={() => { if (aspect !== '16:9') { cancelDrag(); onAspectChange('16:9'); } }}>16:9</button>
+        <button className="studio-button" disabled={busy} aria-label="Preview 9:16" aria-pressed={aspect === '9:16'} onClick={() => { if (aspect !== '9:16') { cancelDrag(); onAspectChange('9:16'); } }}>9:16</button>
         <button className="studio-button" aria-label="Layout mode" aria-pressed={mode === 'layout'} onClick={() => { cancelDrag(); setMode('layout'); }}>Layout</button>
         <button className="studio-button" aria-label="Animation mode" aria-pressed={mode === 'animation'} onClick={() => { cancelDrag(); setMode('animation'); }}>Animate</button>
         <button className="studio-button" disabled={busy || blocked || aspect === '9:16'} onClick={() => { cancelDrag(); playback.pause(); setEditor('camera'); }}>Camera</button>

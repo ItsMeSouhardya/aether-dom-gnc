@@ -13,6 +13,7 @@ import { embeddedAudioLoader, embeddedSvgAssets } from '../../features/player/ma
 import { GpuStage } from '../stage/gpu-stage';
 import { SvgContent } from '../stage/svg-content';
 import { AudioGlow } from '../audio/audio-glow';
+import { WebMExport } from './webm-export';
 
 type Shot = CdomDocument['shots'][number];
 const timeLabel = (timeMs: number) => `${(timeMs / 1000).toFixed(1)}s`;
@@ -95,5 +96,6 @@ function ShotPlayer({ manifest, shot, aspect }: { manifest: PlayerManifest; shot
       {hasAudio ? <div className="player-audio-settings"><label>Volume<input type="range" aria-label="Player volume" min={0} max={1} step={.01} value={settings.masterGain} onChange={event => updateSettings({ masterGain: Number(event.target.value) })} /></label><label><input type="checkbox" checked={settings.reactiveGlow} onChange={event => updateSettings({ reactiveGlow: event.target.checked })} />Reactive glow</label></div> : null}
     </div>
     <div className="player-caption"><span>{aspect} · {renderer === 'webgl2' ? 'WebGL2' : 'SVG fallback'} · Revision {document.project.revision}</span><p id="player-keyboard">Focus the stage: Space to play or pause · Arrow keys to seek</p></div>
+    <WebMExport manifest={manifest} shotId={shot.id} aspect={aspect} onStart={playback.pause} />
   </section>;
 }

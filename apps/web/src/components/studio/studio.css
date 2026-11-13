@@ -369,3 +369,15 @@
   .stage-canvas:has(.stage-safe-area) { max-height: none; }
 }
 @media (max-width: 760px) { .studio-header-actions > a { min-height: 44px; display: inline-flex; align-items: center; } }
+
+.branch-content { display: grid; gap: 20px; padding: 20px; }
+.branch-panel .lore-editor { padding: 16px 0; }
+.branch-panel .panel-heading { flex-wrap: wrap; gap: 8px; }
+.branch-panel .lore-editor > .studio-button { margin-top: 12px; }
+.branch-comparison { min-width: 0; display: grid; gap: 16px; }
+.branch-change { min-width: 0; padding-block: 16px; border-top: 1px solid var(--line); }
+.branch-change h4 { margin: 0; font-size: .8125rem; overflow-wrap: anywhere; }
+.branch-change dl { display: grid; gap: 12px; margin-top: 12px; }
+.branch-change dt { color: var(--muted); font-size: .6875rem; }
+.branch-change dd { margin: 4px 0 0; }
+.branch-change pre { max-height: 200px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; font: .75rem/1.5 ui-monospace, Consolas, monospace; margin: 0; padding: 8px; background: var(--bg); }

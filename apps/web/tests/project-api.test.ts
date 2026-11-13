@@ -9,6 +9,11 @@ const command = { commandId: 'cmd_one', projectId: 'proj_neon_shogun', branchId:
 afterEach(() => vi.unstubAllGlobals());
 
 describe('persisted project boundary', () => {
+  it('loads only the explicitly requested branch and rejects a mismatched response', async () => {
+    const fetcher = vi.fn(async () => Response.json(snapshot)); vi.stubGlobal('fetch', fetcher);
+    await expect(loadProject('proj_neon_shogun', 'alternate')).rejects.toThrow('requested branch');
+    expect(String((fetcher.mock.calls as unknown as [string, RequestInit][])[0][0])).toContain('/branches/alternate/document');
+  });
   it('requires approval provenance to match the explicitly approved proposal', async () => {
     const document = structuredClone(sample) as CdomDocument;
     document.project.revision = 1; document.branches[0].headRevision = 1;

@@ -1,0 +1,15 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "title":"BranchList", "type":"object", "additionalProperties":false,
+  "required":["projectId","branches"],
+  "$defs": {
+    "routeId":{"type":"string","pattern":"^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$(?![\\s\\S])"},
+    "revision":{"type":"integer","minimum":0,"maximum":9007199254740991},
+    "BranchSummary":{"type":"object","additionalProperties":false,"required":["id","name","parentId","baseRevision","headRevision"],"properties":{
+      "id":{"$ref":"#/$defs/routeId"}, "name":{"type":"string","minLength":1,"maxLength":80},
+      "parentId":{"anyOf":[{"$ref":"#/$defs/routeId"},{"type":"null"}]},
+      "baseRevision":{"$ref":"#/$defs/revision"},"headRevision":{"$ref":"#/$defs/revision"}
+    }}
+  },
+  "properties":{"projectId":{"$ref":"#/$defs/routeId"},"branches":{"type":"array","maxItems":64,"items":{"$ref":"#/$defs/BranchSummary"}}}
+}

@@ -2,9 +2,33 @@
 
 Last updated: 13 November 2026 (Asia/Calcutta).
 
-**Task07 — Aspect-ratio & player is complete** on `feat/task-07-aspect-player`, based on the user's committed/pushed Task06 `32912ca`. Plan/ledger: docs/superpowers/plans/2026-11-13-task-07-aspect-player.md; evidence: docs/tasks/task-07-verification.md. All Task07 changes remain uncommitted; no push/PR/merge. User handles integration. Next: **Task08 — Branching and exports**.
+## Active phase — Later-epic execution board
 
-## Current phase
+The user requested expansion of the ten **Later epics** in `aether_dom_codex_kit/CODEX_TASKS.md` into ordered execution tasks, after reading all project Markdown. This is a documentation-only milestone: **Tasks 09–29 are planned, not implemented**. Next implementation task: **Task 09 — Durable jobs and provider execution contracts**, when requested separately.
+
+Read all **90 source Markdown files** before planning/changes: root reviewed eight core/product/kit/original-plan files; three read-only parallel reviewers read 41 other project docs and all 41 vendored reference files. Ignored dependencies/generated runtime copies were outside source scope. Reconciled historical claims against latest Task08 evidence; archived Impeccable playbooks were read as reference, not applied as new project instructions.
+
+The board now specifies dependencies, existing code seams, execution checklists and testable acceptance for durable jobs (09), commercial-use provenance (10), rigs/IK (11–12), speech/dialogue and phoneme/viseme alignment (13–14), ControlNet/IP-Adapter generation (15–16), Lyria clips/real-time audition (17–18), heuristic/predictive saliency (19–20), access/events and Yjs collaboration (21–22), graph/vector projections (23–24), releases/telemetry/community connectors (25–27), and marketplace packs/transactions (28–29). Provider selection/live checks stay explicit execution-time work; mocks do not prove live integrations. Yjs drafts and rebuildable indexes preserve server command/revision authority. Merge/apply, MP4 and broader master-plan follow-ups remain separately scoped.
+
+The user explicitly authorized editing the kit board; other original kit files remain preserved. Tasks00–08 and the initial Codex prompt remain byte-for-byte unchanged. The board's pre-expansion SHA256 was `20fcc2b525610d2fbf7ced65cc0b02a0a00e2168c7325ab082eb320948ac02c3`; only its expected hash in `docs/tasks/task-00-preserved.json` was updated to `bd3d0653aad5d419a153666bceb872f1d498a1eddb34ef510fcf7f53e426b9e2` for this authorized baseline change. No application code, dependencies, database, media, landing or archive edits are part of this milestone. Preserve all pre-existing Task08 working changes; user handles commits/integration.
+
+Verification: numbering is continuous Task00–29 with no duplicates; all 21 new tasks have dependencies, deliverables, code areas, three unchecked execution steps and acceptance criteria (63 pending steps). All dependency references point backward. All ten original epic areas are covered. Exact prefix/suffix comparison against the original board passed for Tasks00–08 and the initial prompt. Preservation manifest comparison confirms only the board hash changed and the other177 entries stayed identical; `pnpm verify:preserved` passes all178 entries and exact kit schema/fixture copies. Source Markdown inventory remains90; `git diff --check` passes. No application test/build rerun was needed for these documentation/hash-only edits; Task08's application verification below is historical, not a new run. Only the board, this context and its authorized preservation entry changed during this planning request; no commit/push or implementation began.
+
+## Latest implementation — Task08
+
+**Task08 — Branching and exports is complete** on `feat/task-08-branches-exports`, based on the user's committed/pushed Task07 `bc4c8f0`. Plan/ledger: docs/superpowers/plans/2026-11-13-task-08-branches-exports.md. Evidence and captures: docs/tasks/task-08-verification.md. Changes remain uncommitted/unpushed; user handles integration. This completes the initial ordered task board; the later-epic board above is planning only.
+
+Typed isolated forks preserve source canon and start separate saved/undo histories. Alembic0003 records immutable lineage/audit. Studio branch URLs remount all temporary state and carry exact identity into player/export. Read-only three-way comparison uses the actual common base, distinguishes missing/null and flags conflicts without overwriting either branch. No merge command. Player exports bounded24fps/720p WebM with optional embedded stereo audio, progress/cancel and explicit download. Empty MediaRecorder output falls back to local VP8/Opus WebCodecs; actual native decoding proves playable portrait video and correctly trimmed nonzero audio. No dependency, MP4, remote encoding, capture permission or document upgrade.
+
+Final checks: **790 unit/API tests passed** (458 API,125 schema,207 web),1 existing host-limited skip; **104 production desktop/mobile browser cases passed**; **7 development lifecycle smoke cases passed**. Lint, types,13 generated contracts, production build, diff check and178-file preservation pass. Fresh review's fallback duration finding fixed and closed after native decoding. One batched desktop/mobile CUA inspection completed; viewport reset. Impeccable detector ran once and returned `[]`. Local Edge used; CI Chromium selection expanded, remote CI not run.
+
+Final read-only preservation check: user revision11/history11/one branch/schema0.2.0, sorted Python JSON SHA256 `08900480a857680b617c79a43b4418fef0522b81105737a120ba31093f73ce38` unchanged. Migration0003 adds lineage storage only. No commands/forks sent to user project; all mutation tests isolated. Final HTTP200 preview: http://127.0.0.1:3000/ and API http://127.0.0.1:8000/. Open **Branches** for fork/switch/compare; **Player → WebM preview** for video export. Existing Python3.12 override retained; RTK works. Temporary visual servers stopped.
+
+## Previous phase — Task07 (historical record)
+
+Task07 was committed/pushed by the user as `bc4c8f0` before Task08. Its earlier verification and revision6 baseline below are historical. Plan/ledger: docs/superpowers/plans/2026-11-13-task-07-aspect-player.md; evidence: docs/tasks/task-07-verification.md.
+
+### Task07 completion details
 
 Command0.6 edits existing9:16 override maps atomically with exact undo, preserving base layers/other aspects/document version. Studio adds aspect previews, portrait-only gestures/numeric drafts, safe-area guides and explicit Fit/Save/Cancel. Shared composition rebases keyframe movement; fit evaluates time-zero pose. Independent read-only `/player` shares renderer/clock/audio and opens exact revision manifests or portable local JSON. Export embeds sanitized SVG/PCM outside canonical document fields; API-blocked reopen/playback proved. No new schema version, SQL migration, dependency, AI permission, ZIP/video export or publishing.
 
@@ -133,7 +157,7 @@ On 11 November 2026, the user requested connection to https://github.com/ItsMeSo
 
 ## Resume
 
-Read this file, PRODUCT.md and the selected design specification before changes. Task07 is complete; next is the kit's Task08 — Branching and exports. Read the ordered board and canonical-state architecture before implementation. Preserve SQLite ownership, revision-bound analysis, portrait/base separation and separate selection/drafts/playback/audio. AI output must remain proposals until explicit review; no unreviewed writes. Fixture and seed overview stay immutable. Dialogue checking remains an unsaved draft tool because this document version has no attributed lines. Keep landing refinements in landing-page/ and the frozen archive unchanged. Update this context at milestones and handoff.
+Read this file and the kit's ordered board/master plan before changes; for visual work also read PRODUCT.md and the selected design specification. Task08 is complete; Tasks09–29 are planned only. Next implementation task is Task09 — Durable jobs and provider execution contracts, when separately requested. Preserve SQLite ownership, revision-bound analysis, portrait/base separation and separate selection/drafts/playback/audio. AI output must remain proposals until explicit review; no unreviewed writes. Fixture and seed overview stay immutable. Dialogue checking remains an unsaved draft tool until Task13 implements attributed lines. Keep landing refinements in landing-page/ and the frozen archive unchanged. Update this context at milestones and handoff.
 
 ## Task 01 verification and handoff
 

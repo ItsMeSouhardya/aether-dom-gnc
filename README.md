@@ -1,6 +1,6 @@
 # AETHER-DOM
 
-A local-first creative IDE for semantic, cross-modal storytelling. **Task07 — Aspect-ratio & player** adds editable portrait compositions, safe-area guides, independent playback and portable JSON export with local media. The selected Afterlight v2 landing page remains separate and unchanged.
+A local-first creative IDE for semantic, cross-modal storytelling. **Task08 — Branching and exports** adds isolated forks, branch switching, read-only three-way comparison and bounded WebM previews. The selected Afterlight v2 landing page remains separate and unchanged.
 
 ## Local setup — Windows PowerShell
 
@@ -56,6 +56,12 @@ Choose **Player** in the header to open the current saved revision at `/player`.
 
 **Export JSON** downloads a portable `.cdom.json` bundle containing the exact saved document plus sanitized SVG trees and PCM WAV media. Unsaved drafts are excluded. Open it through **Open JSON** in the player; media playback then works with the API offline. The app itself must be installed/running: the JSON is data for this player, not an HTML application or video. The initial bundle format is JSON rather than ZIP, with a32MiB total limit,64 referenced assets and8MiB per WAV. Missing, unsupported, unsafe or unknown-rights referenced media fails export with actionable guidance. Files stay local; no publication or canonical write occurs. Original media references inside the document remain intact.
 
+Choose **Branches** to fork the current saved revision. Enter a name, choose **Create fork**, then **Open branch**. A fork retains the source revision as its base and starts with an empty edit/undo history. Saved edits, undo and proposals are isolated per branch; immutable asset versions may be shared. The source stays unchanged. Branch creation has a separate human command/audit record and cannot be undone as a source edit. Switching discards unsaved drafts and stops preview; the chosen branch lives in the studio URL and survives refresh. A busy save blocks switching. Unknown fork outcomes can safely retry the same command or refresh the branch list.
+
+**Compare branches** shows authored field changes against the actual common ancestor revision. It distinguishes one-sided changes, matching changes and conflicts, including absent fields and additions/deletions. Arrays are compared as whole fields. Revision/active-branch metadata is excluded from creative differences. This is a read-only comparison prototype with no merge or overwrite action.
+
+In **Player**, use **WebM preview** to encode the selected saved/local shot and aspect from time zero. Choose a clip duration and whether to include its saved stereo mix, then **Record WebM**. Download is offered only after encoding succeeds; Cancel saves no partial file. Limits are30seconds,24fps, up to1280×720/720×1280 and64MiB. Native recording runs in real time; a bounded WebCodecs VP8/Opus fallback handles browsers that return empty native recordings. Keep the tab visible. No microphone, screen capture, network media or public upload is used. Runtime reactive glow is excluded; custom/inherited SVG fonts require text converted to paths or an explicit generic font. Browser codec support varies; portable JSON remains available. MP4/FFmpeg and automatic branch merging are deferred.
+
 On macOS/Linux use `python3 -m venv .venv` and `.venv/bin/python -m pip install -r apps/api/requirements-dev.txt`; pnpm commands are identical.
 
 ## Shared checks
@@ -89,12 +95,14 @@ On this Windows host the bundled Playwright Chromium failed to launch. Local bro
 - `POST /api/v1/projects/{projectId}/branches/{branchId}/agent-proposals/{proposalId}/reject`: persist rejection with an empty JSON object; approval uses the existing commands endpoint.
 - `GET /api/v1/projects/{projectId}/branches/{branchId}/player-manifest?revision=N`: exact saved document plus portable embedded SVG/audio media; `download=1` adds an attachment filename. Omit revision to capture current head once. No history/proposal records are exported.
 - [Local OpenAPI docs](http://127.0.0.1:8000/docs).
+- `GET /api/v1/projects/{projectId}/branches`: live branch summaries/lineage; `POST` accepts a separate human `forkBranch` command with source revision and new stable ID.
+- `GET /api/v1/projects/{projectId}/diff?left=branchA&right=branchB`: bounded read-only three-way comparison with captured heads and actual common base.
 
 The web server forwards only these fixed resources and preserves conflict/error status. Browser writes require same-origin JSON requests. Server-only `AETHER_API_ORIGIN` defaults to `http://127.0.0.1:8000`; copy `.env.example` to `apps/web/.env.local` only if changing it. Never use a `NEXT_PUBLIC_` variable for server configuration or secrets. Keep the API bound to loopback; this local task does not add authentication or a public service.
 
 `packages/schema/cdom.schema.json` and the original fixture remain version **0.1.0**. Version0.2 adds stage metadata; version0.3 adds optional `shot.audio.tension`. All three remain readable. `setShotTension` upgrades its copied snapshot losslessly; undo restores exact prior authored fields/version. Stage commands preserve existing0.3 metadata. Startup performs no document upgrade. AJV and Python consume the same schemas; see [the contract guide](packages/schema/README.md).
 
-`command.schema.json` defines command version **0.6.0**, adding `setShotLayoutOverride` targeting a shot with `{aspectRatio:'9:16',layerTransforms:map|null}`; derived analysis remains **0.1.0**. Existing document versions already support these fields, so no document upgrade or SQL migration is needed. SQLite owns canonical state; React accepts only validated, revision-matched responses. Selection, drafts, playback and analyser values stay temporary. Video export/branching belong to Task08; real AI providers, semantic dialogue analysis, advanced rigs, auth and collaboration remain later work. The original fixture’s contradiction stays preserved, while saved branch repairs change its current diagnostic.
+`command.schema.json` remains **0.6.0**, including `setShotLayoutOverride`; derived analysis remains **0.1.0**. Task08 adds separate fork/list/diff schemas and Alembic0003 for immutable fork lineage/audit, preserving existing snapshots and histories. No document upgrade occurs. SQLite owns canonical state; React accepts only validated, revision-matched responses. Selection, drafts, playback and analyser values stay temporary. Real AI providers, semantic dialogue analysis, advanced rigs, auth and collaboration remain later work. The original fixture’s contradiction stays preserved, while saved branch repairs change its current diagnostic.
 
 ## Selected landing and frozen references
 

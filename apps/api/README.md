@@ -13,13 +13,31 @@ The API binds to `127.0.0.1:8000`; set `AETHER_API_PORT` to use a different port
 
 The bundled fixture is validated at startup; invalid source data prevents a healthy startup. Each fixture read loads fresh JSON, validates it, and sends `Cache-Control: no-store`. The health and fixture routes remain read-only, and saved commands never change the fixture file.
 
-SQLite owns canonical state. The database defaults to `<workspace>/data/aether-dom.sqlite3`. `AETHER_DATABASE_PATH` overrides it; relative paths resolve against the workspace, independently of the launch directory. Alembic migrations run at startup, then seed the fixture only when its project/branch is absent. Migration `0002` adds a separate proposal table and preserves all existing canonical snapshots, revisions and history. Run the same idempotent migration/seed explicitly with:
+SQLite owns canonical state. The database defaults to `<workspace>/data/aether-dom.sqlite3`. `AETHER_DATABASE_PATH` overrides it; relative paths resolve against the workspace, independently of the launch directory. Alembic migrations run at startup, then seed the fixture only when its project/branch is absent. Migration `0002` adds a separate proposal table; `0003` adds immutable fork lineage/audit. Both preserve existing canonical snapshots, revisions and history. Run the same idempotent migration/seed explicitly with:
 
 ```powershell
 node tools/api.mjs migrate
 ```
 
-Every accepted command is saved immediately in one serialized SQLite transaction: revision check, validated snapshot, full audit command/actor/reason/timestamp, exact forward/inverse operations, and undo/redo stacks. `setLayerTransform` accepts one or more of `x`, `y`, `z`, `scale` and `rotationDeg`. `undo` and `redo` restore authored values exactly while incrementing revision metadata. New edits clear redo without deleting historical snapshots or receipts. There is no separate save endpoint.
+## Branch creation and comparison — Task 08
+
+- `GET /api/v1/projects/{projectId}/branches` returns `{projectId,branches}` with at most 64 `BranchSummary` records ordered by ID. Names and lineage come from saved metadata/immutable creation receipts; `headRevision` comes from the live branch head.
+- `POST /api/v1/projects/{projectId}/branches` accepts the separate human `ForkBranchCommand`: `{commandId,op:'forkBranch',projectId,sourceBranchId,expectedRevision,newBranchId,name,actor:{kind:'human',id},reason}`. It returns `{branch,receipt}`, with source branch/revision, new branch ID, command/actor/reason and creation time in the receipt. Forking is not an ordinary source edit and cannot be undone through source undo.
+- `GET /api/v1/projects/{projectId}/diff?left={branchId}&right={branchId}` returns the bounded read-only `ThreeWayDiff`. Exactly one `left` and `right` are required; arbitrary bases, duplicate or additional query parameters are rejected. All branch responses and errors use `Cache-Control: no-store`.
+
+Under `BEGIN IMMEDIATE`, a fork captures the source at expected revision N, copies its authored document and entity IDs, changes only the active branch identity and appends child metadata. The child starts at revision N with empty undo/redo/history and no source proposal records. Asset versions remain shared immutable references. Source head, document, history and proposals stay unchanged. Child commands and undo advance only the child. Migration `0003` creates the `branch_forks` side-table; it never upgrades document schemas or rewrites old snapshots.
+
+Project/source/new branch route IDs must match `[A-Za-z0-9][A-Za-z0-9_-]{0,127}` exactly. New IDs cannot collide with any ID in the copied document or with a project branch. Names contain 1–80 Unicode scalar values and at least one non-whitespace character; duplicate names are allowed. Command/actor IDs are 1–128 scalars and reasons 1–500. Fork JSON is bounded to 8 KiB. At most 64 branches can exist per project. Stale forks return `REVISION_CONFLICT` with the current revision. Existing branch IDs and conflicting command IDs return 409, with no partial branch/snapshot/audit writes.
+
+Identical fork command/payload retry returns the original creation result, even after the child advances or the API restarts. That summary deliberately has the original head N; switching should load the child's latest document separately. Command IDs cannot be reused between forks and ordinary edits. There is no fork deletion, source undo entry, merge endpoint or new AI permission.
+
+Comparison captures both heads and lineage under one explicit read transaction. Ancestry traversal carries each branch's available historical revision bound; the nearest common ancestor and minimum shared bound identify the exact base snapshot. Ancestor/descendant, sibling, nested and same-branch comparisons use this rule. Unrelated roots return `NO_COMMON_BASE` (409); missing/cyclic/inconsistent lineage returns `INVALID_BRANCH_LINEAGE` (409). Comparison never writes a canonical revision, proposal, audit record or merge.
+
+Changes match collection/entity IDs, recurse into object fields, escape JSON Pointer tokens and treat authored arrays atomically. Entity addition/deletion uses `/`. Explicit presence flags distinguish missing values from null. Status is `left_only`, `right_only`, `same_change` or `conflict`; `conflictCount` is checked against the changes. Document branch metadata, project revision and active branch identity are excluded; schema version is reported under `document`. Limits are 4,096 changes, 1 MiB of comparison JSON, depth 32 and 200,000 visited values, with finite numbers, Unicode scalar text and conservative numeric wire allowance. Conflicts require a future resolution flow; this prototype applies nothing.
+
+## Canonical edit commands
+
+Every accepted edit command is saved immediately in one serialized SQLite transaction: revision check, validated snapshot, full audit command/actor/reason/timestamp, exact forward/inverse operations, and undo/redo stacks. `setLayerTransform` accepts one or more of `x`, `y`, `z`, `scale` and `rotationDeg`. `undo` and `redo` restore authored values exactly while incrementing revision metadata. New edits clear redo without deleting historical snapshots or receipts. There is no separate save endpoint.
 
 Command contract 0.2.0 adds two continuity repairs; the canonical document stays at 0.1.0 and no database migration is required:
 
