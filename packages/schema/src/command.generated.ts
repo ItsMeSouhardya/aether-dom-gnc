@@ -138,6 +138,47 @@ export type CdomCommand =
       targetId: string;
       args: AssetEvidenceArgs;
       [k: string]: unknown;
+    })
+  | (Envelope & {
+      op: 'importRigLayer';
+      targetId: string;
+      args: {
+        assetId: string;
+        layerId: string;
+        name: string;
+        rights: 'project_original' | 'licensed' | 'unknown';
+        svg: string;
+        characterId: string;
+        rig: Rig;
+      };
+      [k: string]: unknown;
+    })
+  | (Envelope & {
+      op: 'setRigBonePose';
+      targetId: string;
+      args: {
+        rotationDeg: number;
+        action: string | null;
+      };
+      [k: string]: unknown;
+    })
+  | (Envelope & {
+      op: 'setRigBoneKeyframe';
+      targetId: string;
+      args: {
+        keyframeId: string;
+        timeMs: number;
+        rotationDeg: number;
+      };
+      [k: string]: unknown;
+    })
+  | (Envelope & {
+      op: 'deleteRigBoneKeyframe';
+      targetId: string;
+      args: {
+        keyframeId: string;
+      };
+      [k: string]: unknown;
     });
 
 export interface Envelope {
@@ -416,4 +457,74 @@ export interface AssetEvidenceArgs {
           text: string;
         }
       ];
+}
+export interface Rig {
+  id: string;
+  name: string;
+  /**
+   * @minItems 1
+   * @maxItems 32
+   */
+  bones: [
+    {
+      id: string;
+      name: string;
+      parentId: string | null;
+      rest: {
+        x: number;
+        y: number;
+        rotationDeg: number;
+      };
+      rotationDeg: number;
+      limb: string | null;
+      action: string | null;
+      /**
+       * @maxItems 128
+       */
+      keyframes?: {
+        id: string;
+        timeMs: number;
+        rotationDeg: number;
+      }[];
+    },
+    ...{
+      id: string;
+      name: string;
+      parentId: string | null;
+      rest: {
+        x: number;
+        y: number;
+        rotationDeg: number;
+      };
+      rotationDeg: number;
+      limb: string | null;
+      action: string | null;
+      /**
+       * @maxItems 128
+       */
+      keyframes?: {
+        id: string;
+        timeMs: number;
+        rotationDeg: number;
+      }[];
+    }[]
+  ];
+  /**
+   * @minItems 1
+   * @maxItems 32
+   */
+  attachments: [
+    {
+      id: string;
+      name: string;
+      boneId: string;
+      elementId: string;
+    },
+    ...{
+      id: string;
+      name: string;
+      boneId: string;
+      elementId: string;
+    }[]
+  ];
 }

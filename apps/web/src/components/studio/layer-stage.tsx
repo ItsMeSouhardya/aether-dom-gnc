@@ -4,7 +4,7 @@ import type { CdomDocument } from '@aether-dom/schema';
 import type { SelectionAction, StudioSelection } from '@/features/studio/selection';
 import { getShotLayers, layerName } from '@/features/studio/view-model';
 import { nextLayerDepth, projectLayer, unprojectDelta, type Transform } from '@/features/stage/geometry';
-import { stageRenderPlan } from '@/features/stage/render-plan';
+import { stageRenderPlan, type RigPreview } from '@/features/stage/render-plan';
 import type { Playback } from '@/features/stage/playback';
 import { assetKey, type AssetState } from '@/features/stage/use-svg-assets';
 import type { CommandOperation } from '@/features/commands/draft';
@@ -20,10 +20,10 @@ export type StageMode = 'layout' | 'animation' | 'svg';
 type Props = { document: CdomDocument; selection: StudioSelection; dispatch: (action: SelectionAction) => void; assets: Record<string, AssetState>;
   playback: Playback; mode: StageMode; setMode: (mode: StageMode) => void; selectedElement: string | null; selectElement: (id: string) => void;
   busy: boolean; blocked: boolean; run: (operation: CommandOperation, reason: string, revision?: number) => Promise<boolean>; audio: AudioPreview; reactiveGlow: boolean;
-  aspect: Aspect; onAspectChange: (aspect: Aspect) => void; layoutPreview: LayoutPreview | null };
+  aspect: Aspect; onAspectChange: (aspect: Aspect) => void; layoutPreview: LayoutPreview | null; rigPreview: RigPreview | null };
 type Drag = { id: string; pointerId: number; startX: number; startY: number; transform: Transform; revision: number; draft: Transform };
 
-export function LayerStage({ document, selection, dispatch, assets, playback, mode, setMode, selectedElement, selectElement, busy, blocked, run, audio, reactiveGlow, aspect, onAspectChange, layoutPreview }: Props) {
+export function LayerStage({ document, selection, dispatch, assets, playback, mode, setMode, selectedElement, selectElement, busy, blocked, run, audio, reactiveGlow, aspect, onAspectChange, layoutPreview, rigPreview }: Props) {
   const shot = document.shots.find(shot => shot.id === selection.shotId);
   const scene = document.scenes.find(scene => scene.id === selection.sceneId);
   const layers = getShotLayers(document, shot?.id ?? null);
@@ -56,7 +56,7 @@ export function LayerStage({ document, selection, dispatch, assets, playback, mo
     const asset = document.assets.find(asset => asset.id === layer.assetId);
     return { ...layer, transform: draft?.id === layer.id ? draft.transform : layer.transform, svg: asset ? assets[assetKey(asset)]?.svg ?? null : null };
   });
-  const rendered = stageRenderPlan(renderLayers, preview.timeMs, mode === 'animation');
+  const rendered = stageRenderPlan(renderLayers, preview.timeMs, mode === 'animation', null, rigPreview);
   const ratio = { '16:9': 16 / 9, '9:16': 9 / 16, '1:1': 1 }[aspect];
   const selectedAsset = document.assets.find(asset => asset.id === selected?.assetId);
   const svgReady = selectedAsset && assets[assetKey(selectedAsset)]?.svg;
@@ -120,7 +120,7 @@ export function LayerStage({ document, selection, dispatch, assets, playback, mo
                 <SvgContent node={layer.svg.root} scopeId={layer.id} selectedId={isolated ? selectedElement : null} onSelect={isolated ? selectElement : undefined} />
               </svg> : null}
               {layer.svg && document.audioTracks.some(track => track.shotId === shot.id && track.kind === 'foley' && track.boundLayerId === layer.id) ? <AudioGlow runtime={audio} svg={layer.svg} layerId={layer.id} enabled={reactiveGlow} width={p.width} height={p.height} /> : null}
-              {!layer.svg ? <text className="stage-missing-label" textAnchor="middle">{name} · source unavailable</text> : null}
+              {!layer.svg ? <text className="stage-missing-label" textAnchor="middle">{name} · {layer.rigError ? 'rig could not be evaluated' : 'source unavailable'}</text> : null}
               {isSelected ? <rect className="stage-selection" x={-p.width / 2} y={-p.height / 2} width={p.width} height={p.height} fill="none" pointerEvents="none" /> : null}
             </g>;
           })}

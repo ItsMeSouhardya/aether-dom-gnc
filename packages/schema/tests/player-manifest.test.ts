@@ -43,3 +43,19 @@ describe('portable player boundary', () => {
     }
   });
 });
+
+  it('rejects rig slots that do not bind direct source groups', () => {
+    const value = structuredClone(portable) as unknown as {
+      document: {schemaVersion:string; characters:{id:string}[]; layers:{kind:string; characterId:string; assetId:string; rig:{id:string;name:string;bones:unknown[];attachments:{id:string;name:string;boneId:string;elementId:string}[]}}[]};
+      assets:{assetId:string;svg:{root:{children:unknown[]}}}[];
+    };
+    const layer = value.document.layers[0];
+    value.document.schemaVersion = '0.5.0';
+    layer.kind = 'character_sprite'; layer.characterId = value.document.characters[0].id;
+    layer.rig = {id:'test_rig',name:'Rig',bones:[{id:'test_bone',name:'Bone',parentId:null,rest:{x:0,y:0,rotationDeg:0},rotationDeg:0,limb:null,action:null}],attachments:[{id:'test_slot',name:'Slot',boneId:'test_bone',elementId:'part'}]};
+    const svg = value.assets.find(entry => entry.assetId === layer.assetId)!.svg;
+    svg.root.children = [{tag:'g',id:'part',attributes:{},text:'',children:svg.root.children}];
+    expect(validatePlayerManifest(value).valid).toBe(true);
+    layer.rig.attachments[0].elementId = 'missing';
+    expect(validatePlayerManifest(value).valid).toBe(false);
+  });

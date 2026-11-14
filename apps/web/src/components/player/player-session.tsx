@@ -81,7 +81,7 @@ function ShotPlayer({ manifest, shot, aspect }: { manifest: PlayerManifest; shot
           return <g key={layer.id} transform={`translate(${p.x} ${p.y}) rotate(${p.rotation})`}>
             {renderer === 'svg' && layer.svg ? <svg x={-p.width / 2} y={-p.height / 2} width={p.width} height={p.height} viewBox={`${layer.svg.viewBox.x} ${layer.svg.viewBox.y} ${layer.svg.viewBox.width} ${layer.svg.viewBox.height}`} opacity={layer.opacity ?? 1}><SvgContent node={layer.svg.root} scopeId={`player-${layer.id}`} /></svg> : null}
             {layer.svg && document.audioTracks.some(track => track.shotId === shot.id && track.kind === 'foley' && track.boundLayerId === layer.id) ? <AudioGlow runtime={audio} svg={layer.svg} layerId={layer.id} enabled={settings.reactiveGlow} width={p.width} height={p.height} /> : null}
-            {!layer.svg ? <text textAnchor="middle" className="player-missing">{layerName(document, document.layers.find(item => item.id === layer.id)!)} · source unavailable</text> : null}
+            {!layer.svg ? <text textAnchor="middle" className="player-missing">{layerName(document, document.layers.find(item => item.id === layer.id)!)} · {layer.rigError ? 'rig could not be evaluated' : 'source unavailable'}</text> : null}
           </g>;
         })}
       </svg>

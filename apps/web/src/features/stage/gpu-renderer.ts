@@ -116,7 +116,7 @@ export function createStageRenderer(canvas: HTMLCanvasElement, initial: GpuStage
   function update(props: GpuStageProps) {
     if (disposed || renderer === null) return;
     current = props;
-    if (props.layers.some(layer => layer.svg !== null && needsNativeSvg(layer.svg.root))) { fallback(); return; }
+    if (props.layers.some(layer => layer.rig || (layer.svg !== null && needsNativeSvg(layer.svg.root)))) { fallback(); return; }
     if (subscribedPlayback !== props.playback) {
       unsubscribe?.();
       subscribedPlayback = props.playback;

@@ -10,15 +10,28 @@ import { AppearanceEditor, KeyframeEditor, SvgEditor } from '../stage/stage-edit
 import { assetKey, type AssetState } from '@/features/stage/use-svg-assets';
 import type { Playback } from '@/features/stage/playback';
 import type { StageMode } from './layer-stage';
+import { RigPanel } from '../rig/rig-panel';
+import type { RigPreview } from '@/features/stage/render-plan';
 
-export function LayerInspector({ document, selection, clear, busy, blocked, save, run, assets, mode, selectedElement, selectElement, playback }: { document: CdomDocument; selection: StudioSelection; clear: () => void; busy: boolean; blocked: boolean; save: (targetId: string, transform: Transform, expectedRevision: number) => Promise<boolean>; run: (operation: CommandOperation, reason: string, revision?: number) => Promise<boolean>; assets: Record<string, AssetState>; mode: StageMode; selectedElement: string | null; selectElement: (id: string) => void; playback: Playback }) {
-  const [editing, setEditing] = useState(false);
+type Props = { document: CdomDocument; selection: StudioSelection; clear: () => void; busy: boolean; blocked: boolean; save: (targetId: string, transform: Transform, expectedRevision: number) => Promise<boolean>; run: (operation: CommandOperation, reason: string, revision?: number) => Promise<boolean>; assets: Record<string, AssetState>; mode: StageMode; selectedElement: string | null; selectElement: (id: string) => void; playback: Playback; onRigPreview: (preview: (RigPreview & { revision: number }) | null) => void; onRigDirty: (dirty: boolean) => void };
+
+export function LayerInspector(props: Props) {
+  const { document, selection, busy, blocked, run, playback, onRigPreview, onRigDirty } = props;
   const layer = getShotLayers(document, selection.shotId).find(layer => layer.id === selection.layerId);
-  const asset = document.assets.find(asset => asset.id === layer?.assetId);
-  const character = document.characters.find(character => character.id === layer?.characterId);
   return <section className="studio-inspector" aria-label="Inspector">
     <div className="panel-heading"><h2>Inspector</h2><Icon name="inspect" /></div>
-    {layer ? <div className="inspector-content">
+    <div className="inspector-content"><RigPanel document={document} layer={layer} shotId={selection.shotId} playback={playback} busy={busy} blocked={blocked} run={run} onPreview={onRigPreview} onDirty={onRigDirty} /></div>
+    {layer ? <LegacyLayerEditor key={layer.id} {...props} layer={layer} /> : <div className="inspector-empty"><Icon name="inspect" /><h3>Select a layer</h3><p>Choose a layer on the stage or in the navigator to inspect its transform and source references.</p><p>Selection is temporary. Your document stays unchanged.</p></div>}
+  </section>;
+}
+
+type LegacyProps = Omit<Props, 'selection' | 'onRigPreview' | 'onRigDirty'> & { layer: CdomDocument['layers'][number] };
+
+function LegacyLayerEditor({ document, layer, clear, busy, blocked, save, run, assets, mode, selectedElement, selectElement, playback }: LegacyProps) {
+  const [editing, setEditing] = useState(false);
+  const asset = document.assets.find(asset => asset.id === layer.assetId);
+  const character = document.characters.find(character => character.id === layer.characterId);
+  return <div className="inspector-content">
       <div className="inspector-identity"><h3>{layerName(document, layer)}</h3><p>{kindLabel(layer.kind)}</p><code>{layer.id}</code></div>
       <section className="inspector-section" aria-labelledby="transform-heading"><div className="inspector-section-heading"><h3 id="transform-heading">Transform</h3><span>Saved values</span></div>
         <dl className="transform-values">
@@ -37,6 +50,5 @@ export function LayerInspector({ document, selection, clear, busy, blocked, save
       {character ? <CharacterCanon document={document} character={character} layer={layer} busy={busy} blocked={blocked} run={run} /> : null}
       <section className="inspector-section"><h3>Source reference</h3><dl className="reference-values"><div><dt>Asset</dt><dd><code>{layer.assetId}</code></dd></div><div><dt>Path</dt><dd><code>{asset?.uri ?? 'Asset reference unavailable'}</code></dd></div><div><dt>Rights metadata</dt><dd>{asset?.rights.replaceAll('_', ' ') ?? 'Unavailable'}</dd></div></dl><p className="panel-note">{asset && assets[assetKey(asset)]?.svg ? 'Local SVG · stable source element IDs' : asset && assets[assetKey(asset)]?.error ? assets[assetKey(asset)].error : 'Source preview unavailable.'}</p></section>
       <button className="studio-button inspector-clear" onClick={clear}>Clear selection</button>
-    </div> : <div className="inspector-empty"><Icon name="inspect" /><h3>Select a layer</h3><p>Choose a layer on the stage or in the navigator to inspect its transform and source references.</p><p>Selection is temporary. Your document stays unchanged.</p></div>}
-  </section>;
+    </div>;
 }

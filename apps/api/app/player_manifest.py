@@ -18,6 +18,7 @@ from app.audio_assets import MAX_BYTES as MAX_AUDIO_BYTES
 from app.audio_assets import _validate_wav, read_audio
 from app.commands import CommandError
 from app.contracts import SCHEMA_ROOT, validate_document
+from app.rigs import validate_rig_bindings
 from app.svg_assets import SvgAssetError, SvgAssetStore, SvgData, _serialize, parse_svg
 
 MAX_BYTES = 32 * 1024 * 1024
@@ -278,6 +279,10 @@ def validate_player_manifest(value: object) -> list[dict[str, str]]:
                     nodes.extend(node["children"])
                 if parse_svg(_serialize(data).decode("utf-8")) != normalized:
                     raise _invalid("SVG must be the sanitized tree without dropped fields.")
+                for layer in document["layers"]:
+                    if (layer.get("assetId") == entry["assetId"] and layer.get("rig")
+                            and validate_rig_bindings(layer["rig"], dict(data))):
+                        raise _invalid("Rig attachments do not match the SVG source.")
                 payload_hash = svg_payload_hash(svg)
             else:
                 payload_hash = hashlib.sha256(

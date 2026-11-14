@@ -1,6 +1,6 @@
 # AETHER-DOM
 
-A local-first creative IDE for semantic, cross-modal storytelling. **Task09 — Durable jobs** adds leased local proposal work, recovery and a dedicated Jobs inspector. Isolated branches, three-way comparison and WebM preview remain available. The selected Afterlight v2 landing page remains separate and unchanged.
+A local-first creative IDE for semantic, cross-modal storytelling. **Task11 — Articulated rigs** adds an original Kael-inspired character with reviewed bone poses and keyframe motion across studio, player and WebM. Asset evidence, durable local jobs, isolated branches and three-way comparison remain available. The selected Afterlight v2 landing page stays separate.
 
 ## Shared agent skills
 
@@ -72,6 +72,12 @@ The desktop shell uses side panels and a bottom timeline. Narrow screens stack t
 
 **Import SVG** accepts bounded static UTF-8 SVG shapes/groups/text and records source rights. Scripts, links, styles, external references and unsupported content are rejected. Supplied element IDs and the asset ID survive **Edit SVG** changes; the dropdown and native overlay select source elements. Save edits geometry/presentation attributes; all instances sharing that asset use the new immutable version. Safe original files and edited versions live in ignored `assets/originals/` and `assets/imported/`; back these up together with the database.
 
+The **Rig** section is in the normal layer inspector. Choose a shot in **16:9**, close any competing inspector, choose **Character** (Kael by default), then **Add original rig**. This saves a separate original layer and asset; existing Kael/Vance drawings stay fixed. Select the new layer in **Layers**. Its four bones and four attachment slots are **Body**, **Head**, **Left arm** and **Right arm**; choosing an **Attachment** selects its owning **Bone** without saving.
+
+Choose **Edit bone pose**, enter **Angle (°)** and an optional **Action**, then **Review rig change**. The angle previews locally; the review names the saved and proposed angle/action. **Save rig change** commits against the captured revision; **Cancel rig draft** restores saved rendering. Controls freeze while saving. A changed revision, removed target or uncertain save retains draft text for recovery; use Cancel or **Reload latest** before continuing. An angle alone makes no injury claim. Explicit action `lift` on a left/right arm checks the selected character's injury/recovery chronology and exposes evidence in **Diagnostics**; unknown semantics warn about limited coverage.
+
+Use **Add bone frame**, **Edit frame** or **Delete frame**, review, then save explicitly. Frame buttons seek without writing. Angles are bounded to −360°–360°; frame times are whole milliseconds within the shot. A rig supports up to 32 bones, 32 attachment slots and 128 bone frames **in total across the rig**. **Layout** shows the saved base pose; **Animate**, player and WebM interpolate saved angles on the shared clock. Native SVG renders rig scenes; WebM evaluates the rig SVG for every frame. Both aspects and portable JSON retain the saved rig. All parts share one SVG source and its rights: the original fixture supports private preview without a ledger, while public/commercial use requires the existing asset-evidence review. No IK, skinning or new runtime dependency is added.
+
 **Animate** enables keyframe authoring in the inspector. Seek in milliseconds, add/update/delete a frame and save explicitly. Playback linearly interpolates X/Y/Z, scale and rotation without changing base transforms or writing preview frames. Layout always edits the base transform. GPU denial/context loss preserves native editing. On desktop, opening a drawer collapses the timeline body to preserve stage space. Stop services with Ctrl+C; an unavailable API offers **Try again**.
 
 Choose **Audio** in the timeline to open the mixer, then **Enable audio** and **Play**. The checked-in ambient/tension/Foley clips work locally; playback stays silent until that explicit enable gesture. Raise **Tension** to preview supported gain bindings and the ambient fade. **Save tension** persists an editorial shot override through a revision-checked command; **Cancel tension** restores the saved mix. Without an override, supported narrative bindings supply the tension signal. Volume, mute, output mode and glow are temporary preview controls.
@@ -133,9 +139,10 @@ On this Windows host the bundled Playwright Chromium failed to launch. Local bro
 
 - [GET /api/v1/health](http://127.0.0.1:8000/api/v1/health): service and schema version.
 - [GET /api/v1/fixtures/neon-shogun](http://127.0.0.1:8000/api/v1/fixtures/neon-shogun): unchanged validated fixture, revision 0.
+- `GET /api/v1/fixtures/articulated-rig`: read-only original SVG/rig template; importing requires the explicit Add original rig command.
 - `GET /api/v1/projects/{projectId}/branches/{branchId}/document`: saved document, recent history and revision-bound analysis.
 - `GET /api/v1/projects/{projectId}/branches/{branchId}/diagnostics`: derived issues, graph and invalidation metadata.
-- `POST /api/v1/projects/{projectId}/branches/{branchId}/commands`: validated transform/pose/recovery, camera, appearance, SVG import/edit, keyframe and undo/redo commands; requires `expectedRevision`, command ID, stable identities, human actor and reason.
+- `POST /api/v1/projects/{projectId}/branches/{branchId}/commands`: validated transform/pose/recovery, camera, appearance, SVG import/edit, layer/bone keyframe, rig import/pose and undo/redo commands; requires `expectedRevision`, command ID, stable identities, human actor and reason.
 - `GET /api/v1/projects/{projectId}/branches/{branchId}/assets/{assetId}?revision=N`: validated SVG tree for an asset referenced by that immutable saved revision; no arbitrary file access.
 - `GET /api/v1/projects/{projectId}/branches/{branchId}/assets/{assetId}/ledger?revision=N`: exact saved-revision media bindings and referenced text evidence, with recoverable inspection errors. Revision is required.
 - `GET /api/v1/projects/{projectId}/branches/{branchId}/audio/{assetId}?revision=N`: bounded PCM16 WAV bytes for a referenced audio asset at that saved revision. Traversal, network paths, redirected links and invalid/oversized files are rejected.
@@ -148,16 +155,14 @@ On this Windows host the bundled Playwright Chromium failed to launch. Local bro
 
 The web server forwards only these fixed resources and preserves conflict/error status. Browser writes require same-origin JSON requests. Server-only `AETHER_API_ORIGIN` defaults to `http://127.0.0.1:8000`; copy `.env.example` to `apps/web/.env.local` only if changing it. Never use a `NEXT_PUBLIC_` variable for server configuration or secrets. Keep the API bound to loopback; this local task does not add authentication or a public service.
 
-`packages/schema/cdom.schema.json` and the original fixture remain version **0.1.0**. Version0.2 adds stage metadata; version0.3 adds optional `shot.audio.tension`. All three remain readable. `setShotTension` upgrades its copied snapshot losslessly; undo restores exact prior authored fields/version. Stage commands preserve existing0.3 metadata. Startup performs no document upgrade. AJV and Python consume the same schemas; see [the contract guide](packages/schema/README.md).
+`packages/schema/cdom.schema.json` and the original fixture remain version **0.1.0**. Version0.2 adds stage metadata; version0.3 adds optional `shot.audio.tension`,0.4 adds asset evidence and0.5 adds rigs. Versions0.1–0.5 remain readable. `setShotTension` upgrades its copied snapshot losslessly; undo restores exact prior authored fields/version. Stage commands preserve existing0.3 metadata. Startup performs no document upgrade. AJV and Python consume the same schemas; see [the contract guide](packages/schema/README.md).
 
-`command.schema.json` is **0.7.0**, including human-only `setAssetEvidence`;
-derived analysis remains **0.1.0**. Task10 adds document0.4 asset provenance while
-preserving0.1–0.3. Only an accepted evidence correction upgrades its copied
-snapshot; undo restores the prior version/field presence. Task08's fork lineage
+`command.schema.json` is **0.8.0**, retaining `setAssetEvidence` and adding human-only rig import, bone pose and bone frame operations;
+derived analysis remains **0.1.0**. Document0.4 adds asset provenance; document0.5 adds optional layer rigs while preserving0.1–0.4 readability. Accepted rig commands upgrade only a copied snapshot; undo restores the exact prior version/field presence. Evidence/audio edits preserve0.5. Task08's fork lineage
 and Task09's job side tables remain separate. SQLite owns canonical state;
 React accepts only validated, revision-matched responses. Selection, drafts,
 playback and analyser values stay temporary. Real AI providers, semantic dialogue
-analysis, advanced rigs, auth and collaboration remain later work. The original
+analysis, IK/skinning, auth and collaboration remain later work. The original
 fixture's contradiction stays preserved, while saved repairs change its diagnostic.
 
 Task10 records creator/source/license/attribution, use permissions, optional
@@ -209,6 +214,4 @@ Open [Afterlight v2](http://localhost:4173/). Stop its dev server before preview
 - `design_archive/`, `design_specifications/vendor/` — preserved references.
 - `aether_dom_codex_kit/`, `initial_first_plan_provided/`, `design_inspirations/` — preserved original specifications and source material.
 
-Next: **Task11 — Authored skeletal rigs and forward kinematics**, following the ordered kit
-board and canonical-state boundaries. WebGPU and advanced rigs/Bezier editing
-remain deferred.
+The active scope is **Task11 — Articulated character posing and canon-aware motion**; final acceptance is recorded separately in task evidence. Next in the [presentation-focused board](aether_dom_codex_kit/TASKS%20PT2.md) is **Task12 — Integrated presentation build and interactive lore inspection**. WebGPU, IK/skinning and Bezier editing remain deferred.

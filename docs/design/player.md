@@ -1,6 +1,10 @@
-# Player surface — Tasks 07–10
+# Player surface — Tasks 07–11
 
 Mode: **Experience**. Let the saved scene lead. Preserve Afterlight charcoal, sage, Manrope and familiar controls; use no decorative effects or marketing claims.
+
+Task11: Saved articulated layers play from the same rigid-FK evaluator and clock as Animate in the studio. Both 16:9/9:16 and API-offline portable reopen retain authored rigs and attachment bindings. Rig scenes use native SVG within the existing composition surface; flat scenes retain the incumbent GPU path. Keep transport, revision/source labels and native rendering status in the established visual hierarchy. A failed rig evaluation names the unavailable rig rather than presenting a different pose.
+
+WebM evaluates the saved rig SVG at every frame, so output contains articulated motion rather than a cached rest pose. The recorder still starts at time zero from the captured saved/local manifest; unsaved rig drafts never enter playback or output. Parts share their source asset's rights/evidence; the original fixture's no-ledger fallback permits private preview, while broader use needs explicit evidence review. Old document versions and portable wrappers remain readable. This is rigid FK playback, with no bone editing, IK or skinning controls in the player.
 
 Task10: Show recorded export use and attribution for saved/local bundles. Legacy
 files default to Private preview; a newer bundle keeps its recorded permitted use.

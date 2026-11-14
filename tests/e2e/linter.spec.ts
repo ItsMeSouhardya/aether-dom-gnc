@@ -22,7 +22,7 @@ test('explains the injured-arm conflict with evidence and inspectable dependenci
   await page.screenshot({ path: testInfo.outputPath('linter.png'), fullPage: true, scale: 'css' });
   await page.getByRole('navigation', { name: 'Layer navigator' }).getByRole('button', { name: 'Select layer Vance', exact: true }).click();
   await conflict(page).getByRole('button', { name: 'Select affected layer', exact: true }).click();
-  await expect(page.getByRole('region', { name: 'Inspector' }).getByLabel('Saved pose')).toHaveText('lifting with left arm');
+  await expect(page.getByRole('region', { name: 'Inspector', exact: true }).getByLabel('Saved pose')).toHaveText('lifting with left arm');
   await page.getByRole('button', { name: 'Dependencies', exact: true }).click();
   await expect(page.getByRole('region', { name: 'Dependency impact' })).toContainText('char_kael');
   await expect(page.getByRole('region', { name: 'Dependency impact' })).toContainText('shot_rooftop');
@@ -60,7 +60,7 @@ test('reviews and records recovery as an exact reversible story event', async ({
   expect(saved.document.events.find((event: { id: string }) => event.id === resolution).description).toContain('after treatment');
   expect(saved.analysis.issues.some((issue: { code: string }) => issue.code === 'CANON_PHYSICAL_CONFLICT')).toBe(false);
   await page.reload(); await selectKael(page);
-  await expect(page.getByRole('region', { name: 'Inspector' })).toContainText(resolution);
+  await expect(page.getByRole('region', { name: 'Inspector', exact: true })).toContainText(resolution);
   await page.getByRole('button', { name: 'Undo', exact: true }).click();
   await expect(page.getByRole('status', { name: 'Save status' })).toContainText('Saved locally');
   const restored = await (await request.get(`${base}/document`)).json();

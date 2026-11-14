@@ -13,7 +13,7 @@ test('selects layers through the navigator and stage and inspects exact canon va
   await page.goto('/');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(sample.project.title);
   const navigator = page.getByRole('navigation', { name: 'Layer navigator' });
-  const inspector = page.getByRole('region', { name: 'Inspector' });
+  const inspector = page.getByRole('region', { name: 'Inspector', exact: true });
   await navigator.getByRole('button', { name: 'Select layer Kael', exact: true }).click();
   await expect(inspector.getByLabel('X position')).toHaveText('-0.65');
   await expect(inspector.getByLabel('Y position')).toHaveText('-0.1');
@@ -40,13 +40,13 @@ test('selects an empty scene and returns to a shot with no stale inspector', asy
   await navigator.getByRole('button', { name: 'Select layer Kael', exact: true }).click();
   await page.getByRole('button', { name: 'Select scene The Escape', exact: true }).click();
   await expect(page.getByRole('region', { name: 'Layered stage' })).toContainText('No shots in this scene');
-  await expect(page.getByRole('region', { name: 'Inspector' })).toContainText('Select a layer');
+  await expect(page.getByRole('region', { name: 'Inspector', exact: true })).toContainText('Select a layer');
   await expect(navigator.getByRole('button')).toHaveCount(0);
   await page.getByRole('button', { name: 'Select shot Rooftop Confrontation (shot_rooftop)', exact: true }).click();
   await navigator.getByRole('button', { name: 'Select layer Sign', exact: true }).click();
-  await expect(page.getByRole('region', { name: 'Inspector' }).getByLabel('Scale')).toHaveText('0.55');
+  await expect(page.getByRole('region', { name: 'Inspector', exact: true }).getByLabel('Scale')).toHaveText('0.55');
   await page.getByRole('region', { name: 'Layered stage' }).getByRole('button', { name: 'Select stage layer Sign', exact: true }).press('Escape');
-  await expect(page.getByRole('region', { name: 'Inspector' })).toContainText('Select a layer');
+  await expect(page.getByRole('region', { name: 'Inspector', exact: true })).toContainText('Select a layer');
 });
 
 test('retains failure/retry and empty project states in the studio', async ({ page }) => {
@@ -66,15 +66,15 @@ test('allows keyboard selection, resets on reload and supports narrow reflow', a
   await page.goto('/');
   const kael = page.getByRole('navigation', { name: 'Layer navigator' }).getByRole('button', { name: 'Select layer Kael', exact: true });
   await kael.press('Enter');
-  await expect(page.getByRole('region', { name: 'Inspector' }).getByLabel('X position')).toHaveText('-0.65');
+  await expect(page.getByRole('region', { name: 'Inspector', exact: true }).getByLabel('X position')).toHaveText('-0.65');
   await page.getByRole('button', { name: 'Reload document' }).click();
-  await expect(page.getByRole('region', { name: 'Inspector' })).toContainText('Select a layer');
+  await expect(page.getByRole('region', { name: 'Inspector', exact: true })).toContainText('Select a layer');
   for (const width of [1024, 720, 360]) {
     await page.setViewportSize({ width, height: 900 });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
     await expect(kael).toBeVisible();
     await kael.click();
-    await expect(page.getByRole('region', { name: 'Inspector' }).getByLabel('X position')).toHaveText('-0.65');
+    await expect(page.getByRole('region', { name: 'Inspector', exact: true }).getByLabel('X position')).toHaveText('-0.65');
   }
 });
 

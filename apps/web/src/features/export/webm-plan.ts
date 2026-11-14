@@ -47,9 +47,11 @@ export type WebMPlan = ReturnType<typeof planWebM>;
 export function webMFrame(plan: WebMPlan, timeMs: number): string {
   if (!Number.isFinite(timeMs) || timeMs < 0 || timeMs > plan.durationMs) throw new Error('The recording frame time is outside the clip.');
   const content = stageRenderPlan(plan.layers, timeMs, true).map(layer => {
+    if (!layer.svg) throw new Error('The rig could not be evaluated for this recording. Check its source and bindings.');
     const box = layer.svg!.viewBox, p = projectLayer(layer.transform, plan.camera, plan, box);
     if (!p) return '';
-    return `<g transform="translate(${p.x} ${p.y}) rotate(${p.rotation})" opacity="${layer.opacity ?? 1}"><svg x="${-p.width / 2}" y="${-p.height / 2}" width="${p.width}" height="${p.height}" viewBox="${box.x} ${box.y} ${box.width} ${box.height}">${plan.markup.get(layer.id)}</svg></g>`;
+    const markup = layer.rig ? serializeSvg(layer.svg!).replace(/width="[^"]*" height="[^"]*"/, 'width="100%" height="100%" overflow="visible"') : plan.markup.get(layer.id);
+    return `<g transform="translate(${p.x} ${p.y}) rotate(${p.rotation})" opacity="${layer.opacity ?? 1}"><svg x="${-p.width / 2}" y="${-p.height / 2}" width="${p.width}" height="${p.height}" viewBox="${box.x} ${box.y} ${box.width} ${box.height}">${markup}</svg></g>`;
   }).join('');
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${plan.width}" height="${plan.height}" viewBox="0 0 ${plan.width} ${plan.height}" font-size="16" font-weight="400"><rect width="100%" height="100%" fill="#101310"/>${content}</svg>`;
 }

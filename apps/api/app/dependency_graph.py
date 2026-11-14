@@ -38,6 +38,19 @@ def entity_records(document: dict[str, Any]) -> list[tuple[str, str, dict[str, A
                     if keyframe.get("id"):
                         result.append((keyframe["id"], "keyframe", keyframe,
                                        f"{path}/keyframes/{offset}"))
+                rig = entity.get("rig")
+                if rig:
+                    rig_path = f"{path}/rig"
+                    result.append((rig["id"], "rig", rig, rig_path))
+                    for bone_index, bone in enumerate(rig.get("bones", [])):
+                        bone_path = f"{rig_path}/bones/{bone_index}"
+                        result.append((bone["id"], "rig_bone", bone, bone_path))
+                        for frame_index, frame in enumerate(bone.get("keyframes", [])):
+                            result.append((frame["id"], "rig_keyframe", frame,
+                                           f"{bone_path}/keyframes/{frame_index}"))
+                    for slot_index, slot in enumerate(rig.get("attachments", [])):
+                        result.append((slot["id"], "rig_attachment", slot,
+                                       f"{rig_path}/attachments/{slot_index}"))
             if kind == "character":
                 for offset, constraint in enumerate(entity.get("constraints", [])):
                     if constraint.get("id"):
@@ -220,6 +233,17 @@ def build_graph(document: dict[str, Any]) -> DependencyGraph:
             if kind == "layer":
                 for keyframe in entity.get("keyframes", []):
                     edge(keyframe.get("id"), entity_id, "animates")
+                rig = entity.get("rig")
+                if rig:
+                    edge(entity_id, rig["id"], "owns_rig")
+                    edge(entity.get("assetId"), rig["id"], "rig_source")
+                    for bone in rig.get("bones", []):
+                        edge(bone.get("parentId") or rig["id"], bone["id"], "rig_parent")
+                        for frame in bone.get("keyframes", []):
+                            edge(frame["id"], bone["id"], "animates")
+                    for slot in rig.get("attachments", []):
+                        edge(slot.get("boneId"), slot["id"], "rig_attachment")
+                        edge(slot["id"], entity.get("shotId"), "aggregates")
             edge(entity.get("assetId"), entity_id, "uses_asset")
             edge(entity_id, entity.get("shotId"), "aggregates")
             edge(entity.get("characterId"), entity_id, "appears_in")

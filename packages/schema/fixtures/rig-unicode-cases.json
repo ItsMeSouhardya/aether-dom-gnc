@@ -1,0 +1,16 @@
+[
+  {"name":"BOM only","value":"\ufeff","validText":false,"validId":false},
+  {"name":"NEL only","value":"\u0085","validText":false,"validId":false},
+  {"name":"mixed whitespace only","value":" \ufeff\u0085\n","validText":false,"validId":false},
+  {"name":"leading BOM","value":"\ufeffvisible","validText":true,"validId":false},
+  {"name":"trailing BOM","value":"visible\ufeff","validText":true,"validId":false},
+  {"name":"leading NEL","value":"\u0085visible","validText":true,"validId":false},
+  {"name":"trailing NEL","value":"visible\u0085","validText":true,"validId":false},
+  {"name":"trailing newline","value":"visible\n","validText":true,"validId":false},
+  {"name":"surrounding spaces","value":" visible ","validText":true,"validId":false},
+  {"name":"interior BOM and NEL","value":"visible\ufeff\u0085text","validText":true,"validId":true},
+  {"name":"interior newline","value":"visible\ntext","validText":true,"validId":true},
+  {"name":"visible Unicode","value":"Visible 🐈","validText":true,"validId":true},
+  {"name":"reserved prototype","value":"__proto__","validText":true,"validId":false},
+  {"name":"reserved constructor","value":"constructor","validText":true,"validId":false}
+]

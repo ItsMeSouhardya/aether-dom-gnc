@@ -1,0 +1,15 @@
+{
+  "id": "template_rig", "name": "Kael-inspired rig",
+  "bones": [
+    {"id":"template_root","name":"Body","parentId":null,"rest":{"x":100,"y":150,"rotationDeg":0},"rotationDeg":0,"limb":null,"action":null},
+    {"id":"template_head","name":"Head","parentId":"template_root","rest":{"x":0,"y":-50,"rotationDeg":0},"rotationDeg":0,"limb":null,"action":null},
+    {"id":"template_left","name":"Left arm","parentId":"template_root","rest":{"x":-28,"y":-33,"rotationDeg":0},"rotationDeg":0,"limb":"left_arm","action":null},
+    {"id":"template_right","name":"Right arm","parentId":"template_root","rest":{"x":28,"y":-33,"rotationDeg":0},"rotationDeg":0,"limb":"right_arm","action":null}
+  ],
+  "attachments": [
+    {"id":"template_body_slot","name":"Body","boneId":"template_root","elementId":"body"},
+    {"id":"template_head_slot","name":"Head","boneId":"template_head","elementId":"head"},
+    {"id":"template_left_slot","name":"Left arm","boneId":"template_left","elementId":"left_arm"},
+    {"id":"template_right_slot","name":"Right arm","boneId":"template_right","elementId":"right_arm"}
+  ]
+}

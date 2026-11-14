@@ -165,16 +165,16 @@ SVG attachments and pure forward kinematics; retain flat sprites unchanged.
 `linter.py`, `player_manifest.py`; web `features/stage/`, stage inspector, shared
 player/export; new original fixtures under `assets/fixtures/` with provenance.
 
-- [ ] Add shared TS/Python rig validation and pure deterministic FK; reject cycles,
+- [x] Add shared TS/Python rig validation and pure deterministic FK; reject cycles,
   missing parents/slots, duplicate IDs, invalid timing and nonfinite transforms.
-- [ ] Add reviewed pose/keyframe commands, exact undo/reload/fork behavior and
+- [x] Add reviewed pose/keyframe commands, exact undo/reload/fork behavior and
   descendant-only invalidation. Rig angles and runtime matrices remain distinct.
-- [ ] Add bone selection and explicit pose preview/save/cancel. Link supported limb
+- [x] Add bone selection and explicit pose preview/save/cancel. Link supported limb
   actions to existing injury/recovery evidence as soft continuity diagnostics;
   unsupported action semantics are labelled, not guessed from pixels.
-- [ ] Evaluate the same saved pose at a given time in studio, native fallback,
+- [x] Evaluate the same saved pose at a given time in studio, native fallback,
   player, portable reopen and WebM, in16:9 and9:16.
-- [ ] Hand off the minimum rig plus regression evidence before stretching scope.
+- [x] Hand off the minimum rig plus regression evidence before stretching scope.
 
 **Acceptance:** changing an arm parent moves only its descendants/attachments;
 undo restores exact authored state; seek is deterministic; injury evidence remains
@@ -183,6 +183,11 @@ articulated pose is saved, reloaded and exported in a browser test.
 
 **Deadline cut:** advanced skinning and two-bone IK move to optional19. Do not let
 arbitrary-body reconstruction, mesh tooling or a second renderer delay Task12.
+
+**Completed:** 15 November 2026 on `feat/task-11-articulated-rigs`.
+Verification: [Task11 evidence](../docs/tasks/task-11-verification.md).
+1,164 tests passed,5existing host skips;140 final production browser cases passed.
+User handles commit/push; Task12 starts only when requested separately.
 
 ## Task 12 — Integrated presentation build and interactive lore inspection
 

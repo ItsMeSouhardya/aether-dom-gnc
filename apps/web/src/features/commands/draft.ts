@@ -16,6 +16,10 @@ export type CommandOperation = { op: 'setLayerTransform'; targetId: string; args
   | { op: 'editSvgElement'; targetId: string; args: { elementId: string; attributes: Record<string, string> } }
   | { op: 'setLayerKeyframe'; targetId: string; args: { keyframeId: string; timeMs: number; transform: Transform } }
   | { op: 'deleteLayerKeyframe'; targetId: string; args: { keyframeId: string } }
+  | { op: 'importRigLayer'; targetId: string; args: Extract<CdomCommand, { op: 'importRigLayer' }>['args'] }
+  | { op: 'setRigBonePose'; targetId: string; args: Extract<CdomCommand, { op: 'setRigBonePose' }>['args'] }
+  | { op: 'setRigBoneKeyframe'; targetId: string; args: Extract<CdomCommand, { op: 'setRigBoneKeyframe' }>['args'] }
+  | { op: 'deleteRigBoneKeyframe'; targetId: string; args: Extract<CdomCommand, { op: 'deleteRigBoneKeyframe' }>['args'] }
   | { op: 'undo' | 'redo' };
 
 export function parseTransformDraft(draft: TransformDraft):

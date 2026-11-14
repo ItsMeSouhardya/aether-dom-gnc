@@ -21,8 +21,8 @@ describe('API snapshot boundary', () => {
   it('reads the preserved V1 seed from a V4 service that supports V1', async () => {
     respond(fixture, 200, {
       ...health,
-      schemaVersion: '0.4.0',
-      supportedSchemaVersions: ['0.1.0', '0.2.0', '0.3.0', '0.4.0'],
+      schemaVersion: '0.5.0',
+      supportedSchemaVersions: ['0.1.0', '0.2.0', '0.3.0', '0.4.0', '0.5.0'],
     });
     expect((await loadSnapshot()).schemaVersion).toBe('0.1.0');
     respond(fixture, 200, { ...health, schemaVersion: '0.4.0', supportedSchemaVersions: ['0.4.0'] });
