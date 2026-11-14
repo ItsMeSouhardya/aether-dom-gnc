@@ -29,6 +29,10 @@ def validate_command(value: object) -> dict[str, Any]:
     if (not portable_json_within(value, 512 * 1024) or _portable_issues(value)
             or not COMMAND_VALIDATOR.is_valid(value)):
         raise CommandError(422, "INVALID_COMMAND", "Command violates the shared command schema")
+    if isinstance(value, dict) and value.get("op") == "importRigLayer":
+        from app.rigs import validate_rig
+        if validate_rig(value["args"]["rig"]):
+            raise CommandError(422, "INVALID_COMMAND", "Invalid rig")
     return cast(dict[str, Any], value)
 
 
@@ -89,6 +93,10 @@ def apply_operation(
     if op == "setAssetEvidence":
         from app.asset_commands import apply_asset_operation
         return apply_asset_operation(document, operation, asset_store)
+    if op in {"importRigLayer", "setRigBonePose", "setRigBoneKeyframe",
+              "deleteRigBoneKeyframe"}:
+        from app.rig_commands import apply_rig_operation
+        return apply_rig_operation(document, operation, asset_store)
     if op == "restoreStageSnapshot":
         result = copy.deepcopy(operation["args"]["document"])
         ensure_valid_document(result)

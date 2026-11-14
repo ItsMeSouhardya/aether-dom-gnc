@@ -3,6 +3,7 @@ import schema from '../command.schema.json';
 import type { CdomCommand } from './command.generated';
 import type { ValidationIssue } from './index';
 import { hasNonScalarText } from './portable';
+import { validateRig } from './rigs';
 import { portableJsonWithin, validateEvidenceArgs } from './asset-rights';
 
 export type { CdomCommand } from './command.generated';
@@ -13,6 +14,7 @@ export function validateCommand(
   if (!portableJsonWithin(value, 512 * 1024))
     return { valid: false, issues: [{ path: '/', message: 'Command must be bounded portable JSON' }] };
   if (validate(value)) {
+    if (value.op === 'importRigLayer') { const rig = validateRig(value.args.rig); if (!rig.valid) return rig; }
     if (value.op === 'setAssetEvidence' && !validateEvidenceArgs(value.args))
       return { valid: false, issues: [{ path: '/args', message: 'Invalid or oversized evidence' }] };
     if (hasNonScalarText(value))

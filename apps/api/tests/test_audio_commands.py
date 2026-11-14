@@ -46,6 +46,27 @@ def test_stage_edits_preserve_v3_audio_and_undo_presence():
     assert apply_operation(result, inverse)[0] == document
 
 
+def test_tension_preserves_v5_rig_and_exact_undo():
+    document = load_fixture()
+    document["schemaVersion"] = "0.5.0"
+    document["layers"][1]["rig"] = {
+        "id": "rig", "name": "Rig",
+        "bones": [{"id": "bone", "name": "Bone", "parentId": None,
+                   "rest": {"x": 0, "y": 0, "rotationDeg": 0},
+                   "rotationDeg": 0, "limb": None, "action": None}],
+        "attachments": [{"id": "slot", "name": "Slot", "boneId": "bone",
+                         "elementId": "part"}],
+    }
+    assert validate_document(document) == []
+    before = copy.deepcopy(document)
+    result, _, inverse, _ = apply_operation(document, {
+        "op": "setShotTension", "targetId": "shot_rooftop", "args": {"tension": 0.8},
+    })
+    assert result["schemaVersion"] == "0.5.0"
+    assert validate_document(result) == []
+    assert apply_operation(result, inverse)[0] == before
+
+
 @pytest.mark.parametrize("audio", [{}, {"tension": -0.1}, {"tension": 1.1},
                                     {"tension": True}, {"tension": float("inf")},
                                     {"tension": 0.5, "gain": 1}])

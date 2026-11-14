@@ -2,8 +2,9 @@
 
 From the workspace root, create `.venv` and install `apps/api/requirements-dev.txt` as described in the root README. Then run `pnpm dev:api` (or `pnpm --filter api dev`). The shared launcher uses the root virtual environment and resolves paths independently of the current directory.
 
-- `GET /api/v1/health` → `{ "status": "ok", "service": "aether-dom-api", "schemaVersion": "0.3.0", "supportedSchemaVersions": ["0.1.0", "0.2.0", "0.3.0"] }`.
+- `GET /api/v1/health` → `{ "status": "ok", "service": "aether-dom-api", "schemaVersion": "0.5.0", "supportedSchemaVersions": ["0.1.0", "0.2.0", "0.3.0", "0.4.0", "0.5.0"] }`.
 - `GET /api/v1/fixtures/neon-shogun` → the validated supplied document, revision 0.
+- `GET /api/v1/fixtures/articulated-rig` → fixed read-only original SVG/rig template; see Task11 below.
 - `GET /api/v1/projects/proj_neon_shogun/branches/branch_main/document` → `{document, history, analysis}`.
 - `POST /api/v1/projects/proj_neon_shogun/branches/branch_main/commands` → `{document, history, receipt, analysis}`.
 - `GET /api/v1/projects/proj_neon_shogun/branches/branch_main/diagnostics` → revision-bound `DocumentAnalysis`.
@@ -203,7 +204,7 @@ creator/source/license/attribution, use permissions, lineage, voice/likeness con
 and labelled evidence text. The server computes trusted media/proof hashes and
 paths. Clients cannot author those bindings or upload arbitrary file paths.
 Accepted edits use normal audit, invalidation, replay and exact undo/redo; they
-upgrade only the copied snapshot to document0.4. No startup migration is performed.
+upgrade an older copied snapshot to document0.4 and preserve document0.5. No startup migration is performed.
 SVG derivatives retain the original and prior ledger; their changed URI leaves
 the old current binding stale until reviewed. Existing commands preserve0.4.
 
@@ -238,3 +239,24 @@ immutable media/evidence references rather than file bytes. Evidence text appear
 in portable JSON alongside the full project and embedded media. Review sensitive
 content before distributing it. No legal service, PDF/image evidence parser or
 live provider integration is introduced.
+
+## Task11 — Articulated rig commands
+
+Document **0.5.0** adds optional layer-owned rigs; command **0.8.0** adds four human operations through the existing branch commands endpoint:
+
+| Operation / target | Arguments |
+| --- | --- |
+| `importRigLayer` / shot | `{assetId,layerId,name,rights,characterId,svg,rig}` |
+| `setRigBonePose` / bone | `{rotationDeg,action:string|null}` |
+| `setRigBoneKeyframe` / bone | `{keyframeId,timeMs,rotationDeg}` |
+| `deleteRigBoneKeyframe` / bone | `{keyframeId}` |
+
+These use normal expected-revision checks, replay, audit and exact undo/redo. A successful rig edit upgrades only its copied snapshot; undo restores the predecessor's version and optional-field presence. Reads/startup never upgrade documents;0.1–0.4 documents and existing portable wrappers remain readable. Audio/evidence edits preserve0.5. No SQL migration, provider permission or dependency is added.
+
+`GET /api/v1/fixtures/articulated-rig` returns `{templateVersion:'1.0.0',name,svg,rig}` from the fixed checked-in `kael-articulated.svg` and `kael-articulated.rig.json` files with `Cache-Control: no-store`. It creates nothing. The client remaps template entity IDs and submits a normal import command; source group IDs remain stable. The original geometric fixture has four bones/four slots (body, head, left arm, right arm), each sharing one SVG source and rights status. The explicit import uses `project_original`: private preview may use the no-ledger known-rights fallback; broader use still requires asset-evidence review.
+
+Validation requires a character-sprite layer, valid shot/character ownership, one acyclic root hierarchy, globally unique entity IDs and valid source slots. Each attachment names a distinct direct-root SVG `g`; transformed roots and missing/ambiguous bindings reject. Limits are1–32 bones,1–32 attachments and 128 total bone frames per rig. Rest positions are finite within±10000 SVG units; rest/base/frame angles are within±360°. Times are unique per bone, whole nonnegative safe milliseconds within the shot. Source edits and portable acceptance also validate the actual sanitized SVG bindings.
+
+Dependencies register rig/bone/slot/frame IDs and invalidate descendants and output consumers without marking unrelated sibling bones. Explicit `lift` on `left_arm`/`right_arm` uses the layer's character and existing injury/recovery chronology, with bone/constraint/event/scene evidence. Rotation alone implies no action; unknown semantics disclose limited coverage. These remain soft diagnostics.
+
+The shared pure FK evaluator drives native SVG rig scenes and per-frame WebM SVG evaluation in the existing compositor. Portable documents retain authored rigs and unchanged embedded source bytes; evaluated matrices never enter canon or replace source evidence. Both aspects and offline playback use the same saved motion. This slice provides rigid FK only, without IK, skinning or deformation.

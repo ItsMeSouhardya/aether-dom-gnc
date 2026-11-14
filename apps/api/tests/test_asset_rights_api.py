@@ -67,6 +67,33 @@ def fixture_media(tmp_path):
             path.write_bytes(base64.b64decode(entry["dataBase64"]))
 
 
+def test_evidence_preserves_v5_rig_and_exact_undo(tmp_path):
+    from app.commands import apply_operation
+    from app.contracts import load_fixture, validate_document
+    from app.svg_assets import SvgAssetStore
+
+    fixture_media(tmp_path)
+    document = load_fixture()
+    document["schemaVersion"] = "0.5.0"
+    document["layers"][1]["rig"] = {
+        "id": "rig", "name": "Rig",
+        "bones": [{"id": "bone", "name": "Bone", "parentId": None,
+                   "rest": {"x": 0, "y": 0, "rotationDeg": 0},
+                   "rotationDeg": 0, "limb": None, "action": None}],
+        "attachments": [{"id": "slot", "name": "Slot", "boneId": "bone",
+                         "elementId": "part"}],
+    }
+    assert validate_document(document) == []
+    before = copy.deepcopy(document)
+    asset = document["assets"][0]
+    result, _, inverse, _ = apply_operation(document, {
+        "op": "setAssetEvidence", "targetId": asset["id"], "args": args(asset),
+    }, SvgAssetStore(tmp_path))
+    assert result["schemaVersion"] == "0.5.0"
+    assert validate_document(result) == []
+    assert apply_operation(result, inverse)[0] == before
+
+
 def test_review_replay_conflict_noop_history_restart(tmp_path):
     fixture_media(tmp_path)
     db = tmp_path / "rights.db"

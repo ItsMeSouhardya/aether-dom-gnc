@@ -106,6 +106,11 @@ def apply_stage_operation(
             if asset["kind"] != "svg":
                 raise CommandError(422, "INVALID_TARGET", "Only SVG assets can be edited")
             edited = asset_store.edit_svg(asset["uri"], args["elementId"], args["attributes"])
+            from app.rigs import validate_rig_bindings
+            if any(layer.get("rig") and layer.get("assetId") == target
+                   and validate_rig_bindings(layer["rig"], dict(edited["svg"]))
+                   for layer in result["layers"]):
+                raise CommandError(422, "INVALID_RIG", "SVG edit invalidates rig bindings")
             asset.setdefault("sourceUri", asset["uri"])
             asset["uri"] = edited["uri"]
     changed = sorted(set(changed))

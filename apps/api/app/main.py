@@ -1,3 +1,4 @@
+import json
 import re
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
@@ -88,6 +89,14 @@ def create_app(
     def fixture(response: Response) -> dict[str, Any]:
         response.headers["Cache-Control"] = "no-store"
         return load_fixture()
+
+    @app.get("/api/v1/fixtures/articulated-rig")
+    def articulated_fixture(response: Response) -> dict[str, Any]:
+        response.headers["Cache-Control"] = "no-store"
+        root = Path(__file__).resolve().parents[3] / "assets" / "fixtures"
+        return {"templateVersion": "1.0.0", "name": "Kael-inspired rig",
+                "svg": (root / "kael-articulated.svg").read_text(encoding="utf-8"),
+                "rig": json.loads((root / "kael-articulated.rig.json").read_text(encoding="utf-8"))}
 
     @app.get("/api/v1/projects/{project_id}/branches/{branch_id}/document")
     def document(project_id: str, branch_id: str, response: Response) -> dict[str, Any]:

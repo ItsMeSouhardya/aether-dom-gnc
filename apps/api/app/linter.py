@@ -329,6 +329,19 @@ class _Rules:
             shot = self.get(layer.get("shotId"), "shot")
             scene_id = shot.get("sceneId") if shot else None
             anchor = anchors.get(scene_id or "")
+            bones = (layer.get("rig") or {}).get("bones", [])
+            for bone in bones:
+                action, limb = bone.get("action"), bone.get("limb")
+                if (limb is not None and limb not in {"left_arm", "right_arm"}) or (
+                    action is not None
+                    and (action != "lift" or limb not in {"left_arm", "right_arm"})
+                ):
+                    self.emit(
+                        "physical.unsupported_rig_semantics",
+                        bone["id"],
+                        "/action",
+                        "Rig action or limb has unsupported physical semantics.",
+                    )
             for constraint in character.get("constraints", []):
                 constraint_id = constraint["id"]
                 if not _supported_constraint(constraint):
@@ -367,6 +380,33 @@ class _Rules:
                     )
                     continue
                 assert anchor is not None and start is not None
+                for bone in bones:
+                    if (
+                        bone.get("action") == "lift"
+                        and bone.get("limb") == constraint["limb"]
+                        and start["order"] <= anchor
+                        and (end is None or anchor < end["order"])
+                    ):
+                        self.emit(
+                            "CANON_PHYSICAL_CONFLICT",
+                            bone["id"],
+                            "/action",
+                            f"{character['name']} uses an injured "
+                            f"{constraint['limb'].replace('_', ' ')}.",
+                            [
+                                self.evidence(bone["id"], "/action", "Authored rig action: lift"),
+                                self.evidence(constraint_id, "", "Active limb injury constraint"),
+                                self.evidence(
+                                    start["id"], "/order", start.get("description", "Injury starts")
+                                ),
+                                self.evidence(
+                                    scene_id or "",
+                                    "/eventIds",
+                                    f"Shot follows scene event order {anchor}",
+                                ),
+                            ],
+                            token=constraint_id,
+                        )
                 if (
                     pose in POSE_LIMBS
                     and POSE_LIMBS[pose] == constraint["limb"]
@@ -415,13 +455,17 @@ class _Rules:
                 continue
             observed = (observations or {}).get(asset["id"], {})
             if observed.get("error"):
-                self.emit("asset.evidence_integrity", asset["id"], "/provenance",
-                          observed["error"])
+                self.emit("asset.evidence_integrity", asset["id"], "/provenance", observed["error"])
             for use in USES:
                 decision = evaluate_asset_use(asset, use, observed.get("evidence"))
                 if not decision["allowed"]:
-                    self.emit("asset.use_blocked", asset["id"], "/provenance",
-                              use + ": " + "; ".join(decision["reasons"]), token=use)
+                    self.emit(
+                        "asset.use_blocked",
+                        asset["id"],
+                        "/provenance",
+                        use + ": " + "; ".join(decision["reasons"]),
+                        token=use,
+                    )
 
 
 def _supported_constraint(constraint: dict[str, Any]) -> bool:
@@ -471,6 +515,7 @@ def analyze_document(
         ),
         "graph": graph.to_dict(),
         "invalidation": graph.invalidate(
-            changed_entity_ids, build_graph(previous_document) if previous_document else None,
+            changed_entity_ids,
+            build_graph(previous_document) if previous_document else None,
         ),
     }

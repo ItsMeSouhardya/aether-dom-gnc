@@ -1,46 +1,49 @@
 # Current context — AETHER-DOM
 
-Git follow-up: active checkout is now `feat/task-10-asset-rights`. The suggested
-`feat/task-10-asset-provenance` already exists in the separate Antigravity
-`implement_task_eleven` worktree and was preserved. Created the new local branch
-from the existing checkout with all uncommitted changes retained; no commit or
-push. `.superpowers/` is ignored so internal review/checkpoint files are not staged.
-Earlier branch names below describe implementation history.
+Last updated: 15 November 2026 (Asia/Calcutta).
 
-Last updated: 14 November 2026 (Asia/Calcutta).
+## Active phase — Task11 complete
 
-## Active phase — Task10 complete; Task11 planned
+Task11 is complete on `feat/task-11-articulated-rigs`, based on user
+Task10 commit `2874c26af6653be776dc5a00f7fff4ba01c7582f`. No staging, commit or
+push. User owns integration; Antigravity worktree and its branch stay untouched.
+User selected a separate original Kael-inspired rigid SVG rig. Task12+ remains
+separate; use `aether_dom_codex_kit/TASKS PT2.md` for scheduling.
 
-Task10 is complete on14November2026. Final evidence:
-`docs/tasks/task-10-verification.md`; completed plan:
-`docs/superpowers/plans/2026-11-13-task-10-asset-rights.md`. Delivered document0.4/
-command0.7 provenance, immutable text evidence, exact media bindings, audited
-reviewed rights commands, readonly3-use decisions/reasons/attribution, safe draft
-recovery, use-gated portable1.1/offlineWebMcompanion. Policy evaluates recorded
-claims; it is not automatic legal clearance or publication.
+Evidence: `docs/tasks/task-11-verification.md`; approved spec/plan under
+`docs/superpowers/` dated2026-11-14. Plan-owned recovery artifacts and logs are in
+`.superpowers/sdd/2026-11-14-task-11-articulated-rigs/`. Preserve them until user
+commits: there is no Git history of this uncommitted task yet. Two agents reached
+usage limits; continuation recovered existing code/evidence without restarting.
 
-Final checks:1067passed (619API/225schema/223web),5hostskips;17generatedcontracts/
-strictTS/mypy30,lint and finalproductionbuild pass. Production132distinctcases
-verified acrossruns: fullattempt130pass/2strictlocatorfail, then precisealert
-selector correction and2/2affecteddesktop/mobileproductionpasses22.3s. Final
-development9cases pass40.0s with clean output. No falseclaim that the original
-132-case attempt wasgreen. Freshwhole-change review's2Important findings (removed
-target draft and missing effective decisions) are addressed/scopedapproved;
-behavioraloldcomponentRED+exactSHArestore anddesktop/mobileGREEN prove recovery,
-Reloadcompletion andBranches/Exportopen. M1fixturelabel/M4reviewidentitiesfixed;
-M2unusedargument/M3source-density remain nonblocking maintenance only.
+Delivered document0.5/command0.8, shared bounded TS/Python rigid FK, original
+four-bone/four-slot source, reviewed pose/frames and exact undo, acyclic descendant
+invalidation, explicit injury evidence, captured draft recovery, native/player/
+portable/per-frameWebM. Both output orientations are actually decoded. Legacy
+transform retargeting and v5 audio/evidence downgrade bugs are fixed. Whole review
+found Unicode text/ID parity corruption; shared BOM/NEL/strict-end regression and
+explicit patterns fix it. Final scoped review approved I1/docM1, no open Critical
+or Important finding. Three test-maintenance minors remain nonblocking in evidence.
 
-Once-onlydetector[]; bounded visualtwofixes scoredresolved/ship; freshdocumenter
-reconciled source/briefs. AlluserDB/media and806protectedreferencehashes are
-preserved;approved178preservationchecks/sharedresources755files27entries pass.
-No Task11+ code, staging, commit, push, merge or PR. Existingbranch remains
-`feat/task-09-durable-jobs` at3330d8f until the user's commit. Keep ignored Task10
-reports/checkpoints whileuncommitted; noGit history yet contains that evidence.
+Fresh final source checks:1164 passed (673API,265schema,226web),5existing host
+skips; lint/types19generated/mypy32/build pass. Earlier correctedproduction140/140
+and development36/36 passed. Final post-Unicode production140/140 passes in3.7min, exit0.
+Visual review ship,6 raw captures copied to docs/tasks,once-only detector[].
+Fresh documenter updated6userdocs and preserved design authority/tokens.
 
-Next separately requested implementation isTask11 from
-`aether_dom_codex_kit/TASKS PT2.md`. Its first Task10-closeout gate is checked.
-Follow the user's Task11/12 commit handoffs andpost12no-commit/checkpoint policy.
-Earlier implementation checkpoints below are historical, not open work.
+Preservation:178original checks/755shared resources pass;836protected paths,16old
+generated files,8original media all match baseline hashes. Regular project stays
+one branch atrevision28/history28, document SHA256
+`0e6acce2a50cb24f8f14527fddb3667e45d45f4f032f6729a9578bf132fcdbc6`.
+Quick start: restart existing API/web dev servers, open the studio in16:9, use
+Inspector → Add original rig, select its new layer and bone, then Edit bone pose
+→ Review rig change → Save rig change. Animate/seek and Player use saved poses.
+
+RTK remains WAC-blocked; bounded file APIs and approved isolated verification
+processes are established fallback. No dependency, migration, IK/skinning, landing
+or Task12+ changes. Board/plan/evidence are reconciled. Next separate implementation is Task12 from
+TASKS PT2; no Task12 code started. User commits/pushes Task11. Task10 evidence
+remains historical.
 
 ## Previous planning phase — Presentation-focused roadmap
 
@@ -424,3 +427,11 @@ Read this file and the kit's ordered board/master plan before changes; for visua
 The final-review I1/I2 source correction is frozen for controller checks. Missing-target drafts retain their captured asset and proof text for copying until explicit Cancel; read-only inspection displays shared policy decisions with observed media integrity guards. M1 and M4 addressed; M2 and M3 deferred. Focused web 223, schema 225, API 61, web typecheck and isolated Edge desktop/mobile recovery 2 passed. The browser regression was added after implementation and its Reload click was not asserted to complete; see `.superpowers/sdd/2026-11-13-task-10-asset-rights/final-fix-report.md` for exact evidence, limitations and earlier run failures. Controller owns final checks and scoped review. No Task11 work or commit/push.
 
 Follow-up verification supersedes the browser limitations in the preceding milestone: guarded prior-source desktop execution produced a behavioral RED on the missing Creator draft after the Undo revision rendered, then restored the frozen AssetPanel byte-for-byte. The strengthened isolated desktop/mobile GREEN verifies Reload response and rendered revision and opens Branches and Export after Cancel. Full hashes and logs are in the final-fix report. Controller final checks remain pending.
+
+## Task11 stage 3 frozen implementation checkpoint
+
+Task11 stage 3 UI/render/template/draft integration is frozen for independent review and controller checks. Report and exact source snapshot/diff: `.superpowers/sdd/2026-11-14-task-11-articulated-rigs/task-3-report.md`, `task-3-final-state.json`, `task-3-diff.patch`. Fresh isolated Edge focused rig suite passed 6/6 desktop/mobile cases (38.0s), including actual animated SVG matrices, offline studio/player equality, decoded animated WebM, reviewed pose/frame edits and slow/stale/unknown/removed-target recovery. A final keyboard/review-capture main-flow run passed 2/2 (28.2s); new captures are `.impeccable/review/task11-review-desktop.png` and `task11-review-mobile.png`. Focused rig unit tests 3/3, v5 audio/evidence exact-undo regressions 2/2 and web typecheck passed. Earlier browser timing/selection failures and exact limitations are recorded in the report. No commit/push or regular project/media mutation. Controller retains full production/browser/unit/lifecycle/preservation/visual/detector/review/documentation gates; this checkpoint does not mark Task11 complete.
+
+Stage3 review fix1/5 addresses I1: legacy layer editors now reset by selected layer ID while the recoverable RigPanel remains mounted. An isolated regression observed the old transform draft persist across selection (RED), then desktop/mobile selection-no-write and removed-rig-draft recovery passed 4/4 (15.6s); scoped lint and web typecheck passed. Fix freeze/diff is `task-3-fix1-state.json` / `task-3-fix1-diff.patch`, exactly two source files against the controller review baseline. Report includes commands and limits; scoped re-review and controller acceptance remain pending.
+
+Task11 production-test correction checkpoint: the parent full production run (126 passed / 14 failed) exposed ambiguous Inspector test selectors. A read-only audit confirmed the recovery test saved its event then threw before Undo, affecting subsequent injury checks. Exact selectors repair the test path; no injury assertions or production behavior were weakened. Rig acceptance now verifies mobile portrait and desktop landscape player parity, decoded WebM dimensions and changing pixels. Combined isolated Edge development linter/studio/rig run passed all 36 cases (1.5 minutes), scoped lint and diff whitespace checks passed. Freeze/diff is `task-3-production-testfix-state.json` / `task-3-production-testfix-diff.patch`: three test files plus one parent-requested terminal blank-line removal in player-manifest. Fresh scoped review and final full production acceptance remain parent-owned.

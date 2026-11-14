@@ -1,0 +1,217 @@
+{
+  "rig": {
+    "id": "rig",
+    "name": "Rig",
+    "bones": [
+      {
+        "id": "root",
+        "name": "Root",
+        "parentId": null,
+        "rest": {
+          "x": 10,
+          "y": 20,
+          "rotationDeg": 0
+        },
+        "rotationDeg": 90,
+        "limb": null,
+        "action": null
+      },
+      {
+        "id": "child",
+        "name": "Child",
+        "parentId": "root",
+        "rest": {
+          "x": 5,
+          "y": 0,
+          "rotationDeg": 0
+        },
+        "rotationDeg": 0,
+        "limb": null,
+        "action": null
+      }
+    ],
+    "attachments": [
+      {
+        "id": "slot",
+        "name": "Slot",
+        "boneId": "child",
+        "elementId": "part"
+      }
+    ]
+  },
+  "childMatrix": [
+    0,
+    1,
+    -1,
+    0,
+    10,
+    25
+  ],
+  "boundaryCases": [
+    {
+      "kind": "bones",
+      "count": 32,
+      "valid": true
+    },
+    {
+      "kind": "bones",
+      "count": 33,
+      "valid": false
+    },
+    {
+      "kind": "frames",
+      "count": 128,
+      "valid": true
+    },
+    {
+      "kind": "frames",
+      "count": 129,
+      "valid": false
+    },
+    {
+      "kind": "duplicateId",
+      "valid": false
+    },
+    {
+      "kind": "duplicateTime",
+      "valid": false
+    }
+  ],
+  "documentCases": [
+    {
+      "kind": "valid",
+      "valid": true
+    },
+    {
+      "kind": "oldVersion",
+      "valid": false
+    },
+    {
+      "kind": "globalId",
+      "valid": false
+    },
+    {
+      "kind": "shotLimit",
+      "valid": true
+    },
+    {
+      "kind": "pastShot",
+      "valid": false
+    }
+  ],
+  "timingCases": [
+    {
+      "timeMs": 0,
+      "bone": [
+        1,
+        0,
+        0,
+        1,
+        15,
+        20
+      ],
+      "attachment": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "timeMs": 50,
+      "bone": [
+        0.7071067811865476,
+        0.7071067811865476,
+        -0.7071067811865476,
+        0.7071067811865476,
+        13.535533905932738,
+        23.535533905932738
+      ],
+      "attachment": [
+        0.7071067811865476,
+        0.7071067811865476,
+        -0.7071067811865476,
+        0.7071067811865476,
+        17.071067811865476,
+        -1.2132034355964265
+      ]
+    },
+    {
+      "timeMs": 100,
+      "bone": [
+        0,
+        1,
+        -1,
+        0,
+        10,
+        25
+      ],
+      "attachment": [
+        0,
+        1,
+        -1,
+        0,
+        30,
+        10
+      ]
+    },
+    {
+      "timeMs": 200,
+      "bone": [
+        0,
+        1,
+        -1,
+        0,
+        10,
+        25
+      ],
+      "attachment": [
+        0,
+        1,
+        -1,
+        0,
+        30,
+        10
+      ]
+    }
+  ],
+  "svg": {
+    "viewBox": {
+      "x": 2,
+      "y": 3,
+      "width": 100,
+      "height": 100
+    },
+    "root": {
+      "tag": "svg",
+      "id": "svg",
+      "attributes": {},
+      "text": "",
+      "children": [
+        {
+          "tag": "g",
+          "id": "part",
+          "attributes": {},
+          "text": "",
+          "children": []
+        }
+      ]
+    }
+  },
+  "bindingCases": [
+    {
+      "kind": "valid",
+      "valid": true
+    },
+    {
+      "kind": "nestedDuplicate",
+      "valid": false
+    },
+    {
+      "kind": "nonGroupDuplicate",
+      "valid": false
+    }
+  ]
+}

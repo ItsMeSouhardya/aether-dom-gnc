@@ -3,6 +3,7 @@ import schema from '../player-manifest.schema.json';
 import type { PlayerManifestWire } from './player-manifest.generated';
 import { validateCdom, type CdomDocument, type ValidationIssue } from './index';
 import { validateSvgAsset } from './svg';
+import { validateRigBindings } from './rigs';
 import { hasNonScalarText } from './portable';
 import { evaluateAssetUse, type EvidenceBlob, type ExportUse } from './asset-rights';
 import { sha256Bytes, svgPayloadHash } from './asset-hash';
@@ -154,6 +155,10 @@ export function validatePlayerManifest(value:unknown): Result {
       if (entry.kind==='svg') {
         if (entry.svg.assetId!==entry.assetId || entry.svg.uri!==metadata.uri || entry.svg.sourceUri!==(metadata.sourceUri??metadata.uri)) return fail('SVG identity does not match saved metadata.');
         const svg=validateSvgAsset(entry.svg); if (!svg.valid) return svg;
+        for (const layer of canonical.document.layers) {
+          if (layer.assetId === entry.assetId && 'rig' in layer && layer.rig &&
+              validateRigBindings(layer.rig, entry.svg).length) return fail('Rig attachments do not match the SVG source.');
+        }
         payloadHash=svgPayloadHash(entry.svg);
       } else payloadHash=sha256Bytes(new Uint8Array(decodeManifestAudio(entry.dataBase64)));
       if (provenance && (payloadHash!==provenance.current.payloadSha256 || (entry.kind==='audio' && payloadHash!==provenance.current.sha256))) return fail(`Asset ${entry.assetId}: media payload integrity check failed.`);

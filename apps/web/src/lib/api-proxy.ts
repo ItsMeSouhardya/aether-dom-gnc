@@ -1,4 +1,4 @@
-type ApiPath = '/api/v1/health' | '/api/v1/fixtures/neon-shogun';
+type ApiPath = '/api/v1/health' | '/api/v1/fixtures/neon-shogun' | '/api/v1/fixtures/articulated-rig';
 
 // Deliberately not a catch-all proxy: Task 00 exposes two read-only resources.
 export async function proxyApi(path: ApiPath): Promise<Response> {
