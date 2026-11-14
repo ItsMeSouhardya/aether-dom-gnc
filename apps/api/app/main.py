@@ -4,12 +4,14 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Annotated, Any, Literal, cast
 
-from fastapi import Body, FastAPI, Query, Request, Response
+from fastapi import Body, Depends, FastAPI, Query, Request, Response
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
+from app.asset_evidence import inspect_asset
 from app.asset_inventory import inspect_assets
+from app.command_body import command_body
 from app.commands import CommandError
 from app.contracts import SCHEMA_VERSION, SUPPORTED_SCHEMA_VERSIONS, load_fixture
 from app.job_routes import job_router
@@ -45,6 +47,9 @@ def create_app(
             document, changed_entity_ids=changed_ids,
             asset_status=inspect_assets(document, repository.asset_root),
             previous_document=previous,
+            asset_evidence={asset["id"]: inspect_asset(asset, repository.asset_root,
+                                                     repository.asset_store)
+                            for asset in document["assets"] if "provenance" in asset},
         )}
 
     @asynccontextmanager
@@ -133,10 +138,26 @@ def create_app(
             "Cache-Control": "no-store", "Content-Length": str(len(raw)),
         })
 
+    @app.get("/api/v1/projects/{project_id}/branches/{branch_id}/assets/{asset_id}/ledger")
+    def asset_ledger(project_id: str, branch_id: str, asset_id: str,
+                     request: Request, response: Response) -> dict[str, Any]:
+        query = list(request.query_params.multi_items())
+        if (len(query) != 1 or query[0][0] != "revision"
+                or not re.fullmatch(r"0|[1-9][0-9]{0,15}", query[0][1])
+                or int(query[0][1]) > 9007199254740991
+                or any(not re.fullmatch(r"[A-Za-z0-9_-]{1,128}", identity)
+                       for identity in (project_id, branch_id))
+                or asset_id in (".", "..") or not 1 <= len(asset_id) <= 128
+                or any(char in "/\\" or ord(char) < 32 or 0xD800 <= ord(char) <= 0xDFFF
+                       for char in asset_id)):
+            raise CommandError(422, "INVALID_LEDGER_REQUEST", "Invalid ledger identity or revision")
+        response.headers["Cache-Control"] = "no-store"
+        return repository.get_asset_ledger(project_id, branch_id, asset_id, int(query[0][1]))
+
     @app.get("/api/v1/projects/{project_id}/branches/{branch_id}/player-manifest")
     def player_manifest(project_id: str, branch_id: str, request: Request) -> JSONResponse:
         query = list(request.query_params.multi_items())
-        if (any(key not in {"revision", "download"} for key, _ in query)
+        if (any(key not in {"revision", "download", "use"} for key, _ in query)
                 or len({key for key, _ in query}) != len(query)
                 or any(not re.fullmatch(r"[A-Za-z0-9_-]{1,128}", identity)
                        for identity in (project_id, branch_id))):
@@ -144,12 +165,15 @@ def create_app(
                                "Invalid manifest identity or query")
         revision_text = request.query_params.get("revision")
         download = request.query_params.get("download")
+        export_use = request.query_params.get("use", "private_preview")
         if ((revision_text is not None and (not re.fullmatch(r"0|[1-9][0-9]{0,15}", revision_text)
                                            or int(revision_text) > 9007199254740991))
-                or (download is not None and download != "1")):
+                or (download is not None and download != "1")
+                or export_use not in {"private_preview", "public_distribution", "commercial_pack"}):
             raise CommandError(422, "INVALID_MANIFEST_REQUEST", "Invalid revision or download flag")
         manifest = repository.get_player_manifest(
             project_id, branch_id, int(revision_text) if revision_text is not None else None,
+            export_use,
         )
         headers = {"Cache-Control": "no-store"}
         if download:
@@ -161,7 +185,8 @@ def create_app(
 
     @app.post("/api/v1/projects/{project_id}/branches/{branch_id}/commands")
     def execute(
-        project_id: str, branch_id: str, response: Response, payload: Annotated[Any, Body()],
+        project_id: str, branch_id: str, response: Response,
+        payload: Annotated[object, Depends(command_body)],
     ) -> dict[str, Any]:
         response.headers["Cache-Control"] = "no-store"
         return decorate(repository.execute(project_id, branch_id, payload))

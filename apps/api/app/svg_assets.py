@@ -450,7 +450,8 @@ class SvgAssetStore:
         self._check_directories()
         self._check_path(path)
         try:
-            flags = os.O_RDONLY | getattr(os, "O_BINARY", 0) | getattr(os, "O_NOFOLLOW", 0)
+            flags = (os.O_RDONLY | getattr(os, "O_BINARY", 0) | getattr(os, "O_NOFOLLOW", 0)
+                     | getattr(os, "O_NONBLOCK", 0))
             with os.fdopen(os.open(path, flags), "rb") as source:
                 info = os.fstat(source.fileno())
                 if not stat.S_ISREG(info.st_mode) or info.st_size > MAX_BYTES or info.st_nlink > 1:

@@ -30,3 +30,13 @@ it('bounds manifest responses and rejects non-JSON content', async () => {
   vi.stubGlobal('fetch', async () => new Response('{}', { headers: { 'Content-Type': 'application/json', 'Content-Length': String(32 * 1024 * 1024 + 1) } }));
   expect((await proxyPlayerManifest(params, new Request('http://localhost/manifest'))).status).toBe(502);
 });
+
+it('forwards one explicit export use and rejects invalid or duplicate uses', async () => {
+  const fetcher = vi.fn(async () => Response.json({ manifestVersion: '1.1.0' })); vi.stubGlobal('fetch', fetcher);
+  const response = await proxyPlayerManifest(params, new Request('http://localhost/manifest?revision=6&use=public_distribution'));
+  expect(response.status).toBe(200);
+  expect((fetcher.mock.calls[0] as unknown as [URL])[0].search).toBe('?revision=6&use=public_distribution');
+  expect((await proxyPlayerManifest(params, new Request('http://localhost/manifest?use=unknown'))).status).toBe(422);
+  expect((await proxyPlayerManifest(params, new Request('http://localhost/manifest?use=private_preview&use=commercial_pack'))).status).toBe(422);
+  expect(fetcher).toHaveBeenCalledOnce();
+});

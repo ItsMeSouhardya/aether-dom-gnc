@@ -14,7 +14,8 @@ def apply_audio_operation(
     shot = next((item for item in result["shots"] if item["id"] == target), None)
     if shot is None:
         raise CommandError(404, "TARGET_NOT_FOUND", "The target shot does not exist")
-    result["schemaVersion"] = "0.3.0"
+    if result["schemaVersion"] != "0.4.0":
+        result["schemaVersion"] = "0.3.0"
     shot["audio"] = {"tension": operation["args"]["tension"]}
     ensure_valid_document(result)
     changed = [target]

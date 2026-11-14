@@ -1,6 +1,33 @@
-# Studio surface — Tasks 01–09
+# Studio surface — Tasks 01–10
 
 Mode: **Operate**. This extends the selected Afterlight identity into the product; the landing design remains independent.
+
+Task10: Asset evidence extends the inspector using the existing charcoal/sage
+forms. Opening it pauses preview and closes competing panels. Asset selection
+includes visual/audio references without widening the crowded header. Show exact
+saved revision, original/current bindings, existing rights, concrete policy reasons
+and required attribution. Missing proof can be replaced; missing/corrupt originals
+need restore guidance. Never present recorded permission as verified ownership.
+
+Edit evidence captures asset/project/branch/revision and expected media URIs.
+Native labelled controls group creator/source, license/attribution, text evidence,
+permissions, optional lineage and voice/likeness consent. Consent proof choices
+use readable evidence labels. Disclose that evidence travels with portable files.
+Review changes groups the revision notice, rights and provenance, permissions,
+previous provenance, consent and lineage, and evidence into readable sections before
+Save evidence. All draft controls are disabled during a save to protect the captured
+submission. Typing, inspection and Cancel make no writes. A dirty draft retains
+its captured identity across saved head changes. If the asset disappears, retain draft
+text for copying; Cancel restores navigation. Stale/uncertain saves use Reload
+latest. Long text/hashes wrap and narrow forms remain one column with44px controls.
+
+Export JSON explicitly names Private preview, Public distribution or Commercial
+pack, the captured revision, attribution and blocking recovery before download.
+Review asset evidence takes a blocking asset back to its inspector. Export choices
+remain temporary and never grant permission, mutate canon or publish. Keep the
+stage usable at short desktop heights; use the inspector rather than adding a row
+of header fields. Loading, retry, empty, disabled and permission states stay in
+the established form vocabulary.
 
 Task09: Jobs opens its own inspector beside Proposals, pauses preview and closes competing inspectors. Reuse charcoal/sage/Manrope, existing form rows and proposal review controls. Queue a selected layer/shot scenario with explicit scope/operation/base revision; show the deterministic mock and zero cost plainly. Durable recent history and selected-job details expose status, real phase progress, attempts, recorded cost and recoverable errors. Queued work explains the separate `pnpm jobs:worker` command. Native progress is labelled and supplemented with text; no decorative animation or fabricated time estimate.
 

@@ -1,0 +1,3 @@
+# Archived source checksums must survive checkout on every platform.
+agent_resources/plugins/** -text
+agent_resources/environment/RTK.md -text

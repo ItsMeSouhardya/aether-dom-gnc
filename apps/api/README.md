@@ -194,3 +194,47 @@ states and claim selection fetches one eligible record. Terminal historical
 artifacts are not fetched/deserialized on every poll or idle worker tick.
 No browser endpoint can run/claim a worker. This task supports only the existing
 deterministic proposal mock; it does not prove a live paid-provider integration.
+
+## Task10 — Revision-owned asset evidence
+
+Human command0.7 `setAssetEvidence` targets an existing asset and captures its
+expected source/current URIs and branch revision. Arguments contain rights,
+creator/source/license/attribution, use permissions, lineage, voice/likeness consent
+and labelled evidence text. The server computes trusted media/proof hashes and
+paths. Clients cannot author those bindings or upload arbitrary file paths.
+Accepted edits use normal audit, invalidation, replay and exact undo/redo; they
+upgrade only the copied snapshot to document0.4. No startup migration is performed.
+SVG derivatives retain the original and prior ledger; their changed URI leaves
+the old current binding stale until reviewed. Existing commands preserve0.4.
+
+`GET /api/v1/projects/{project}/branches/{branch}/assets/{asset}/ledger?revision=N`
+requires one explicit saved revision and returns matching identities plus
+`original`, `current`, `evidence` and nullable `error`. Missing/invalid media can
+produce partial observations and an actionable error without blocking other
+editing. Only evidence referenced by that revision is readable. Responses/errors
+use `Cache-Control: no-store`; no arbitrary-path evidence resource exists.
+
+Evidence is bounded immutable UTF-8 text under `assets/evidence/<sha256>.txt`,
+excluded from Git as runtime data. At most8 texts,64KiB each and256KiB total per
+asset are accepted. Command bodies are streamed with a512KiB limit and strict
+JSON/Unicode/depth checks before domain work. Writes use verified directory/file
+handles, exclusive temporary creation and no-replace publication; unsafe links,
+redirected directories, hardlinks, corrupt winners and nonregular files reject.
+Windows uses rooted native handles after its volume anchor; POSIX uses directory
+descriptors. Unreferenced immutable blobs may remain after a rolled-back command;
+they cannot be read through the branch API.
+
+The player-manifest resource also accepts `use=private_preview` (default),
+`public_distribution` or `commercial_pack`. Any included ledger or broader use
+produces wrapper1.1 with exact proof text and recorded use; legacy private bundles
+without included ledgers retain1.0. Server assembly and offline validation both
+enforce policy and bindings. Blocked responses include the requested use and
+affected asset identity where available; they report the first blocking decision,
+not an exhaustive inventory. Diagnostics expose missing/stale/incompatible evidence.
+Changing a permission neither establishes ownership nor publishes anything.
+
+Retain `assets/` together with the database when backing up: snapshots contain
+immutable media/evidence references rather than file bytes. Evidence text appears
+in portable JSON alongside the full project and embedded media. Review sensitive
+content before distributing it. No legal service, PDF/image evidence parser or
+live provider integration is introduced.

@@ -9,6 +9,7 @@ export type CommandOperation = { op: 'setLayerTransform'; targetId: string; args
   | { op: 'setShotCamera'; targetId: string; args: { camera: CdomDocument['shots'][number]['camera'] } }
   | { op: 'setShotTension'; targetId: string; args: { tension: number } }
   | { op: 'setShotLayoutOverride'; targetId: string; args: { aspectRatio: '9:16'; layerTransforms: Record<string, Transform> | null } }
+  | { op: 'setAssetEvidence'; targetId: string; args: Extract<CdomCommand, { op: 'setAssetEvidence' }>['args'] }
   | { op: 'approveProposal'; targetId: string; args: Record<string, never> }
   | { op: 'setLayerAppearance'; targetId: string; args: { visible?: boolean; opacity?: number } }
   | { op: 'importSvgLayer'; targetId: string; args: { assetId: string; layerId: string; name: string; rights: 'project_original' | 'licensed' | 'unknown'; svg: string } }

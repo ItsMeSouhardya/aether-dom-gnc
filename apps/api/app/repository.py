@@ -155,6 +155,7 @@ class Repository:
 
     def get_player_manifest(
         self, project_id: str, branch_id: str, revision: int | None = None,
+        export_use: str = "private_preview",
     ) -> dict[str, Any]:
         from app.player_manifest import build_player_manifest
         if revision is not None and (isinstance(revision, bool) or not isinstance(revision, int)
@@ -164,7 +165,22 @@ class Repository:
         document = self.get(project_id, branch_id)["document"] if revision is None else (
             self.revision_document(project_id, branch_id, revision)
         )
-        return build_player_manifest(document, self.asset_root, self.asset_store)
+        return build_player_manifest(document, self.asset_root, self.asset_store, export_use)
+
+    def get_asset_ledger(
+        self, project_id: str, branch_id: str, asset_id: str, revision: int,
+    ) -> dict[str, Any]:
+        from app.asset_evidence import inspect_asset
+        if (isinstance(revision, bool) or not isinstance(revision, int)
+                or not 0 <= revision <= 9007199254740991):
+            raise CommandError(422, "INVALID_REVISION",
+                               "Revision must be a nonnegative safe integer")
+        document = self.revision_document(project_id, branch_id, revision)
+        assets = [asset for asset in document["assets"] if asset["id"] == asset_id]
+        if len(assets) != 1:
+            raise CommandError(404, "ASSET_NOT_FOUND", "The asset does not exist at this revision")
+        return {"projectId": project_id, "branchId": branch_id, "revision": revision,
+                "assetId": asset_id, **inspect_asset(assets[0], self.asset_root, self.asset_store)}
 
     def get_audio_asset(
         self, project_id: str, branch_id: str, asset_id: str, revision: int | None = None,

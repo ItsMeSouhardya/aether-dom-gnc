@@ -36,6 +36,20 @@ Task08 adds human-created isolated forks, URL-based branch switching, read-only 
 
 Task09 adds durable zero-cost local mock proposal jobs, a separate worker and a Jobs inspector. SQLite side-table leases fence late workers; cancellation, bounded retries and expired-lease recovery preserve the captured project/branch/revision and selected-node input hash. Completion stages a reviewable proposal and immutable initial artifact digest. The current review decision remains visible after approval/rejection. Job lifecycle never edits canon; only the existing human approval command can apply a fresh scoped result. The worker must be started explicitly; paid providers and generated media remain future tasks.
 
+Task10 adds revision-owned asset evidence: immutable original/current hashes,
+creator/source/license/attribution, recorded use permissions, provider/model lineage
+and applicable voice/likeness consent. Human evidence corrections are reviewed,
+audited and undoable. A ledger's restrictions govern private preview as well as
+public/commercial use; legacy known-rights private preview remains available only
+without a ledger. Missing, stale or incompatible evidence blocks the requested
+export and exposes recovery guidance. Portable bundles retain exact evidence and
+recompute policy offline. Evidence records express the creator's assertions;
+permission checks do not establish ownership, legal clearance or publication.
+Text evidence is included with the full project and media in portable JSON.
+WebM carries no embedded ledger; its matching source/evidence JSON can be retained
+separately and privately. Marketplace transactions and public publishing remain
+later tasks.
+
 ## Brand Commitments
 
 AETHER-DOM. Premium, modern, soothing typography. The user supplied ten references in `design_inspirations/` and requested three distinct landing page versions with an in-page switcher before choosing the final direction.

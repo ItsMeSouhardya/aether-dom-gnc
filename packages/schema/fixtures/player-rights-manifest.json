@@ -1,0 +1,311 @@
+{
+  "manifestVersion": "1.1.0",
+  "document": {
+    "schemaVersion": "0.4.0",
+    "project": {
+      "id": "proj_neon_shogun",
+      "title": "Neon Shogun \u00e2\u20ac\u201d Rooftop",
+      "description": "Offline demo story; all characters fictional",
+      "revision": 0,
+      "activeBranchId": "branch_main"
+    },
+    "branches": [
+      {
+        "id": "branch_main",
+        "name": "Main Canon",
+        "parentId": null,
+        "baseRevision": 0,
+        "headRevision": 0
+      }
+    ],
+    "characters": [
+      {
+        "id": "char_kael",
+        "name": "Kael",
+        "traits": {
+          "paranoia": 0.75,
+          "loyalty": 0.2,
+          "aggression": 0.55
+        },
+        "dialect": {
+          "style": "Low-Sector Cyber-Cant",
+          "forbiddenTerms": [
+            "kindly",
+            "your excellency"
+          ]
+        },
+        "constraints": [
+          {
+            "id": "constraint_kael_left_arm",
+            "type": "limb_injury",
+            "limb": "left_arm",
+            "effectiveFromEventId": "event_injury",
+            "resolvedByEventId": null
+          }
+        ]
+      },
+      {
+        "id": "char_vance",
+        "name": "Vance",
+        "traits": {
+          "paranoia": 0.32,
+          "loyalty": 0.1,
+          "aggression": 0.35
+        },
+        "dialect": {
+          "style": "Formal-Corporate",
+          "forbiddenTerms": []
+        },
+        "constraints": []
+      }
+    ],
+    "events": [
+      {
+        "id": "event_injury",
+        "sceneId": "scene_prologue",
+        "order": 0,
+        "kind": "physical_change",
+        "description": "Kael injures his left arm during the escape."
+      },
+      {
+        "id": "event_betrayal",
+        "sceneId": "scene_rooftop",
+        "order": 1,
+        "kind": "revelation",
+        "description": "Kael learns Vance betrayed the syndicate."
+      }
+    ],
+    "scenes": [
+      {
+        "id": "scene_prologue",
+        "title": "The Escape",
+        "eventIds": [
+          "event_injury"
+        ],
+        "shotIds": []
+      },
+      {
+        "id": "scene_rooftop",
+        "title": "Rooftop Confrontation",
+        "eventIds": [
+          "event_betrayal"
+        ],
+        "shotIds": [
+          "shot_rooftop"
+        ]
+      }
+    ],
+    "shots": [
+      {
+        "id": "shot_rooftop",
+        "sceneId": "scene_rooftop",
+        "durationMs": 16000,
+        "camera": {
+          "aspectRatio": "16:9",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 5
+          },
+          "fovDeg": 45
+        },
+        "layerIds": [
+          "layer_rooftops"
+        ],
+        "audioTrackIds": [
+          "track_ambient"
+        ],
+        "layoutOverrides": {}
+      }
+    ],
+    "assets": [
+      {
+        "id": "asset_rooftops",
+        "kind": "svg",
+        "uri": "assets/fixtures/rooftops.svg",
+        "rights": "project_original",
+        "provenance": {
+          "ledgerVersion": "1.0.0",
+          "original": {
+            "uri": "assets/fixtures/rooftops.svg",
+            "sha256": "e427974a2ac1cad294138b02b8a71ffd6a93c9353c674cc11cac7da582b0e756"
+          },
+          "current": {
+            "uri": "assets/fixtures/rooftops.svg",
+            "sha256": "e427974a2ac1cad294138b02b8a71ffd6a93c9353c674cc11cac7da582b0e756",
+            "payloadSha256": "d2d7b9e6d4270b18f4e877dfac1cc5c7701d65c4c10d22262a9532a66d88adf4"
+          },
+          "creator": "Ada",
+          "source": "Creator drawing",
+          "license": "Creator permission statement",
+          "attribution": "Art by Ada",
+          "permissions": {
+            "private_preview": "allowed",
+            "public_distribution": "allowed",
+            "commercial_pack": "allowed"
+          },
+          "evidence": [
+            {
+              "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+              "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+              "label": "Creator statement"
+            }
+          ],
+          "lineage": null,
+          "consents": [
+            {
+              "kind": "voice",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            },
+            {
+              "kind": "likeness",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "asset_ambient",
+        "kind": "audio",
+        "uri": "assets/fixtures/ambient.wav",
+        "rights": "project_original",
+        "provenance": {
+          "ledgerVersion": "1.0.0",
+          "original": {
+            "uri": "assets/fixtures/ambient.wav",
+            "sha256": "4aebda3a657a0d8f532d11ceacb1679081d7bdf7d7d301a53f1096af3580be91"
+          },
+          "current": {
+            "uri": "assets/fixtures/ambient.wav",
+            "sha256": "4aebda3a657a0d8f532d11ceacb1679081d7bdf7d7d301a53f1096af3580be91",
+            "payloadSha256": "4aebda3a657a0d8f532d11ceacb1679081d7bdf7d7d301a53f1096af3580be91"
+          },
+          "creator": "Ada",
+          "source": "Creator drawing",
+          "license": "Creator permission statement",
+          "attribution": "Art by Ada",
+          "permissions": {
+            "private_preview": "allowed",
+            "public_distribution": "allowed",
+            "commercial_pack": "allowed"
+          },
+          "evidence": [
+            {
+              "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+              "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+              "label": "Creator statement"
+            }
+          ],
+          "lineage": null,
+          "consents": [
+            {
+              "kind": "voice",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            },
+            {
+              "kind": "likeness",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            }
+          ]
+        }
+      }
+    ],
+    "layers": [
+      {
+        "id": "layer_rooftops",
+        "shotId": "shot_rooftop",
+        "kind": "svg_plane",
+        "assetId": "asset_rooftops",
+        "characterId": null,
+        "pose": null,
+        "transform": {
+          "x": 0,
+          "y": 0,
+          "z": -2,
+          "scale": 1,
+          "rotationDeg": 0
+        }
+      }
+    ],
+    "audioTracks": [
+      {
+        "id": "track_ambient",
+        "shotId": "shot_rooftop",
+        "kind": "music",
+        "assetId": "asset_ambient",
+        "gainDb": -4,
+        "boundLayerId": null
+      }
+    ],
+    "bindings": [],
+    "provenance": {
+      "createdBy": "fixture",
+      "generatedAssets": false,
+      "notes": "Intentional continuity issue: Kael has an injured left arm but the pose lifts with it."
+    }
+  },
+  "assets": [
+    {
+      "assetId": "asset_rooftops",
+      "kind": "svg",
+      "svg": {
+        "assetId": "asset_rooftops",
+        "uri": "assets/fixtures/rooftops.svg",
+        "sourceUri": "assets/fixtures/rooftops.svg",
+        "viewBox": {
+          "x": 0.0,
+          "y": 0.0,
+          "width": 10.0,
+          "height": 10.0
+        },
+        "root": {
+          "tag": "svg",
+          "id": "svg-node-1",
+          "attributes": {},
+          "text": "",
+          "children": [
+            {
+              "tag": "rect",
+              "id": "svg-node-2",
+              "attributes": {
+                "width": "10"
+              },
+              "text": "",
+              "children": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "assetId": "asset_ambient",
+      "kind": "audio",
+      "mimeType": "audio/wav",
+      "dataBase64": "UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQIAAAAAAA=="
+    }
+  ],
+  "exportUse": "public_distribution",
+  "evidence": [
+    {
+      "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+      "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+      "text": "Creator statement: I made this asset and permit all three uses."
+    }
+  ]
+}

@@ -14,6 +14,9 @@ test('records a real portrait WebM with embedded audio and playable video bytes'
   await page.getByLabel('WebM clip duration').fill('1');
   await page.getByRole('button', { name: 'Record WebM', exact: true }).click();
   const link = page.getByRole('link', { name: /Download WebM/ }); await expect(link).toBeVisible({ timeout: 20000 });
+  const source = page.getByRole('link', { name: 'Source + evidence JSON' }); await expect(source).toBeVisible();
+  expect(await source.getAttribute('download')).toBe('source-and-evidence.cdom.json');
+  await page.screenshot({ path: `.impeccable/review/task10-player-${testInfo.project.name}.png`, fullPage: true });
   const url = await link.getAttribute('href');
   const metadata = await page.evaluate(async url => {
     const video = document.createElement('video'); video.src = url!; video.muted = true; document.body.append(video);

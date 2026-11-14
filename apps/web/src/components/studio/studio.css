@@ -389,3 +389,18 @@
 .job-panel .job-details { display: grid; gap: 12px; }
 .job-panel .proposal-form > .panel-note { margin-block: 8px; }
 .job-panel > .lore-editor { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--line); }
+
+.studio .lore-editor .asset-checkbox { flex-direction: row; align-items: center; gap: 10px; min-height: 44px; margin-top: 0; }
+.studio .lore-editor .asset-checkbox input[type=checkbox] { width: 18px; height: 18px; min-height: 0; flex: 0 0 18px; padding: 0; accent-color: var(--accent); }
+.export-use-field { display: flex; flex-direction: column; gap: 6px; color: var(--muted); font-size: .75rem; }
+.studio .export-use-field select { width: 100%; min-height: 44px; padding: 8px; border: 1px solid #7c8b6e; border-radius: 3px; color: var(--fg); background: #11150e; font: inherit; }
+
+.asset-bindings dd { margin: 0 0 10px; overflow-wrap: anywhere; }
+.asset-bindings dt { color: var(--muted); }
+
+.asset-draft-controls { display: contents; }
+
+.asset-review { display: grid; gap: 16px; }
+.asset-review h3, .asset-review h4, .asset-review p { margin: 0; }
+.asset-review-group { display: grid; gap: 8px; overflow-wrap: anywhere; }
+.asset-review-group h4 { font-size: .8125rem; font-weight: 600; }

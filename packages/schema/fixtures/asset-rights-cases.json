@@ -1,0 +1,1963 @@
+{
+  "provenance": {
+    "ledgerVersion": "1.0.0",
+    "original": {
+      "uri": "assets/original.svg",
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "current": {
+      "uri": "assets/current.svg",
+      "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "payloadSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+    },
+    "creator": "Ada",
+    "source": "Creator drawing",
+    "license": "Creator permission statement",
+    "attribution": "Art by Ada",
+    "permissions": {
+      "private_preview": "allowed",
+      "public_distribution": "allowed",
+      "commercial_pack": "allowed"
+    },
+    "evidence": [
+      {
+        "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+        "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+        "label": "Creator statement"
+      }
+    ],
+    "lineage": null,
+    "consents": [
+      {
+        "kind": "voice",
+        "applicability": "not_applicable",
+        "subject": "",
+        "status": "unknown",
+        "uses": [],
+        "evidenceHashes": []
+      },
+      {
+        "kind": "likeness",
+        "applicability": "not_applicable",
+        "subject": "",
+        "status": "unknown",
+        "uses": [],
+        "evidenceHashes": []
+      }
+    ]
+  },
+  "blob": {
+    "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+    "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+    "text": "Creator statement: I made this asset and permit all three uses."
+  },
+  "asset": {
+    "id": "asset_1",
+    "kind": "svg",
+    "uri": "assets/current.svg",
+    "sourceUri": "assets/original.svg",
+    "rights": "project_original"
+  },
+  "cases": [
+    {
+      "name": "legacy private preview",
+      "use": "private_preview",
+      "allowed": true,
+      "asset": {
+        "id": "asset_1",
+        "kind": "svg",
+        "uri": "assets/current.svg",
+        "sourceUri": "assets/original.svg",
+        "rights": "project_original"
+      },
+      "evidence": [
+        {
+          "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+          "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+          "text": "Creator statement: I made this asset and permit all three uses."
+        }
+      ]
+    },
+    {
+      "name": "legacy public blocked",
+      "use": "public_distribution",
+      "allowed": false,
+      "asset": {
+        "id": "asset_1",
+        "kind": "svg",
+        "uri": "assets/current.svg",
+        "sourceUri": "assets/original.svg",
+        "rights": "project_original"
+      },
+      "evidence": [
+        {
+          "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+          "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+          "text": "Creator statement: I made this asset and permit all three uses."
+        }
+      ]
+    },
+    {
+      "name": "legacy commercial blocked",
+      "use": "commercial_pack",
+      "allowed": false,
+      "asset": {
+        "id": "asset_1",
+        "kind": "svg",
+        "uri": "assets/current.svg",
+        "sourceUri": "assets/original.svg",
+        "rights": "project_original"
+      },
+      "evidence": [
+        {
+          "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+          "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+          "text": "Creator statement: I made this asset and permit all three uses."
+        }
+      ]
+    },
+    {
+      "name": "allowed ledger public",
+      "use": "public_distribution",
+      "allowed": true,
+      "asset": {
+        "id": "asset_1",
+        "kind": "svg",
+        "uri": "assets/current.svg",
+        "sourceUri": "assets/original.svg",
+        "rights": "project_original",
+        "provenance": {
+          "ledgerVersion": "1.0.0",
+          "original": {
+            "uri": "assets/original.svg",
+            "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          "current": {
+            "uri": "assets/current.svg",
+            "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "payloadSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+          },
+          "creator": "Ada",
+          "source": "Creator drawing",
+          "license": "Creator permission statement",
+          "attribution": "Art by Ada",
+          "permissions": {
+            "private_preview": "allowed",
+            "public_distribution": "allowed",
+            "commercial_pack": "allowed"
+          },
+          "evidence": [
+            {
+              "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+              "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+              "label": "Creator statement"
+            }
+          ],
+          "lineage": null,
+          "consents": [
+            {
+              "kind": "voice",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            },
+            {
+              "kind": "likeness",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            }
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+          "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+          "text": "Creator statement: I made this asset and permit all three uses."
+        }
+      ]
+    },
+    {
+      "name": "allowed ledger commercial",
+      "use": "commercial_pack",
+      "allowed": true,
+      "asset": {
+        "id": "asset_1",
+        "kind": "svg",
+        "uri": "assets/current.svg",
+        "sourceUri": "assets/original.svg",
+        "rights": "project_original",
+        "provenance": {
+          "ledgerVersion": "1.0.0",
+          "original": {
+            "uri": "assets/original.svg",
+            "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          "current": {
+            "uri": "assets/current.svg",
+            "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "payloadSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+          },
+          "creator": "Ada",
+          "source": "Creator drawing",
+          "license": "Creator permission statement",
+          "attribution": "Art by Ada",
+          "permissions": {
+            "private_preview": "allowed",
+            "public_distribution": "allowed",
+            "commercial_pack": "allowed"
+          },
+          "evidence": [
+            {
+              "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+              "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+              "label": "Creator statement"
+            }
+          ],
+          "lineage": null,
+          "consents": [
+            {
+              "kind": "voice",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            },
+            {
+              "kind": "likeness",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            }
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+          "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+          "text": "Creator statement: I made this asset and permit all three uses."
+        }
+      ]
+    },
+    {
+      "name": "private denial overrides label",
+      "use": "private_preview",
+      "allowed": false,
+      "asset": {
+        "id": "asset_1",
+        "kind": "svg",
+        "uri": "assets/current.svg",
+        "sourceUri": "assets/original.svg",
+        "rights": "project_original",
+        "provenance": {
+          "ledgerVersion": "1.0.0",
+          "original": {
+            "uri": "assets/original.svg",
+            "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          "current": {
+            "uri": "assets/current.svg",
+            "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "payloadSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+          },
+          "creator": "Ada",
+          "source": "Creator drawing",
+          "license": "Creator permission statement",
+          "attribution": "Art by Ada",
+          "permissions": {
+            "private_preview": "denied",
+            "public_distribution": "allowed",
+            "commercial_pack": "allowed"
+          },
+          "evidence": [
+            {
+              "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+              "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+              "label": "Creator statement"
+            }
+          ],
+          "lineage": null,
+          "consents": [
+            {
+              "kind": "voice",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            },
+            {
+              "kind": "likeness",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            }
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+          "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+          "text": "Creator statement: I made this asset and permit all three uses."
+        }
+      ]
+    },
+    {
+      "name": "unknown label blocked",
+      "use": "public_distribution",
+      "allowed": false,
+      "asset": {
+        "id": "asset_1",
+        "kind": "svg",
+        "uri": "assets/current.svg",
+        "sourceUri": "assets/original.svg",
+        "rights": "unknown",
+        "provenance": {
+          "ledgerVersion": "1.0.0",
+          "original": {
+            "uri": "assets/original.svg",
+            "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          "current": {
+            "uri": "assets/current.svg",
+            "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "payloadSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+          },
+          "creator": "Ada",
+          "source": "Creator drawing",
+          "license": "Creator permission statement",
+          "attribution": "Art by Ada",
+          "permissions": {
+            "private_preview": "allowed",
+            "public_distribution": "allowed",
+            "commercial_pack": "allowed"
+          },
+          "evidence": [
+            {
+              "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+              "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+              "label": "Creator statement"
+            }
+          ],
+          "lineage": null,
+          "consents": [
+            {
+              "kind": "voice",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            },
+            {
+              "kind": "likeness",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            }
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+          "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+          "text": "Creator statement: I made this asset and permit all three uses."
+        }
+      ]
+    },
+    {
+      "name": "unknown private permission",
+      "use": "private_preview",
+      "allowed": false,
+      "asset": {
+        "id": "asset_1",
+        "kind": "svg",
+        "uri": "assets/current.svg",
+        "sourceUri": "assets/original.svg",
+        "rights": "project_original",
+        "provenance": {
+          "ledgerVersion": "1.0.0",
+          "original": {
+            "uri": "assets/original.svg",
+            "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          "current": {
+            "uri": "assets/current.svg",
+            "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "payloadSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+          },
+          "creator": "Ada",
+          "source": "Creator drawing",
+          "license": "Creator permission statement",
+          "attribution": "Art by Ada",
+          "permissions": {
+            "private_preview": "unknown",
+            "public_distribution": "allowed",
+            "commercial_pack": "allowed"
+          },
+          "evidence": [
+            {
+              "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+              "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+              "label": "Creator statement"
+            }
+          ],
+          "lineage": null,
+          "consents": [
+            {
+              "kind": "voice",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            },
+            {
+              "kind": "likeness",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            }
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+          "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+          "text": "Creator statement: I made this asset and permit all three uses."
+        }
+      ]
+    },
+    {
+      "name": "stale current URI",
+      "use": "private_preview",
+      "allowed": false,
+      "asset": {
+        "id": "asset_1",
+        "kind": "svg",
+        "uri": "assets/changed.svg",
+        "sourceUri": "assets/original.svg",
+        "rights": "project_original",
+        "provenance": {
+          "ledgerVersion": "1.0.0",
+          "original": {
+            "uri": "assets/original.svg",
+            "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          "current": {
+            "uri": "assets/current.svg",
+            "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "payloadSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+          },
+          "creator": "Ada",
+          "source": "Creator drawing",
+          "license": "Creator permission statement",
+          "attribution": "Art by Ada",
+          "permissions": {
+            "private_preview": "allowed",
+            "public_distribution": "allowed",
+            "commercial_pack": "allowed"
+          },
+          "evidence": [
+            {
+              "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+              "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+              "label": "Creator statement"
+            }
+          ],
+          "lineage": null,
+          "consents": [
+            {
+              "kind": "voice",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            },
+            {
+              "kind": "likeness",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            }
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+          "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+          "text": "Creator statement: I made this asset and permit all three uses."
+        }
+      ]
+    },
+    {
+      "name": "stale source URI",
+      "use": "private_preview",
+      "allowed": false,
+      "asset": {
+        "id": "asset_1",
+        "kind": "svg",
+        "uri": "assets/current.svg",
+        "sourceUri": "assets/changed-original.svg",
+        "rights": "project_original",
+        "provenance": {
+          "ledgerVersion": "1.0.0",
+          "original": {
+            "uri": "assets/original.svg",
+            "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          "current": {
+            "uri": "assets/current.svg",
+            "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "payloadSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+          },
+          "creator": "Ada",
+          "source": "Creator drawing",
+          "license": "Creator permission statement",
+          "attribution": "Art by Ada",
+          "permissions": {
+            "private_preview": "allowed",
+            "public_distribution": "allowed",
+            "commercial_pack": "allowed"
+          },
+          "evidence": [
+            {
+              "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+              "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+              "label": "Creator statement"
+            }
+          ],
+          "lineage": null,
+          "consents": [
+            {
+              "kind": "voice",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            },
+            {
+              "kind": "likeness",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            }
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+          "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+          "text": "Creator statement: I made this asset and permit all three uses."
+        }
+      ]
+    },
+    {
+      "name": "tampered evidence",
+      "use": "public_distribution",
+      "allowed": false,
+      "asset": {
+        "id": "asset_1",
+        "kind": "svg",
+        "uri": "assets/current.svg",
+        "sourceUri": "assets/original.svg",
+        "rights": "project_original",
+        "provenance": {
+          "ledgerVersion": "1.0.0",
+          "original": {
+            "uri": "assets/original.svg",
+            "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          "current": {
+            "uri": "assets/current.svg",
+            "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "payloadSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+          },
+          "creator": "Ada",
+          "source": "Creator drawing",
+          "license": "Creator permission statement",
+          "attribution": "Art by Ada",
+          "permissions": {
+            "private_preview": "allowed",
+            "public_distribution": "allowed",
+            "commercial_pack": "allowed"
+          },
+          "evidence": [
+            {
+              "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+              "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+              "label": "Creator statement"
+            }
+          ],
+          "lineage": null,
+          "consents": [
+            {
+              "kind": "voice",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            },
+            {
+              "kind": "likeness",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            }
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+          "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+          "text": "Creator statement: I made this asset and permit all three uses. altered"
+        }
+      ]
+    },
+    {
+      "name": "missing evidence",
+      "use": "public_distribution",
+      "allowed": false,
+      "asset": {
+        "id": "asset_1",
+        "kind": "svg",
+        "uri": "assets/current.svg",
+        "sourceUri": "assets/original.svg",
+        "rights": "project_original",
+        "provenance": {
+          "ledgerVersion": "1.0.0",
+          "original": {
+            "uri": "assets/original.svg",
+            "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          "current": {
+            "uri": "assets/current.svg",
+            "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "payloadSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+          },
+          "creator": "Ada",
+          "source": "Creator drawing",
+          "license": "Creator permission statement",
+          "attribution": "Art by Ada",
+          "permissions": {
+            "private_preview": "allowed",
+            "public_distribution": "allowed",
+            "commercial_pack": "allowed"
+          },
+          "evidence": [
+            {
+              "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+              "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+              "label": "Creator statement"
+            }
+          ],
+          "lineage": null,
+          "consents": [
+            {
+              "kind": "voice",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            },
+            {
+              "kind": "likeness",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            }
+          ]
+        }
+      },
+      "evidence": []
+    },
+    {
+      "name": "duplicate evidence blobs",
+      "use": "public_distribution",
+      "allowed": false,
+      "asset": {
+        "id": "asset_1",
+        "kind": "svg",
+        "uri": "assets/current.svg",
+        "sourceUri": "assets/original.svg",
+        "rights": "project_original",
+        "provenance": {
+          "ledgerVersion": "1.0.0",
+          "original": {
+            "uri": "assets/original.svg",
+            "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          "current": {
+            "uri": "assets/current.svg",
+            "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "payloadSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+          },
+          "creator": "Ada",
+          "source": "Creator drawing",
+          "license": "Creator permission statement",
+          "attribution": "Art by Ada",
+          "permissions": {
+            "private_preview": "allowed",
+            "public_distribution": "allowed",
+            "commercial_pack": "allowed"
+          },
+          "evidence": [
+            {
+              "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+              "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+              "label": "Creator statement"
+            }
+          ],
+          "lineage": null,
+          "consents": [
+            {
+              "kind": "voice",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            },
+            {
+              "kind": "likeness",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            }
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+          "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+          "text": "Creator statement: I made this asset and permit all three uses."
+        },
+        {
+          "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+          "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+          "text": "Creator statement: I made this asset and permit all three uses."
+        }
+      ]
+    },
+    {
+      "name": "duplicate evidence references",
+      "use": "public_distribution",
+      "allowed": false,
+      "asset": {
+        "id": "asset_1",
+        "kind": "svg",
+        "uri": "assets/current.svg",
+        "sourceUri": "assets/original.svg",
+        "rights": "project_original",
+        "provenance": {
+          "ledgerVersion": "1.0.0",
+          "original": {
+            "uri": "assets/original.svg",
+            "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          "current": {
+            "uri": "assets/current.svg",
+            "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "payloadSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+          },
+          "creator": "Ada",
+          "source": "Creator drawing",
+          "license": "Creator permission statement",
+          "attribution": "Art by Ada",
+          "permissions": {
+            "private_preview": "allowed",
+            "public_distribution": "allowed",
+            "commercial_pack": "allowed"
+          },
+          "evidence": [
+            {
+              "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+              "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+              "label": "Creator statement"
+            },
+            {
+              "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+              "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+              "label": "Creator statement"
+            }
+          ],
+          "lineage": null,
+          "consents": [
+            {
+              "kind": "voice",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            },
+            {
+              "kind": "likeness",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            }
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+          "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+          "text": "Creator statement: I made this asset and permit all three uses."
+        }
+      ]
+    },
+    {
+      "name": "unsafe path",
+      "use": "public_distribution",
+      "allowed": false,
+      "asset": {
+        "id": "asset_1",
+        "kind": "svg",
+        "uri": "assets/current.svg",
+        "sourceUri": "assets/original.svg",
+        "rights": "project_original",
+        "provenance": {
+          "ledgerVersion": "1.0.0",
+          "original": {
+            "uri": "assets/original.svg",
+            "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          "current": {
+            "uri": "assets/current.svg",
+            "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "payloadSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+          },
+          "creator": "Ada",
+          "source": "Creator drawing",
+          "license": "Creator permission statement",
+          "attribution": "Art by Ada",
+          "permissions": {
+            "private_preview": "allowed",
+            "public_distribution": "allowed",
+            "commercial_pack": "allowed"
+          },
+          "evidence": [
+            {
+              "uri": "../secret.txt",
+              "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+              "label": "Creator statement"
+            }
+          ],
+          "lineage": null,
+          "consents": [
+            {
+              "kind": "voice",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            },
+            {
+              "kind": "likeness",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            }
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+          "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+          "text": "Creator statement: I made this asset and permit all three uses."
+        }
+      ]
+    },
+    {
+      "name": "unknown consent applicability",
+      "use": "public_distribution",
+      "allowed": false,
+      "asset": {
+        "id": "asset_1",
+        "kind": "svg",
+        "uri": "assets/current.svg",
+        "sourceUri": "assets/original.svg",
+        "rights": "project_original",
+        "provenance": {
+          "ledgerVersion": "1.0.0",
+          "original": {
+            "uri": "assets/original.svg",
+            "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          "current": {
+            "uri": "assets/current.svg",
+            "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "payloadSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+          },
+          "creator": "Ada",
+          "source": "Creator drawing",
+          "license": "Creator permission statement",
+          "attribution": "Art by Ada",
+          "permissions": {
+            "private_preview": "allowed",
+            "public_distribution": "allowed",
+            "commercial_pack": "allowed"
+          },
+          "evidence": [
+            {
+              "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+              "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+              "label": "Creator statement"
+            }
+          ],
+          "lineage": null,
+          "consents": [
+            {
+              "kind": "voice",
+              "applicability": "unknown",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            },
+            {
+              "kind": "likeness",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            }
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+          "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+          "text": "Creator statement: I made this asset and permit all three uses."
+        }
+      ]
+    },
+    {
+      "name": "unknown consent permits private",
+      "use": "private_preview",
+      "allowed": true,
+      "asset": {
+        "id": "asset_1",
+        "kind": "svg",
+        "uri": "assets/current.svg",
+        "sourceUri": "assets/original.svg",
+        "rights": "project_original",
+        "provenance": {
+          "ledgerVersion": "1.0.0",
+          "original": {
+            "uri": "assets/original.svg",
+            "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          "current": {
+            "uri": "assets/current.svg",
+            "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "payloadSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+          },
+          "creator": "Ada",
+          "source": "Creator drawing",
+          "license": "Creator permission statement",
+          "attribution": "Art by Ada",
+          "permissions": {
+            "private_preview": "allowed",
+            "public_distribution": "allowed",
+            "commercial_pack": "allowed"
+          },
+          "evidence": [
+            {
+              "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+              "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+              "label": "Creator statement"
+            }
+          ],
+          "lineage": null,
+          "consents": [
+            {
+              "kind": "voice",
+              "applicability": "unknown",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            },
+            {
+              "kind": "likeness",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            }
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+          "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+          "text": "Creator statement: I made this asset and permit all three uses."
+        }
+      ]
+    },
+    {
+      "name": "required consent missing use",
+      "use": "commercial_pack",
+      "allowed": false,
+      "asset": {
+        "id": "asset_1",
+        "kind": "svg",
+        "uri": "assets/current.svg",
+        "sourceUri": "assets/original.svg",
+        "rights": "project_original",
+        "provenance": {
+          "ledgerVersion": "1.0.0",
+          "original": {
+            "uri": "assets/original.svg",
+            "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          "current": {
+            "uri": "assets/current.svg",
+            "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "payloadSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+          },
+          "creator": "Ada",
+          "source": "Creator drawing",
+          "license": "Creator permission statement",
+          "attribution": "Art by Ada",
+          "permissions": {
+            "private_preview": "allowed",
+            "public_distribution": "allowed",
+            "commercial_pack": "allowed"
+          },
+          "evidence": [
+            {
+              "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+              "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+              "label": "Creator statement"
+            }
+          ],
+          "lineage": null,
+          "consents": [
+            {
+              "kind": "voice",
+              "applicability": "required",
+              "subject": "Ada",
+              "status": "allowed",
+              "uses": [
+                "public_distribution"
+              ],
+              "evidenceHashes": [
+                "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f"
+              ]
+            },
+            {
+              "kind": "likeness",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            }
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+          "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+          "text": "Creator statement: I made this asset and permit all three uses."
+        }
+      ]
+    },
+    {
+      "name": "required compatible consent",
+      "use": "commercial_pack",
+      "allowed": true,
+      "asset": {
+        "id": "asset_1",
+        "kind": "svg",
+        "uri": "assets/current.svg",
+        "sourceUri": "assets/original.svg",
+        "rights": "project_original",
+        "provenance": {
+          "ledgerVersion": "1.0.0",
+          "original": {
+            "uri": "assets/original.svg",
+            "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          "current": {
+            "uri": "assets/current.svg",
+            "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "payloadSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+          },
+          "creator": "Ada",
+          "source": "Creator drawing",
+          "license": "Creator permission statement",
+          "attribution": "Art by Ada",
+          "permissions": {
+            "private_preview": "allowed",
+            "public_distribution": "allowed",
+            "commercial_pack": "allowed"
+          },
+          "evidence": [
+            {
+              "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+              "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+              "label": "Creator statement"
+            }
+          ],
+          "lineage": null,
+          "consents": [
+            {
+              "kind": "voice",
+              "applicability": "required",
+              "subject": "Ada",
+              "status": "allowed",
+              "uses": [
+                "commercial_pack"
+              ],
+              "evidenceHashes": [
+                "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f"
+              ]
+            },
+            {
+              "kind": "likeness",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            }
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+          "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+          "text": "Creator statement: I made this asset and permit all three uses."
+        }
+      ]
+    },
+    {
+      "name": "required consent missing proof",
+      "use": "commercial_pack",
+      "allowed": false,
+      "asset": {
+        "id": "asset_1",
+        "kind": "svg",
+        "uri": "assets/current.svg",
+        "sourceUri": "assets/original.svg",
+        "rights": "project_original",
+        "provenance": {
+          "ledgerVersion": "1.0.0",
+          "original": {
+            "uri": "assets/original.svg",
+            "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          "current": {
+            "uri": "assets/current.svg",
+            "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "payloadSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+          },
+          "creator": "Ada",
+          "source": "Creator drawing",
+          "license": "Creator permission statement",
+          "attribution": "Art by Ada",
+          "permissions": {
+            "private_preview": "allowed",
+            "public_distribution": "allowed",
+            "commercial_pack": "allowed"
+          },
+          "evidence": [
+            {
+              "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+              "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+              "label": "Creator statement"
+            }
+          ],
+          "lineage": null,
+          "consents": [
+            {
+              "kind": "voice",
+              "applicability": "required",
+              "subject": "Ada",
+              "status": "allowed",
+              "uses": [
+                "commercial_pack"
+              ],
+              "evidenceHashes": [
+                "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+              ]
+            },
+            {
+              "kind": "likeness",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            }
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+          "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+          "text": "Creator statement: I made this asset and permit all three uses."
+        }
+      ]
+    },
+    {
+      "name": "unknown creator",
+      "use": "public_distribution",
+      "allowed": false,
+      "asset": {
+        "id": "asset_1",
+        "kind": "svg",
+        "uri": "assets/current.svg",
+        "sourceUri": "assets/original.svg",
+        "rights": "project_original",
+        "provenance": {
+          "ledgerVersion": "1.0.0",
+          "original": {
+            "uri": "assets/original.svg",
+            "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          "current": {
+            "uri": "assets/current.svg",
+            "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "payloadSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+          },
+          "creator": "unknown",
+          "source": "Creator drawing",
+          "license": "Creator permission statement",
+          "attribution": "Art by Ada",
+          "permissions": {
+            "private_preview": "allowed",
+            "public_distribution": "allowed",
+            "commercial_pack": "allowed"
+          },
+          "evidence": [
+            {
+              "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+              "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+              "label": "Creator statement"
+            }
+          ],
+          "lineage": null,
+          "consents": [
+            {
+              "kind": "voice",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            },
+            {
+              "kind": "likeness",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            }
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+          "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+          "text": "Creator statement: I made this asset and permit all three uses."
+        }
+      ]
+    },
+    {
+      "name": "blank license",
+      "use": "public_distribution",
+      "allowed": false,
+      "asset": {
+        "id": "asset_1",
+        "kind": "svg",
+        "uri": "assets/current.svg",
+        "sourceUri": "assets/original.svg",
+        "rights": "project_original",
+        "provenance": {
+          "ledgerVersion": "1.0.0",
+          "original": {
+            "uri": "assets/original.svg",
+            "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          "current": {
+            "uri": "assets/current.svg",
+            "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "payloadSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+          },
+          "creator": "Ada",
+          "source": "Creator drawing",
+          "license": " ",
+          "attribution": "Art by Ada",
+          "permissions": {
+            "private_preview": "allowed",
+            "public_distribution": "allowed",
+            "commercial_pack": "allowed"
+          },
+          "evidence": [
+            {
+              "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+              "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+              "label": "Creator statement"
+            }
+          ],
+          "lineage": null,
+          "consents": [
+            {
+              "kind": "voice",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            },
+            {
+              "kind": "likeness",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            }
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+          "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+          "text": "Creator statement: I made this asset and permit all three uses."
+        }
+      ]
+    },
+    {
+      "name": "duplicate consent kinds",
+      "use": "public_distribution",
+      "allowed": false,
+      "asset": {
+        "id": "asset_1",
+        "kind": "svg",
+        "uri": "assets/current.svg",
+        "sourceUri": "assets/original.svg",
+        "rights": "project_original",
+        "provenance": {
+          "ledgerVersion": "1.0.0",
+          "original": {
+            "uri": "assets/original.svg",
+            "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          "current": {
+            "uri": "assets/current.svg",
+            "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "payloadSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+          },
+          "creator": "Ada",
+          "source": "Creator drawing",
+          "license": "Creator permission statement",
+          "attribution": "Art by Ada",
+          "permissions": {
+            "private_preview": "allowed",
+            "public_distribution": "allowed",
+            "commercial_pack": "allowed"
+          },
+          "evidence": [
+            {
+              "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+              "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+              "label": "Creator statement"
+            }
+          ],
+          "lineage": null,
+          "consents": [
+            {
+              "kind": "voice",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            },
+            {
+              "kind": "voice",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            }
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+          "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+          "text": "Creator statement: I made this asset and permit all three uses."
+        }
+      ]
+    },
+    {
+      "name": "unknown legacy rights",
+      "use": "private_preview",
+      "allowed": false,
+      "asset": {
+        "id": "asset_1",
+        "kind": "svg",
+        "uri": "assets/current.svg",
+        "sourceUri": "assets/original.svg",
+        "rights": "unknown"
+      },
+      "evidence": [
+        {
+          "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+          "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+          "text": "Creator statement: I made this asset and permit all three uses."
+        }
+      ]
+    },
+    {
+      "name": "private ledger requires evidence",
+      "use": "private_preview",
+      "allowed": false,
+      "asset": {
+        "id": "asset_1",
+        "kind": "svg",
+        "uri": "assets/current.svg",
+        "sourceUri": "assets/original.svg",
+        "rights": "project_original",
+        "provenance": {
+          "ledgerVersion": "1.0.0",
+          "original": {
+            "uri": "assets/original.svg",
+            "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          "current": {
+            "uri": "assets/current.svg",
+            "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "payloadSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+          },
+          "creator": "Ada",
+          "source": "Creator drawing",
+          "license": "Creator permission statement",
+          "attribution": "Art by Ada",
+          "permissions": {
+            "private_preview": "allowed",
+            "public_distribution": "allowed",
+            "commercial_pack": "allowed"
+          },
+          "evidence": [],
+          "lineage": null,
+          "consents": [
+            {
+              "kind": "voice",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            },
+            {
+              "kind": "likeness",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            }
+          ]
+        }
+      },
+      "evidence": []
+    },
+    {
+      "name": "duplicate hashes disguised with different labels",
+      "use": "public_distribution",
+      "allowed": false,
+      "asset": {
+        "id": "asset_1",
+        "kind": "svg",
+        "uri": "assets/current.svg",
+        "sourceUri": "assets/original.svg",
+        "rights": "project_original",
+        "provenance": {
+          "ledgerVersion": "1.0.0",
+          "original": {
+            "uri": "assets/original.svg",
+            "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          "current": {
+            "uri": "assets/current.svg",
+            "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "payloadSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+          },
+          "creator": "Ada",
+          "source": "Creator drawing",
+          "license": "Creator permission statement",
+          "attribution": "Art by Ada",
+          "permissions": {
+            "private_preview": "allowed",
+            "public_distribution": "allowed",
+            "commercial_pack": "allowed"
+          },
+          "evidence": [
+            {
+              "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+              "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+              "label": "Creator statement"
+            },
+            {
+              "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+              "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+              "label": "Different label"
+            }
+          ],
+          "lineage": null,
+          "consents": [
+            {
+              "kind": "voice",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            },
+            {
+              "kind": "likeness",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            }
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+          "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+          "text": "Creator statement: I made this asset and permit all three uses."
+        }
+      ]
+    },
+    {
+      "name": "trailing newline hash",
+      "use": "public_distribution",
+      "allowed": false,
+      "asset": {
+        "id": "asset_1",
+        "kind": "svg",
+        "uri": "assets/current.svg",
+        "sourceUri": "assets/original.svg",
+        "rights": "project_original",
+        "provenance": {
+          "ledgerVersion": "1.0.0",
+          "original": {
+            "uri": "assets/original.svg",
+            "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          "current": {
+            "uri": "assets/current.svg",
+            "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\n",
+            "payloadSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+          },
+          "creator": "Ada",
+          "source": "Creator drawing",
+          "license": "Creator permission statement",
+          "attribution": "Art by Ada",
+          "permissions": {
+            "private_preview": "allowed",
+            "public_distribution": "allowed",
+            "commercial_pack": "allowed"
+          },
+          "evidence": [
+            {
+              "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+              "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+              "label": "Creator statement"
+            }
+          ],
+          "lineage": null,
+          "consents": [
+            {
+              "kind": "voice",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            },
+            {
+              "kind": "likeness",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            }
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+          "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+          "text": "Creator statement: I made this asset and permit all three uses."
+        }
+      ]
+    },
+    {
+      "name": "required consent covers private preview",
+      "use": "private_preview",
+      "allowed": true,
+      "asset": {
+        "id": "asset_1",
+        "kind": "svg",
+        "uri": "assets/current.svg",
+        "sourceUri": "assets/original.svg",
+        "rights": "project_original",
+        "provenance": {
+          "ledgerVersion": "1.0.0",
+          "original": {
+            "uri": "assets/original.svg",
+            "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          "current": {
+            "uri": "assets/current.svg",
+            "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "payloadSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+          },
+          "creator": "Ada",
+          "source": "Creator drawing",
+          "license": "Creator permission statement",
+          "attribution": "Art by Ada",
+          "permissions": {
+            "private_preview": "allowed",
+            "public_distribution": "allowed",
+            "commercial_pack": "allowed"
+          },
+          "evidence": [
+            {
+              "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+              "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+              "label": "Creator statement"
+            }
+          ],
+          "lineage": null,
+          "consents": [
+            {
+              "kind": "voice",
+              "applicability": "required",
+              "subject": "Ada",
+              "status": "allowed",
+              "uses": [
+                "private_preview"
+              ],
+              "evidenceHashes": [
+                "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f"
+              ]
+            },
+            {
+              "kind": "likeness",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            }
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+          "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+          "text": "Creator statement: I made this asset and permit all three uses."
+        }
+      ]
+    },
+    {
+      "name": "required private consent denied",
+      "use": "private_preview",
+      "allowed": false,
+      "asset": {
+        "id": "asset_1",
+        "kind": "svg",
+        "uri": "assets/current.svg",
+        "sourceUri": "assets/original.svg",
+        "rights": "project_original",
+        "provenance": {
+          "ledgerVersion": "1.0.0",
+          "original": {
+            "uri": "assets/original.svg",
+            "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          "current": {
+            "uri": "assets/current.svg",
+            "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "payloadSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+          },
+          "creator": "Ada",
+          "source": "Creator drawing",
+          "license": "Creator permission statement",
+          "attribution": "Art by Ada",
+          "permissions": {
+            "private_preview": "allowed",
+            "public_distribution": "allowed",
+            "commercial_pack": "allowed"
+          },
+          "evidence": [
+            {
+              "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+              "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+              "label": "Creator statement"
+            }
+          ],
+          "lineage": null,
+          "consents": [
+            {
+              "kind": "voice",
+              "applicability": "required",
+              "subject": "Ada",
+              "status": "denied",
+              "uses": [
+                "private_preview"
+              ],
+              "evidenceHashes": [
+                "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f"
+              ]
+            },
+            {
+              "kind": "likeness",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            }
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+          "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+          "text": "Creator statement: I made this asset and permit all three uses."
+        }
+      ]
+    },
+    {
+      "name": "required private consent missing use",
+      "use": "private_preview",
+      "allowed": false,
+      "asset": {
+        "id": "asset_1",
+        "kind": "svg",
+        "uri": "assets/current.svg",
+        "sourceUri": "assets/original.svg",
+        "rights": "project_original",
+        "provenance": {
+          "ledgerVersion": "1.0.0",
+          "original": {
+            "uri": "assets/original.svg",
+            "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          "current": {
+            "uri": "assets/current.svg",
+            "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "payloadSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+          },
+          "creator": "Ada",
+          "source": "Creator drawing",
+          "license": "Creator permission statement",
+          "attribution": "Art by Ada",
+          "permissions": {
+            "private_preview": "allowed",
+            "public_distribution": "allowed",
+            "commercial_pack": "allowed"
+          },
+          "evidence": [
+            {
+              "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+              "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+              "label": "Creator statement"
+            }
+          ],
+          "lineage": null,
+          "consents": [
+            {
+              "kind": "voice",
+              "applicability": "required",
+              "subject": "Ada",
+              "status": "allowed",
+              "uses": [
+                "public_distribution"
+              ],
+              "evidenceHashes": [
+                "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f"
+              ]
+            },
+            {
+              "kind": "likeness",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            }
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+          "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+          "text": "Creator statement: I made this asset and permit all three uses."
+        }
+      ]
+    },
+    {
+      "name": "required private consent missing evidence",
+      "use": "private_preview",
+      "allowed": false,
+      "asset": {
+        "id": "asset_1",
+        "kind": "svg",
+        "uri": "assets/current.svg",
+        "sourceUri": "assets/original.svg",
+        "rights": "project_original",
+        "provenance": {
+          "ledgerVersion": "1.0.0",
+          "original": {
+            "uri": "assets/original.svg",
+            "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          "current": {
+            "uri": "assets/current.svg",
+            "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "payloadSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+          },
+          "creator": "Ada",
+          "source": "Creator drawing",
+          "license": "Creator permission statement",
+          "attribution": "Art by Ada",
+          "permissions": {
+            "private_preview": "allowed",
+            "public_distribution": "allowed",
+            "commercial_pack": "allowed"
+          },
+          "evidence": [
+            {
+              "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+              "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+              "label": "Creator statement"
+            }
+          ],
+          "lineage": null,
+          "consents": [
+            {
+              "kind": "voice",
+              "applicability": "required",
+              "subject": "Ada",
+              "status": "allowed",
+              "uses": [
+                "private_preview"
+              ],
+              "evidenceHashes": []
+            },
+            {
+              "kind": "likeness",
+              "applicability": "not_applicable",
+              "subject": "",
+              "status": "unknown",
+              "uses": [],
+              "evidenceHashes": []
+            }
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+          "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+          "text": "Creator statement: I made this asset and permit all three uses."
+        }
+      ]
+    }
+  ],
+  "svg": {
+    "viewBox": {
+      "x": -0.0,
+      "y": 0.1,
+      "width": 120,
+      "height": 80
+    },
+    "root": {
+      "tag": "svg",
+      "id": "root",
+      "attributes": {
+        "viewBox": "0 0 120 80",
+        "fill": "é😀"
+      },
+      "text": "\n",
+      "children": []
+    }
+  },
+  "svgPayloadSha256": "749b495d566ad6129a5e1bc3e560f72c9382d7018900aab49083804366c85980"
+}

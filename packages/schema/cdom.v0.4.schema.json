@@ -1,0 +1,1044 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/aether-dom/cdom.schema.v0.4.0.json",
+  "title": "CdomDocumentV4",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "project",
+    "branches",
+    "characters",
+    "events",
+    "scenes",
+    "shots",
+    "assets",
+    "layers",
+    "audioTracks",
+    "bindings",
+    "provenance"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "0.4.0"
+    },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "description",
+        "revision",
+        "activeBranchId"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "activeBranchId": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "branches": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "parentId",
+          "baseRevision",
+          "headRevision"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "parentId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "baseRevision": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "headRevision": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "characters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "traits",
+          "dialect",
+          "constraints"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "traits": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          },
+          "dialect": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "style",
+              "forbiddenTerms"
+            ],
+            "properties": {
+              "style": {
+                "type": "string"
+              },
+              "forbiddenTerms": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "constraints": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "type",
+                "limb",
+                "effectiveFromEventId",
+                "resolvedByEventId"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "type": {
+                  "type": "string"
+                },
+                "limb": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "effectiveFromEventId": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "resolvedByEventId": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "sceneId",
+          "order",
+          "kind",
+          "description"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sceneId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "order": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "kind": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "scenes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "title",
+          "eventIds",
+          "shotIds"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "eventIds": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "shotIds": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    },
+    "shots": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "sceneId",
+          "durationMs",
+          "camera",
+          "layerIds",
+          "audioTrackIds",
+          "layoutOverrides"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sceneId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "durationMs": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "camera": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "aspectRatio",
+              "position",
+              "fovDeg"
+            ],
+            "properties": {
+              "aspectRatio": {
+                "enum": [
+                  "16:9",
+                  "9:16",
+                  "1:1"
+                ]
+              },
+              "position": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "x",
+                  "y",
+                  "z"
+                ],
+                "properties": {
+                  "x": {
+                    "type": "number"
+                  },
+                  "y": {
+                    "type": "number"
+                  },
+                  "z": {
+                    "type": "number"
+                  }
+                }
+              },
+              "fovDeg": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              }
+            }
+          },
+          "layerIds": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "audioTrackIds": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "layoutOverrides": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "layerTransforms": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "x",
+                      "y",
+                      "z",
+                      "scale",
+                      "rotationDeg"
+                    ],
+                    "properties": {
+                      "x": {
+                        "type": "number"
+                      },
+                      "y": {
+                        "type": "number"
+                      },
+                      "z": {
+                        "type": "number"
+                      },
+                      "scale": {
+                        "type": "number",
+                        "exclusiveMinimum": 0
+                      },
+                      "rotationDeg": {
+                        "type": "number"
+                      }
+                    }
+                  }
+                }
+              },
+              "required": [
+                "layerTransforms"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "audio": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tension"
+            ],
+            "properties": {
+              "tension": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "kind",
+          "uri",
+          "rights"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "enum": [
+              "svg",
+              "raster",
+              "audio",
+              "video",
+              "json"
+            ]
+          },
+          "uri": {
+            "type": "string",
+            "minLength": 1
+          },
+          "rights": {
+            "enum": [
+              "project_original",
+              "licensed",
+              "ai_generated",
+              "unknown"
+            ]
+          },
+          "name": {
+            "type": "string"
+          },
+          "sourceUri": {
+            "type": "string",
+            "minLength": 1
+          },
+          "provenance": {
+            "title": "AssetProvenance",
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "ledgerVersion",
+              "original",
+              "current",
+              "creator",
+              "source",
+              "license",
+              "attribution",
+              "permissions",
+              "lineage",
+              "consents",
+              "evidence"
+            ],
+            "properties": {
+              "ledgerVersion": {
+                "const": "1.0.0"
+              },
+              "original": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "uri",
+                  "sha256"
+                ],
+                "properties": {
+                  "uri": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2000,
+                    "pattern": "^assets/[A-Za-z0-9_./-]+$"
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$(?![\\s\\S])"
+                  }
+                }
+              },
+              "current": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "uri",
+                  "sha256",
+                  "payloadSha256"
+                ],
+                "properties": {
+                  "uri": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2000,
+                    "pattern": "^assets/[A-Za-z0-9_./-]+$"
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$(?![\\s\\S])"
+                  },
+                  "payloadSha256": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$(?![\\s\\S])"
+                  }
+                }
+              },
+              "creator": {
+                "type": "string",
+                "maxLength": 2000
+              },
+              "source": {
+                "type": "string",
+                "maxLength": 2000
+              },
+              "license": {
+                "type": "string",
+                "maxLength": 2000
+              },
+              "attribution": {
+                "type": "string",
+                "maxLength": 2000
+              },
+              "permissions": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "private_preview",
+                  "public_distribution",
+                  "commercial_pack"
+                ],
+                "properties": {
+                  "private_preview": {
+                    "enum": [
+                      "allowed",
+                      "denied",
+                      "unknown"
+                    ]
+                  },
+                  "public_distribution": {
+                    "enum": [
+                      "allowed",
+                      "denied",
+                      "unknown"
+                    ]
+                  },
+                  "commercial_pack": {
+                    "enum": [
+                      "allowed",
+                      "denied",
+                      "unknown"
+                    ]
+                  }
+                }
+              },
+              "lineage": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "provider",
+                      "model",
+                      "parentSha256"
+                    ],
+                    "properties": {
+                      "provider": {
+                        "type": "string",
+                        "maxLength": 256,
+                        "minLength": 1,
+                        "pattern": "[^\\u0009-\\u000d\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000\\ufeff]"
+                      },
+                      "model": {
+                        "type": "string",
+                        "maxLength": 256,
+                        "minLength": 1,
+                        "pattern": "[^\\u0009-\\u000d\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000\\ufeff]"
+                      },
+                      "parentSha256": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "pattern": "^[a-f0-9]{64}$(?![\\s\\S])"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              },
+              "consents": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 2,
+                "uniqueItems": true,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "kind",
+                    "applicability",
+                    "subject",
+                    "status",
+                    "uses",
+                    "evidenceHashes"
+                  ],
+                  "properties": {
+                    "kind": {
+                      "enum": [
+                        "voice",
+                        "likeness"
+                      ]
+                    },
+                    "applicability": {
+                      "enum": [
+                        "not_applicable",
+                        "unknown",
+                        "required"
+                      ]
+                    },
+                    "subject": {
+                      "type": "string",
+                      "maxLength": 256
+                    },
+                    "status": {
+                      "enum": [
+                        "allowed",
+                        "denied",
+                        "unknown"
+                      ]
+                    },
+                    "uses": {
+                      "type": "array",
+                      "maxItems": 3,
+                      "uniqueItems": true,
+                      "items": {
+                        "enum": [
+                          "private_preview",
+                          "public_distribution",
+                          "commercial_pack"
+                        ]
+                      }
+                    },
+                    "evidenceHashes": {
+                      "type": "array",
+                      "maxItems": 8,
+                      "uniqueItems": true,
+                      "items": {
+                        "type": "string",
+                        "pattern": "^[a-f0-9]{64}$(?![\\s\\S])"
+                      }
+                    }
+                  }
+                },
+                "allOf": [
+                  {
+                    "contains": {
+                      "type": "object",
+                      "required": [
+                        "kind"
+                      ],
+                      "properties": {
+                        "kind": {
+                          "const": "voice"
+                        }
+                      }
+                    },
+                    "minContains": 1,
+                    "maxContains": 1
+                  },
+                  {
+                    "contains": {
+                      "type": "object",
+                      "required": [
+                        "kind"
+                      ],
+                      "properties": {
+                        "kind": {
+                          "const": "likeness"
+                        }
+                      }
+                    },
+                    "minContains": 1,
+                    "maxContains": 1
+                  }
+                ]
+              },
+              "evidence": {
+                "type": "array",
+                "maxItems": 8,
+                "uniqueItems": true,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "uri",
+                    "sha256",
+                    "label"
+                  ],
+                  "properties": {
+                    "uri": {
+                      "type": "string",
+                      "pattern": "^assets/evidence/[a-f0-9]{64}\\.txt$(?![\\s\\S])"
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{64}$(?![\\s\\S])"
+                    },
+                    "label": {
+                      "type": "string",
+                      "maxLength": 256,
+                      "minLength": 1,
+                      "pattern": "[^\\u0009-\\u000d\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000\\ufeff]"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "layers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "shotId",
+          "kind",
+          "assetId",
+          "characterId",
+          "pose",
+          "transform"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "shotId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "enum": [
+              "svg_plane",
+              "character_sprite",
+              "raster_plane",
+              "rig"
+            ]
+          },
+          "assetId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "characterId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "pose": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "transform": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "x",
+              "y",
+              "z",
+              "scale",
+              "rotationDeg"
+            ],
+            "properties": {
+              "x": {
+                "type": "number"
+              },
+              "y": {
+                "type": "number"
+              },
+              "z": {
+                "type": "number"
+              },
+              "scale": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "rotationDeg": {
+                "type": "number"
+              }
+            }
+          },
+          "name": {
+            "type": "string"
+          },
+          "visible": {
+            "type": "boolean"
+          },
+          "opacity": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "keyframes": {
+            "type": "array",
+            "maxItems": 128,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "timeMs",
+                "transform"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "timeMs": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "transform": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "x",
+                    "y",
+                    "z",
+                    "scale",
+                    "rotationDeg"
+                  ],
+                  "properties": {
+                    "x": {
+                      "type": "number"
+                    },
+                    "y": {
+                      "type": "number"
+                    },
+                    "z": {
+                      "type": "number"
+                    },
+                    "scale": {
+                      "type": "number",
+                      "exclusiveMinimum": 0
+                    },
+                    "rotationDeg": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "audioTracks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "shotId",
+          "kind",
+          "assetId",
+          "gainDb",
+          "boundLayerId"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "shotId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "enum": [
+              "music",
+              "foley",
+              "dialogue"
+            ]
+          },
+          "assetId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "gainDb": {
+            "type": "number"
+          },
+          "boundLayerId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "bindings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "source",
+          "target",
+          "mapping"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source": {
+            "type": "object",
+            "required": [
+              "entityId",
+              "path"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "entityId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "target": {
+            "type": "object",
+            "required": [
+              "entityId",
+              "path"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "entityId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "mapping": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "kind"
+                ],
+                "properties": {
+                  "kind": {
+                    "const": "identity"
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "kind",
+                  "inputMin",
+                  "inputMax",
+                  "outputMin",
+                  "outputMax"
+                ],
+                "properties": {
+                  "kind": {
+                    "const": "linear"
+                  },
+                  "inputMin": {
+                    "type": "number"
+                  },
+                  "inputMax": {
+                    "type": "number"
+                  },
+                  "outputMin": {
+                    "type": "number"
+                  },
+                  "outputMax": {
+                    "type": "number"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "createdBy",
+        "generatedAssets",
+        "notes"
+      ],
+      "properties": {
+        "createdBy": {
+          "type": "string",
+          "minLength": 1
+        },
+        "generatedAssets": {
+          "type": "boolean"
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

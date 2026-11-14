@@ -86,7 +86,8 @@ def read_audio(root: Path, uri: str) -> bytes:
         workspace = Path(os.path.abspath(root))
         path = workspace / Path(*relative.parts)
         _check_path(workspace, path)
-        flags = os.O_RDONLY | getattr(os, "O_BINARY", 0) | getattr(os, "O_NOFOLLOW", 0)
+        flags = (os.O_RDONLY | getattr(os, "O_BINARY", 0) | getattr(os, "O_NOFOLLOW", 0)
+                 | getattr(os, "O_NONBLOCK", 0))
         with os.fdopen(os.open(path, flags), "rb") as source:
             before = os.fstat(source.fileno())
             if (not stat.S_ISREG(before.st_mode) or before.st_nlink != 1

@@ -1,7 +1,16 @@
 /* Generated from player-manifest.schema.json. Run pnpm --filter @aether-dom/schema types:generate. */
 
-export interface PlayerManifestWire {
-  manifestVersion: '1.0.0';
+export type PlayerManifestWire = {
+  manifestVersion: '1.0.0' | '1.1.0';
+  exportUse?: 'private_preview' | 'public_distribution' | 'commercial_pack';
+  /**
+   * @maxItems 512
+   */
+  evidence?: {
+    uri: string;
+    sha256: string;
+    text: string;
+  }[];
   /**
    * Validated separately against its unchanged canonical document version.
    */
@@ -24,7 +33,8 @@ export interface PlayerManifestWire {
         dataBase64: string;
       }
   )[];
-}
+};
+
 export interface SvgAsset {
   assetId: string;
   uri: string;

@@ -3,13 +3,17 @@
 import base64
 import binascii
 import copy
+import hashlib
 import json
 import math
+import re
 from pathlib import Path
 from typing import Any, cast
 
 from jsonschema import Draft202012Validator
 
+from app.asset_evidence import inspect_asset, read_bound_svg
+from app.asset_rights import USES, evaluate_asset_use, svg_payload_hash
 from app.audio_assets import MAX_BYTES as MAX_AUDIO_BYTES
 from app.audio_assets import _validate_wav, read_audio
 from app.commands import CommandError
@@ -21,8 +25,8 @@ SCHEMA = json.loads((SCHEMA_ROOT / "player-manifest.schema.json").read_text(enco
 VALIDATOR = Draft202012Validator(SCHEMA)
 
 
-def _invalid(message: str) -> CommandError:
-    return CommandError(422, "INVALID_PLAYER_MANIFEST", message)
+def _invalid(message: str, **details: Any) -> CommandError:
+    return CommandError(422, "INVALID_PLAYER_MANIFEST", message, **details)
 
 
 def _bounds(value: object) -> None:
@@ -204,6 +208,19 @@ def validate_player_manifest(value: object) -> list[dict[str, str]]:
         used = referenced_assets(document)
         metadata = {asset["id"]: asset for asset in document["assets"]}
         entries: set[str] = set()
+        evidence = manifest.get("evidence", [])
+        export_use = manifest.get("exportUse", "private_preview")
+        hashes: set[str] = set()
+        required: set[str] = set()
+        raw_bindings: dict[str, str] = {}
+        payload_bindings: dict[str, str] = {}
+        for blob in evidence:
+            raw = blob["text"].encode("utf-8")
+            if (blob["sha256"] in hashes or len(raw) > 65536
+                    or blob["uri"] != f"assets/evidence/{blob['sha256']}.txt"
+                    or hashlib.sha256(raw).hexdigest() != blob["sha256"]):
+                raise _invalid("Evidence integrity or uniqueness check failed.")
+            hashes.add(blob["sha256"])
         for entry in manifest["assets"]:
             asset = metadata.get(entry["assetId"])
             if (
@@ -217,6 +234,30 @@ def validate_player_manifest(value: object) -> list[dict[str, str]]:
                     "Manifest media must exactly match referenced assets with known rights."
                 )
             entries.add(entry["assetId"])
+            provenance = asset.get("provenance")
+            refs = {ref["sha256"] for ref in (provenance or {}).get("evidence", [])}
+            required.update(refs)
+            decision = evaluate_asset_use(asset, export_use,
+                                          [blob for blob in evidence if blob["sha256"] in refs])
+            if not decision["allowed"]:
+                raise _invalid(f"Asset {asset['id']}: " + "; ".join(decision["reasons"]))
+            if provenance:
+                for binding in (provenance["original"], provenance["current"]):
+                    uri, digest = binding["uri"], binding["sha256"]
+                    named_digest = re.fullmatch(
+                        r"assets/(?:originals|imported)/([a-f0-9]{64})\.(?:svg|wav)", uri
+                    )
+                    if ((uri in raw_bindings and raw_bindings[uri] != digest)
+                            or (named_digest and named_digest[1] != digest)):
+                        raise _invalid(f"Asset {asset['id']}: immutable URI/raw hash mismatch.")
+                    raw_bindings[uri] = digest
+                current = provenance["current"]
+                if (current["uri"] in payload_bindings
+                        and payload_bindings[current["uri"]] != current["payloadSha256"]):
+                    raise _invalid(
+                        f"Asset {asset['id']}: shared current URI/payload hash mismatch."
+                    )
+                payload_bindings[current["uri"]] = current["payloadSha256"]
             if entry["kind"] == "svg":
                 svg = entry["svg"]
                 if (
@@ -237,10 +278,18 @@ def validate_player_manifest(value: object) -> list[dict[str, str]]:
                     nodes.extend(node["children"])
                 if parse_svg(_serialize(data).decode("utf-8")) != normalized:
                     raise _invalid("SVG must be the sanitized tree without dropped fields.")
+                payload_hash = svg_payload_hash(svg)
             else:
-                decode_manifest_audio(entry["dataBase64"])
+                payload_hash = hashlib.sha256(
+                    decode_manifest_audio(entry["dataBase64"])
+                ).hexdigest()
+            if provenance and (payload_hash != provenance["current"]["payloadSha256"] or (
+                    entry["kind"] == "audio" and payload_hash != provenance["current"]["sha256"])):
+                raise _invalid(f"Asset {asset['id']}: media payload integrity check failed.")
         if entries != used:
             raise _invalid("Referenced media is missing from the manifest.")
+        if hashes != required:
+            raise _invalid("Evidence must exactly cover the included media.")
         return []
     except (
         CommandError,
@@ -257,9 +306,13 @@ def build_player_manifest(
     document: dict[str, Any],
     asset_root: Path,
     asset_store: SvgAssetStore,
+    export_use: str = "private_preview",
 ) -> dict[str, Any]:
     """Consume exactly one detached snapshot, without canonical or export-job writes."""
+    context_id: str | None = None
     try:
+        if export_use not in USES:
+            raise _invalid("Unknown export use.")
         _bounds(document)
         snapshot = copy.deepcopy(document)
         if validate_document(snapshot):
@@ -268,6 +321,7 @@ def build_player_manifest(
         if len(used) > 64:
             raise _invalid("At most 64 embedded media assets are supported.")
         assets: list[dict[str, Any]] = []
+        evidence: dict[str, dict[str, str]] = {}
         # Stop assembly as soon as the cumulative portable bytes cannot fit. Do
         # not materialize all 64 potential 8 MiB clips before rejecting the bundle.
         size = (
@@ -277,16 +331,28 @@ def build_player_manifest(
         for asset in snapshot["assets"]:
             if asset["id"] not in used:
                 continue
-            if asset["rights"] == "unknown":
-                raise _invalid(
-                    "Referenced media rights are unknown; review the asset rights first."
-                )
+            context_id = asset["id"]
+            observations = (
+                inspect_asset(asset, asset_root, asset_store) if "provenance" in asset else None
+            )
+            blobs = observations["evidence"] if observations else []
+            if observations and observations["error"]:
+                raise _invalid(observations["error"])
+            decision = evaluate_asset_use(asset, export_use, blobs)
+            if not decision["allowed"]:
+                raise _invalid(f"Asset {asset['id']}: " + "; ".join(decision["reasons"]),
+                               decisions=[decision])
+            for blob in blobs:
+                if blob["sha256"] not in evidence:
+                    evidence[blob["sha256"]] = blob
+                    size += len(json.dumps(blob, ensure_ascii=False).encode("utf-8")) + 1
             if asset["kind"] == "svg":
                 svg = {
                     "assetId": asset["id"],
                     "uri": asset["uri"],
                     "sourceUri": asset.get("sourceUri", asset["uri"]),
-                    **asset_store.read_svg(asset["uri"]),
+                    **(read_bound_svg(asset, asset_root) if "provenance" in asset
+                       else asset_store.read_svg(asset["uri"])),
                 }
                 entry = {"assetId": asset["id"], "kind": "svg", "svg": svg}
             elif asset["kind"] == "audio":
@@ -306,10 +372,21 @@ def build_player_manifest(
             if size > MAX_BYTES:
                 raise _invalid("Manifest exceeds 32 MiB; reduce referenced media size.")
             assets.append(entry)
+        context_id = None
         manifest = {"manifestVersion": "1.0.0", "document": snapshot, "assets": assets}
+        if export_use != "private_preview" or any(
+            "provenance" in asset for asset in snapshot["assets"]
+        ):
+            manifest.update(manifestVersion="1.1.0", exportUse=export_use,
+                            evidence=list(evidence.values()))
         issues = validate_player_manifest(manifest)
         if issues:
             raise _invalid(issues[0]["message"])
         return manifest
     except (CommandError, SvgAssetError, UnicodeError, ValueError, RecursionError) as error:
-        raise _invalid(f"Cannot prepare portable player media: {error}") from error
+        details = {key: value for key, value in error.detail.items()
+                   if key not in {"code", "message"}} if isinstance(error, CommandError) else {}
+        if context_id is not None:
+            details.setdefault("assetIds", [context_id])
+        details["exportUse"] = export_use
+        raise _invalid(f"Cannot prepare portable player media: {error}", **details) from error

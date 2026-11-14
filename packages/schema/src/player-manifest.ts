@@ -4,6 +4,8 @@ import type { PlayerManifestWire } from './player-manifest.generated';
 import { validateCdom, type CdomDocument, type ValidationIssue } from './index';
 import { validateSvgAsset } from './svg';
 import { hasNonScalarText } from './portable';
+import { evaluateAssetUse, type EvidenceBlob, type ExportUse } from './asset-rights';
+import { sha256Bytes, svgPayloadHash } from './asset-hash';
 
 export type PlayerAsset = PlayerManifestWire['assets'][number];
 export type PlayerManifest = Omit<PlayerManifestWire, 'document'> & { document: CdomDocument };
@@ -121,16 +123,43 @@ export function validatePlayerManifest(value:unknown): Result {
     const canonical=validateCdom(value.document);
     if (!canonical.valid) return {valid:false,issues:canonical.issues};
     const used=references(canonical.document), entries=new Set<string>();
+    const evidence: EvidenceBlob[] = value.evidence ?? [];
+    const exportUse: ExportUse = value.exportUse ?? 'private_preview';
+    const requiredEvidence = new Set<string>();
+    const hashes = new Set<string>();
+    const rawBindings = new Map<string,string>(), payloadBindings = new Map<string,string>();
+    for (const blob of evidence) {
+      if (hashes.has(blob.sha256) || blob.uri!==`assets/evidence/${blob.sha256}.txt` || encoder.encode(blob.text).length>65536 || sha256Bytes(encoder.encode(blob.text))!==blob.sha256) return fail('Evidence integrity or uniqueness check failed.');
+      hashes.add(blob.sha256);
+    }
     for (const entry of value.assets) {
       const metadata=canonical.document.assets.find(asset=>asset.id===entry.assetId);
       if (!used.has(entry.assetId) || entries.has(entry.assetId) || !metadata || metadata.kind!==entry.kind || metadata.rights==='unknown') return fail('Manifest assets must exactly match referenced media with known rights.');
       entries.add(entry.assetId);
+      const provenance = metadata.provenance;
+      const refs = new Set(provenance?.evidence.map(ref=>ref.sha256) ?? []);
+      for (const digest of refs) requiredEvidence.add(digest);
+      const decision = evaluateAssetUse(metadata, exportUse, evidence.filter(blob=>refs.has(blob.sha256)));
+      if (!decision.allowed) return fail(`Asset ${entry.assetId}: ${decision.reasons.join('; ')}`);
+      if (provenance) {
+        for (const binding of [provenance.original, provenance.current]) {
+          const namedDigest = /^assets\/(?:originals|imported)\/([a-f0-9]{64})\.(?:svg|wav)$/.exec(binding.uri);
+          if ((rawBindings.has(binding.uri) && rawBindings.get(binding.uri)!==binding.sha256) || (namedDigest && namedDigest[1]!==binding.sha256)) return fail(`Asset ${entry.assetId}: immutable URI/raw hash mismatch.`);
+          rawBindings.set(binding.uri,binding.sha256);
+        }
+        if (payloadBindings.has(provenance.current.uri) && payloadBindings.get(provenance.current.uri)!==provenance.current.payloadSha256) return fail(`Asset ${entry.assetId}: shared current URI/payload hash mismatch.`);
+        payloadBindings.set(provenance.current.uri,provenance.current.payloadSha256);
+      }
+      let payloadHash: string;
       if (entry.kind==='svg') {
         if (entry.svg.assetId!==entry.assetId || entry.svg.uri!==metadata.uri || entry.svg.sourceUri!==(metadata.sourceUri??metadata.uri)) return fail('SVG identity does not match saved metadata.');
         const svg=validateSvgAsset(entry.svg); if (!svg.valid) return svg;
-      } else decodeManifestAudio(entry.dataBase64);
+        payloadHash=svgPayloadHash(entry.svg);
+      } else payloadHash=sha256Bytes(new Uint8Array(decodeManifestAudio(entry.dataBase64)));
+      if (provenance && (payloadHash!==provenance.current.payloadSha256 || (entry.kind==='audio' && payloadHash!==provenance.current.sha256))) return fail(`Asset ${entry.assetId}: media payload integrity check failed.`);
     }
     if (entries.size!==used.size) return fail('Referenced media is missing from the manifest.');
+    if (hashes.size!==requiredEvidence.size || [...hashes].some(hash=>!requiredEvidence.has(hash))) return fail('Evidence must exactly cover the included media.');
     return {valid:true,manifest:value as PlayerManifest};
   } catch (error) { return fail(error instanceof Error ? error.message : 'Invalid player manifest.'); }
 }

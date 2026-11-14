@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://example.org/aether-dom/command.schema.v0.6.0.json",
+  "$id": "https://example.org/aether-dom/command.schema.v0.7.0.json",
   "title": "CdomCommand",
   "type": "object",
   "$defs": {
@@ -80,6 +80,258 @@
         },
         "rotationDeg": {
           "type": "number"
+        }
+      }
+    },
+    "assetEvidenceArgs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rights",
+        "expectedAssetUri",
+        "expectedSourceUri",
+        "creator",
+        "source",
+        "license",
+        "attribution",
+        "permissions",
+        "lineage",
+        "consents",
+        "evidence"
+      ],
+      "properties": {
+        "rights": {
+          "enum": [
+            "project_original",
+            "licensed",
+            "ai_generated",
+            "unknown"
+          ]
+        },
+        "expectedAssetUri": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000,
+          "pattern": "^assets/[A-Za-z0-9_./-]+$"
+        },
+        "expectedSourceUri": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000,
+          "pattern": "^assets/[A-Za-z0-9_./-]+$"
+        },
+        "creator": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "source": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "license": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "attribution": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "permissions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "private_preview",
+            "public_distribution",
+            "commercial_pack"
+          ],
+          "properties": {
+            "private_preview": {
+              "enum": [
+                "allowed",
+                "denied",
+                "unknown"
+              ]
+            },
+            "public_distribution": {
+              "enum": [
+                "allowed",
+                "denied",
+                "unknown"
+              ]
+            },
+            "commercial_pack": {
+              "enum": [
+                "allowed",
+                "denied",
+                "unknown"
+              ]
+            }
+          }
+        },
+        "lineage": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "provider",
+                "model",
+                "parentSha256"
+              ],
+              "properties": {
+                "provider": {
+                  "type": "string",
+                  "maxLength": 256,
+                  "minLength": 1,
+                  "pattern": "[^\\u0009-\\u000d\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000\\ufeff]"
+                },
+                "model": {
+                  "type": "string",
+                  "maxLength": 256,
+                  "minLength": 1,
+                  "pattern": "[^\\u0009-\\u000d\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000\\ufeff]"
+                },
+                "parentSha256": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{64}$(?![\\s\\S])"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "consents": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "applicability",
+              "subject",
+              "status",
+              "uses",
+              "evidenceHashes"
+            ],
+            "properties": {
+              "kind": {
+                "enum": [
+                  "voice",
+                  "likeness"
+                ]
+              },
+              "applicability": {
+                "enum": [
+                  "not_applicable",
+                  "unknown",
+                  "required"
+                ]
+              },
+              "subject": {
+                "type": "string",
+                "maxLength": 256
+              },
+              "status": {
+                "enum": [
+                  "allowed",
+                  "denied",
+                  "unknown"
+                ]
+              },
+              "uses": {
+                "type": "array",
+                "maxItems": 3,
+                "uniqueItems": true,
+                "items": {
+                  "enum": [
+                    "private_preview",
+                    "public_distribution",
+                    "commercial_pack"
+                  ]
+                }
+              },
+              "evidenceHashes": {
+                "type": "array",
+                "maxItems": 8,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$(?![\\s\\S])"
+                }
+              }
+            }
+          },
+          "allOf": [
+            {
+              "contains": {
+                "type": "object",
+                "required": [
+                  "kind"
+                ],
+                "properties": {
+                  "kind": {
+                    "const": "voice"
+                  }
+                }
+              },
+              "minContains": 1,
+              "maxContains": 1
+            },
+            {
+              "contains": {
+                "type": "object",
+                "required": [
+                  "kind"
+                ],
+                "properties": {
+                  "kind": {
+                    "const": "likeness"
+                  }
+                }
+              },
+              "minContains": 1,
+              "maxContains": 1
+            }
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "maxItems": 8,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "label",
+              "text"
+            ],
+            "properties": {
+              "label": {
+                "type": "string",
+                "maxLength": 256,
+                "minLength": 1,
+                "pattern": "[^\\u0009-\\u000d\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000\\ufeff]"
+              },
+              "text": {
+                "type": "string",
+                "maxLength": 65536,
+                "minLength": 1,
+                "pattern": "[^\\u0009-\\u000d\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000\\ufeff]"
+              }
+            }
+          }
         }
       }
     }
@@ -757,6 +1009,37 @@
                   }
                 }
               }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "unevaluatedProperties": false,
+      "allOf": [
+        {
+          "$ref": "#/$defs/envelope"
+        },
+        {
+          "type": "object",
+          "required": [
+            "op",
+            "targetId",
+            "args"
+          ],
+          "properties": {
+            "op": {
+              "const": "setAssetEvidence"
+            },
+            "targetId": {
+              "type": "string",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "[^\\u0009-\\u000d\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000\\ufeff]"
+            },
+            "args": {
+              "$ref": "#/$defs/assetEvidenceArgs"
             }
           }
         }

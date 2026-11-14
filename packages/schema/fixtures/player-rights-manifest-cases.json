@@ -1,0 +1,671 @@
+[
+  {
+    "name": "public recorded SVG and WAV",
+    "valid": true,
+    "path": [],
+    "value": null,
+    "updates": []
+  },
+  {
+    "name": "private recorded SVG and WAV",
+    "valid": true,
+    "path": [
+      "exportUse"
+    ],
+    "value": "private_preview",
+    "updates": []
+  },
+  {
+    "name": "commercial recorded SVG and WAV",
+    "valid": true,
+    "path": [
+      "exportUse"
+    ],
+    "value": "commercial_pack",
+    "updates": []
+  },
+  {
+    "name": "tampered evidence text",
+    "valid": false,
+    "path": [
+      "evidence",
+      0,
+      "text"
+    ],
+    "value": "Forged",
+    "updates": []
+  },
+  {
+    "name": "missing referenced proof",
+    "valid": false,
+    "path": [
+      "evidence"
+    ],
+    "value": [],
+    "updates": []
+  },
+  {
+    "name": "duplicate proof",
+    "valid": false,
+    "path": [
+      "evidence"
+    ],
+    "value": [
+      {
+        "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+        "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+        "text": "Creator statement: I made this asset and permit all three uses."
+      },
+      {
+        "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+        "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+        "text": "Creator statement: I made this asset and permit all three uses."
+      }
+    ],
+    "updates": []
+  },
+  {
+    "name": "SVG swapped payload",
+    "valid": false,
+    "path": [
+      "assets",
+      0,
+      "svg",
+      "viewBox",
+      "width"
+    ],
+    "value": 4,
+    "updates": []
+  },
+  {
+    "name": "WAV swapped payload",
+    "valid": false,
+    "path": [
+      "assets",
+      1,
+      "dataBase64"
+    ],
+    "value": "UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQIAAAAAAgA=",
+    "updates": []
+  },
+  {
+    "name": "public denial wins legacy label",
+    "valid": false,
+    "path": [
+      "document",
+      "assets",
+      0,
+      "provenance",
+      "permissions",
+      "public_distribution"
+    ],
+    "value": "denied",
+    "updates": []
+  },
+  {
+    "name": "cached allowed flag is not authority",
+    "valid": false,
+    "path": [
+      "allowed"
+    ],
+    "value": true,
+    "updates": []
+  },
+  {
+    "name": "stale current identity",
+    "valid": false,
+    "path": [
+      "document",
+      "assets",
+      0,
+      "provenance",
+      "current",
+      "uri"
+    ],
+    "value": "assets/elsewhere.svg",
+    "updates": []
+  },
+  {
+    "name": "unknown intended use",
+    "valid": false,
+    "path": [
+      "exportUse"
+    ],
+    "value": "publish",
+    "updates": []
+  },
+  {
+    "name": "one SVG URI cannot claim two raw hashes",
+    "valid": false,
+    "path": [],
+    "value": null,
+    "updates": [
+      {
+        "path": [
+          "document",
+          "assets",
+          0,
+          "provenance",
+          "original",
+          "sha256"
+        ],
+        "value": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      }
+    ]
+  },
+  {
+    "name": "one WAV URI cannot claim two raw hashes",
+    "valid": false,
+    "path": [],
+    "value": null,
+    "updates": [
+      {
+        "path": [
+          "document",
+          "assets",
+          1,
+          "provenance",
+          "original",
+          "sha256"
+        ],
+        "value": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      }
+    ]
+  },
+  {
+    "name": "originals filename raw digest matches",
+    "valid": true,
+    "path": [],
+    "value": null,
+    "updates": [
+      {
+        "path": [
+          "document",
+          "assets",
+          0,
+          "provenance",
+          "original",
+          "uri"
+        ],
+        "value": "assets/originals/e427974a2ac1cad294138b02b8a71ffd6a93c9353c674cc11cac7da582b0e756.svg"
+      },
+      {
+        "path": [
+          "document",
+          "assets",
+          0,
+          "sourceUri"
+        ],
+        "value": "assets/originals/e427974a2ac1cad294138b02b8a71ffd6a93c9353c674cc11cac7da582b0e756.svg"
+      },
+      {
+        "path": [
+          "assets",
+          0,
+          "svg",
+          "sourceUri"
+        ],
+        "value": "assets/originals/e427974a2ac1cad294138b02b8a71ffd6a93c9353c674cc11cac7da582b0e756.svg"
+      }
+    ]
+  },
+  {
+    "name": "originals filename raw digest mismatch",
+    "valid": false,
+    "path": [],
+    "value": null,
+    "updates": [
+      {
+        "path": [
+          "document",
+          "assets",
+          0,
+          "provenance",
+          "original",
+          "uri"
+        ],
+        "value": "assets/originals/ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff.svg"
+      },
+      {
+        "path": [
+          "document",
+          "assets",
+          0,
+          "sourceUri"
+        ],
+        "value": "assets/originals/ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff.svg"
+      },
+      {
+        "path": [
+          "assets",
+          0,
+          "svg",
+          "sourceUri"
+        ],
+        "value": "assets/originals/ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff.svg"
+      }
+    ]
+  },
+  {
+    "name": "imported filename raw digest matches",
+    "valid": true,
+    "path": [],
+    "value": null,
+    "updates": [
+      {
+        "path": [
+          "document",
+          "assets",
+          0,
+          "provenance",
+          "current",
+          "uri"
+        ],
+        "value": "assets/imported/e427974a2ac1cad294138b02b8a71ffd6a93c9353c674cc11cac7da582b0e756.svg"
+      },
+      {
+        "path": [
+          "document",
+          "assets",
+          0,
+          "uri"
+        ],
+        "value": "assets/imported/e427974a2ac1cad294138b02b8a71ffd6a93c9353c674cc11cac7da582b0e756.svg"
+      },
+      {
+        "path": [
+          "assets",
+          0,
+          "svg",
+          "uri"
+        ],
+        "value": "assets/imported/e427974a2ac1cad294138b02b8a71ffd6a93c9353c674cc11cac7da582b0e756.svg"
+      },
+      {
+        "path": [
+          "document",
+          "assets",
+          0,
+          "sourceUri"
+        ],
+        "value": "assets/fixtures/rooftops.svg"
+      }
+    ]
+  },
+  {
+    "name": "imported filename raw digest mismatch",
+    "valid": false,
+    "path": [],
+    "value": null,
+    "updates": [
+      {
+        "path": [
+          "document",
+          "assets",
+          0,
+          "provenance",
+          "current",
+          "uri"
+        ],
+        "value": "assets/imported/ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff.svg"
+      },
+      {
+        "path": [
+          "document",
+          "assets",
+          0,
+          "uri"
+        ],
+        "value": "assets/imported/ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff.svg"
+      },
+      {
+        "path": [
+          "assets",
+          0,
+          "svg",
+          "uri"
+        ],
+        "value": "assets/imported/ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff.svg"
+      },
+      {
+        "path": [
+          "document",
+          "assets",
+          0,
+          "sourceUri"
+        ],
+        "value": "assets/fixtures/rooftops.svg"
+      }
+    ]
+  },
+  {
+    "name": "shared immutable URI across assets cannot claim different raw hashes",
+    "valid": false,
+    "path": [],
+    "value": null,
+    "updates": [
+      {
+        "path": [
+          "document",
+          "assets",
+          1,
+          "provenance",
+          "original",
+          "uri"
+        ],
+        "value": "assets/fixtures/rooftops.svg"
+      },
+      {
+        "path": [
+          "document",
+          "assets",
+          1,
+          "sourceUri"
+        ],
+        "value": "assets/fixtures/rooftops.svg"
+      }
+    ]
+  },
+  {
+    "name": "one current URI cannot claim different deterministic payload hashes",
+    "valid": false,
+    "path": [],
+    "value": null,
+    "updates": [
+      {
+        "path": [
+          "document",
+          "assets"
+        ],
+        "value": [
+          {
+            "id": "asset_rooftops",
+            "kind": "svg",
+            "uri": "assets/fixtures/rooftops.svg",
+            "rights": "project_original",
+            "provenance": {
+              "ledgerVersion": "1.0.0",
+              "original": {
+                "uri": "assets/fixtures/rooftops.svg",
+                "sha256": "e427974a2ac1cad294138b02b8a71ffd6a93c9353c674cc11cac7da582b0e756"
+              },
+              "current": {
+                "uri": "assets/fixtures/rooftops.svg",
+                "sha256": "e427974a2ac1cad294138b02b8a71ffd6a93c9353c674cc11cac7da582b0e756",
+                "payloadSha256": "d2d7b9e6d4270b18f4e877dfac1cc5c7701d65c4c10d22262a9532a66d88adf4"
+              },
+              "creator": "Ada",
+              "source": "Creator drawing",
+              "license": "Creator permission statement",
+              "attribution": "Art by Ada",
+              "permissions": {
+                "private_preview": "allowed",
+                "public_distribution": "allowed",
+                "commercial_pack": "allowed"
+              },
+              "evidence": [
+                {
+                  "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+                  "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+                  "label": "Creator statement"
+                }
+              ],
+              "lineage": null,
+              "consents": [
+                {
+                  "kind": "voice",
+                  "applicability": "not_applicable",
+                  "subject": "",
+                  "status": "unknown",
+                  "uses": [],
+                  "evidenceHashes": []
+                },
+                {
+                  "kind": "likeness",
+                  "applicability": "not_applicable",
+                  "subject": "",
+                  "status": "unknown",
+                  "uses": [],
+                  "evidenceHashes": []
+                }
+              ]
+            }
+          },
+          {
+            "id": "asset_ambient",
+            "kind": "audio",
+            "uri": "assets/fixtures/ambient.wav",
+            "rights": "project_original",
+            "provenance": {
+              "ledgerVersion": "1.0.0",
+              "original": {
+                "uri": "assets/fixtures/ambient.wav",
+                "sha256": "4aebda3a657a0d8f532d11ceacb1679081d7bdf7d7d301a53f1096af3580be91"
+              },
+              "current": {
+                "uri": "assets/fixtures/ambient.wav",
+                "sha256": "4aebda3a657a0d8f532d11ceacb1679081d7bdf7d7d301a53f1096af3580be91",
+                "payloadSha256": "4aebda3a657a0d8f532d11ceacb1679081d7bdf7d7d301a53f1096af3580be91"
+              },
+              "creator": "Ada",
+              "source": "Creator drawing",
+              "license": "Creator permission statement",
+              "attribution": "Art by Ada",
+              "permissions": {
+                "private_preview": "allowed",
+                "public_distribution": "allowed",
+                "commercial_pack": "allowed"
+              },
+              "evidence": [
+                {
+                  "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+                  "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+                  "label": "Creator statement"
+                }
+              ],
+              "lineage": null,
+              "consents": [
+                {
+                  "kind": "voice",
+                  "applicability": "not_applicable",
+                  "subject": "",
+                  "status": "unknown",
+                  "uses": [],
+                  "evidenceHashes": []
+                },
+                {
+                  "kind": "likeness",
+                  "applicability": "not_applicable",
+                  "subject": "",
+                  "status": "unknown",
+                  "uses": [],
+                  "evidenceHashes": []
+                }
+              ]
+            }
+          },
+          {
+            "id": "asset_duplicate",
+            "kind": "svg",
+            "uri": "assets/fixtures/rooftops.svg",
+            "rights": "project_original",
+            "provenance": {
+              "ledgerVersion": "1.0.0",
+              "original": {
+                "uri": "assets/fixtures/rooftops.svg",
+                "sha256": "e427974a2ac1cad294138b02b8a71ffd6a93c9353c674cc11cac7da582b0e756"
+              },
+              "current": {
+                "uri": "assets/fixtures/rooftops.svg",
+                "sha256": "e427974a2ac1cad294138b02b8a71ffd6a93c9353c674cc11cac7da582b0e756",
+                "payloadSha256": "6804b68d3f1639231e3edf0b135b39382a5853c7658b907ef74983ada2b5c6ba"
+              },
+              "creator": "Ada",
+              "source": "Creator drawing",
+              "license": "Creator permission statement",
+              "attribution": "Art by Ada",
+              "permissions": {
+                "private_preview": "allowed",
+                "public_distribution": "allowed",
+                "commercial_pack": "allowed"
+              },
+              "evidence": [
+                {
+                  "uri": "assets/evidence/2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f.txt",
+                  "sha256": "2ae2f624fe77c445a11e0ff094308cf5b31618604d2f0047a27fcde2ac5cb54f",
+                  "label": "Creator statement"
+                }
+              ],
+              "lineage": null,
+              "consents": [
+                {
+                  "kind": "voice",
+                  "applicability": "not_applicable",
+                  "subject": "",
+                  "status": "unknown",
+                  "uses": [],
+                  "evidenceHashes": []
+                },
+                {
+                  "kind": "likeness",
+                  "applicability": "not_applicable",
+                  "subject": "",
+                  "status": "unknown",
+                  "uses": [],
+                  "evidenceHashes": []
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "path": [
+          "document",
+          "layers"
+        ],
+        "value": [
+          {
+            "id": "layer_rooftops",
+            "shotId": "shot_rooftop",
+            "kind": "svg_plane",
+            "assetId": "asset_rooftops",
+            "characterId": null,
+            "pose": null,
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": -2,
+              "scale": 1,
+              "rotationDeg": 0
+            }
+          },
+          {
+            "id": "layer_duplicate",
+            "shotId": "shot_rooftop",
+            "kind": "svg_plane",
+            "assetId": "asset_duplicate",
+            "characterId": null,
+            "pose": null,
+            "transform": {
+              "x": 0,
+              "y": 0,
+              "z": -2,
+              "scale": 1,
+              "rotationDeg": 0
+            }
+          }
+        ]
+      },
+      {
+        "path": [
+          "document",
+          "shots",
+          0,
+          "layerIds"
+        ],
+        "value": [
+          "layer_rooftops",
+          "layer_duplicate"
+        ]
+      },
+      {
+        "path": [
+          "assets"
+        ],
+        "value": [
+          {
+            "assetId": "asset_rooftops",
+            "kind": "svg",
+            "svg": {
+              "assetId": "asset_rooftops",
+              "uri": "assets/fixtures/rooftops.svg",
+              "sourceUri": "assets/fixtures/rooftops.svg",
+              "viewBox": {
+                "x": 0.0,
+                "y": 0.0,
+                "width": 10.0,
+                "height": 10.0
+              },
+              "root": {
+                "tag": "svg",
+                "id": "svg-node-1",
+                "attributes": {},
+                "text": "",
+                "children": [
+                  {
+                    "tag": "rect",
+                    "id": "svg-node-2",
+                    "attributes": {
+                      "width": "10"
+                    },
+                    "text": "",
+                    "children": []
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "assetId": "asset_ambient",
+            "kind": "audio",
+            "mimeType": "audio/wav",
+            "dataBase64": "UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQIAAAAAAA=="
+          },
+          {
+            "assetId": "asset_duplicate",
+            "kind": "svg",
+            "svg": {
+              "assetId": "asset_duplicate",
+              "uri": "assets/fixtures/rooftops.svg",
+              "sourceUri": "assets/fixtures/rooftops.svg",
+              "viewBox": {
+                "x": 0.0,
+                "y": 0.0,
+                "width": 9,
+                "height": 10.0
+              },
+              "root": {
+                "tag": "svg",
+                "id": "svg-node-1",
+                "attributes": {},
+                "text": "",
+                "children": [
+                  {
+                    "tag": "rect",
+                    "id": "svg-node-2",
+                    "attributes": {
+                      "width": "10"
+                    },
+                    "text": "",
+                    "children": []
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

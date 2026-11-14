@@ -169,3 +169,35 @@ Later review metadata is read from the stored proposal, while all nondecision
 content must still match that frozen artifact. Job-result boundaries also reject
 reserved keys inside arbitrary context/diff JSON before exposing review controls.
 Canonical document and command versions remain unchanged.
+
+## Task10 — Asset evidence and export use
+
+`cdom.v0.4.schema.json` adds optional asset `provenance`; versions0.1–0.3 and
+their generated types remain preserved. `AssetProvenance` records original/current
+URI and SHA256 bindings, creator/source/license/attribution, three explicit use
+permissions, immutable text-evidence references, optional provider/model lineage,
+and voice/likeness consent. Reads never upgrade a document. An accepted human
+`setAssetEvidence` command (command0.7) upgrades a copied snapshot; undo restores
+exact earlier field presence and version. Providers have no new command permission.
+
+`evaluateAssetUse` and Python `evaluate_asset_use` evaluate recorded permissions
+for `private_preview`, `public_distribution` or `commercial_pack`. A known legacy
+rights label permits private preview only when the asset has no ledger. A ledger's
+denial, unknown permission, missing evidence or stale binding takes precedence.
+Required consent must cover the requested use, including private preview; unknown
+applicability blocks broader use. These checks do not establish legal clearance.
+
+Evidence is UTF-8 text: at most8 records,64KiB per text and256KiB total per asset.
+References use `assets/evidence/<sha256>.txt`; hashes cover exact bytes. Authored
+provenance is bounded to128KiB and command JSON to512KiB. Shared SHA256 and SVG
+payload helpers match Python; portable SVG viewBox numbers use binary64 hex with
+negative zero normalized, while source-byte hashes retain exact source identity.
+
+Player wrapper1.1 adds `exportUse` and embedded `evidence`. Validation recomputes
+permissions and verifies proof coverage, text hashes, media payload bindings and
+consistent raw hashes for shared URIs. It never trusts a cached allow flag.
+Legacy wrapper1.0 remains readable for private previews without included ledgers.
+The existing32MiB/64-media/depth32/node limits still apply. Text evidence travels
+with the full saved project and embedded media, so review its contents before
+sharing a portable bundle. Shared rights and rights-manifest fixtures exercise
+matching TypeScript/Python behavior without modifying the original player fixture.

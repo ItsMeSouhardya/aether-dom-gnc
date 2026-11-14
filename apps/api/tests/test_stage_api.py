@@ -188,3 +188,12 @@ def test_camera_bounds_are_rejected_without_upgrade(client: TestClient, position
     })
     assert client.post(BASE + "/commands", json=payload).status_code == 422
     assert client.get(BASE + "/document").json()["document"] == load_fixture()
+
+
+def test_unicode_imported_asset_ledger_is_inspectable(client: TestClient):
+    payload = imported()
+    payload["args"]["assetId"] = "asset_é"
+    save(client, payload)
+    response = client.get(BASE + "/assets/asset_é/ledger?revision=1")
+    assert response.status_code == 200, response.text
+    assert response.json()["assetId"] == "asset_é"
