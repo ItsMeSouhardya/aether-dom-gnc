@@ -3,9 +3,9 @@ import type { SelectionAction, StudioSelection } from '@/features/studio/selecti
 import { getSceneShots, kindLabel, layerName, stageLayers } from '@/features/studio/view-model';
 import { Icon } from './icons';
 
-type Props = { document: CdomDocument; selection: StudioSelection; dispatch: (action: SelectionAction) => void };
+type Props = { document: CdomDocument; selection: StudioSelection; dispatch: (action: SelectionAction) => void; inspectAsset?: (id: string) => void; assetSelectionDisabled?: boolean };
 
-export function ProjectNavigator({ document, selection, dispatch }: Props) {
+export function ProjectNavigator({ document, selection, dispatch, inspectAsset, assetSelectionDisabled }: Props) {
   const layers = stageLayers(document, selection.shotId).toReversed();
   return <aside className="studio-explorer" aria-label="Project explorer and nodes">
     <section className="project-explorer" aria-labelledby="project-explorer-heading">
@@ -24,7 +24,7 @@ export function ProjectNavigator({ document, selection, dispatch }: Props) {
       </details>
       <details className="explorer-group">
         <summary><Icon name="chevron" className="disclosure-icon" />Asset references<span>{document.assets.length}</span></summary>
-        <ul className="asset-reference-list">{document.assets.map(asset => <li key={asset.id}><Icon name="asset" /><span>{asset.uri.split('/').at(-1)}<small>{asset.kind} · Metadata only</small></span></li>)}</ul>
+        <ul className="asset-reference-list">{document.assets.map(asset => <li key={asset.id}><Icon name="asset" />{inspectAsset ? <button className="tree-node" disabled={assetSelectionDisabled} onClick={() => inspectAsset(asset.id)}><span>{asset.uri.split('/').at(-1)}<small>{asset.kind} · Review evidence</small></span></button> : <span>{asset.uri.split('/').at(-1)}<small>{asset.kind} · Metadata only</small></span>}</li>)}</ul>
         {document.assets.length === 0 ? <p className="panel-note">No asset references recorded.</p> : null}
       </details>
     </section>

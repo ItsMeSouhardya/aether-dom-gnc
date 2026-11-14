@@ -11,6 +11,7 @@ from collections import defaultdict
 from collections.abc import Iterable
 from typing import Any
 
+from app.asset_rights import USES, evaluate_asset_use
 from app.dependency_graph import build_graph, entity_records
 
 POSE_LIMBS = {
@@ -408,6 +409,20 @@ class _Rules:
             }
             self.emit("asset." + status, asset["id"], "/uri", messages[status])
 
+    def rights(self, observations: dict[str, dict[str, Any]] | None) -> None:
+        for asset in self.document.get("assets", []):
+            if "provenance" not in asset:
+                continue
+            observed = (observations or {}).get(asset["id"], {})
+            if observed.get("error"):
+                self.emit("asset.evidence_integrity", asset["id"], "/provenance",
+                          observed["error"])
+            for use in USES:
+                decision = evaluate_asset_use(asset, use, observed.get("evidence"))
+                if not decision["allowed"]:
+                    self.emit("asset.use_blocked", asset["id"], "/provenance",
+                              use + ": " + "; ".join(decision["reasons"]), token=use)
+
 
 def _supported_constraint(constraint: dict[str, Any]) -> bool:
     return constraint.get("type") == "limb_injury" and constraint.get("limb") in {
@@ -430,6 +445,7 @@ def analyze_document(
     changed_entity_ids: Iterable[str] = (),
     asset_status: dict[str, str] | None = None,
     previous_document: dict[str, Any] | None = None,
+    asset_evidence: dict[str, dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     """Recompute complete analysis against exactly the supplied canonical snapshot."""
     graph = build_graph(document)
@@ -438,6 +454,7 @@ def analyze_document(
     rules.bindings()
     rules.physical()
     rules.assets(asset_status)
+    rules.rights(asset_evidence)
     for entity_id in graph.cycle_node_ids:
         rules.emit(
             "binding.cycle",

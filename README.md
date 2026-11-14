@@ -2,6 +2,13 @@
 
 A local-first creative IDE for semantic, cross-modal storytelling. **Task09 — Durable jobs** adds leased local proposal work, recovery and a dedicated Jobs inspector. Isolated branches, three-way comparison and WebM preview remain available. The selected Afterlight v2 landing page remains separate and unchanged.
 
+## Shared agent skills
+
+The [agent resource library](agent_resources/README.md) contains separate versioned
+Superpowers and context-mode snapshots, skill indexes, licenses and a reusable
+task brief. It also links the existing Impeccable archive. Other agents can read
+these references directly; MCP runtime setup remains host-specific.
+
 ## Local setup — Windows PowerShell
 
 Prerequisites: Node **22.13+**, pnpm **11.25.0**, Python **3.12+**. Task04 verified locally with Node22.23.3 and Python3.12.14. Install pnpm with `npm install --global pnpm@11.25.0` if needed. Open PowerShell at this project root; paths with spaces are supported.
@@ -81,7 +88,20 @@ Choose **9:16** above the stage to preview the saved portrait override. The **Po
 
 Choose **Player** in the header to open the current saved revision at `/player`. Choose a shot/aspect, use Play/Pause or seek, and explicitly **Enable audio** to hear its embedded local mix. Focus the frame for Space/arrow/Home/End keyboard controls. Changing shot/aspect resets playback and audio. This read-only route uses the same composition, renderer, playback clock and audio engine as the studio.
 
-**Export JSON** downloads a portable `.cdom.json` bundle containing the exact saved document plus sanitized SVG trees and PCM WAV media. Unsaved drafts are excluded. Open it through **Open JSON** in the player; media playback then works with the API offline. The app itself must be installed/running: the JSON is data for this player, not an HTML application or video. The initial bundle format is JSON rather than ZIP, with a32MiB total limit,64 referenced assets and8MiB per WAV. Missing, unsupported, unsafe or unknown-rights referenced media fails export with actionable guidance. Files stay local; no publication or canonical write occurs. Original media references inside the document remain intact.
+Choose **Export JSON**, select the intended use, then **Review export**. Review
+attribution and download the prepared portable `.cdom.json` bundle containing the
+exact saved document, sanitized SVG trees, PCM WAV media and any referenced text
+evidence. Unsaved drafts are excluded. A blocker offers **Review asset evidence**;
+you can also open an asset from the navigator's **Asset references**. Choose
+**Edit evidence**, complete its records, **Review changes**, then **Save evidence**.
+Cancel makes no write; Undo/Redo retains exact earlier evidence and media bindings.
+
+Open a downloaded bundle through **Open JSON** in the player; playback then works
+with the API offline. The app must still be installed/running: JSON is data for
+this player. Limits remain32MiB total,64 referenced assets and8MiB per WAV.
+Missing, unsupported, unsafe or incompatible-rights media blocks the requested
+export with recovery guidance. Files stay local; no publication or canonical
+write occurs. Original media references inside the document remain intact.
 
 Choose **Branches** to fork the current saved revision. Enter a name, choose **Create fork**, then **Open branch**. A fork retains the source revision as its base and starts with an empty edit/undo history. Saved edits, undo and proposals are isolated per branch; immutable asset versions may be shared. The source stays unchanged. Branch creation has a separate human command/audit record and cannot be undone as a source edit. Switching discards unsaved drafts and stops preview; the chosen branch lives in the studio URL and survives refresh. A busy save blocks switching. Unknown fork outcomes can safely retry the same command or refresh the branch list.
 
@@ -117,10 +137,11 @@ On this Windows host the bundled Playwright Chromium failed to launch. Local bro
 - `GET /api/v1/projects/{projectId}/branches/{branchId}/diagnostics`: derived issues, graph and invalidation metadata.
 - `POST /api/v1/projects/{projectId}/branches/{branchId}/commands`: validated transform/pose/recovery, camera, appearance, SVG import/edit, keyframe and undo/redo commands; requires `expectedRevision`, command ID, stable identities, human actor and reason.
 - `GET /api/v1/projects/{projectId}/branches/{branchId}/assets/{assetId}?revision=N`: validated SVG tree for an asset referenced by that immutable saved revision; no arbitrary file access.
+- `GET /api/v1/projects/{projectId}/branches/{branchId}/assets/{assetId}/ledger?revision=N`: exact saved-revision media bindings and referenced text evidence, with recoverable inspection errors. Revision is required.
 - `GET /api/v1/projects/{projectId}/branches/{branchId}/audio/{assetId}?revision=N`: bounded PCM16 WAV bytes for a referenced audio asset at that saved revision. Traversal, network paths, redirected links and invalid/oversized files are rejected.
 - `GET/POST /api/v1/projects/{projectId}/branches/{branchId}/agent-proposals`: list the latest20 review records or generate a scoped proposal against `expectedRevision`.
 - `POST /api/v1/projects/{projectId}/branches/{branchId}/agent-proposals/{proposalId}/reject`: persist rejection with an empty JSON object; approval uses the existing commands endpoint.
-- `GET /api/v1/projects/{projectId}/branches/{branchId}/player-manifest?revision=N`: exact saved document plus portable embedded SVG/audio media; `download=1` adds an attachment filename. Omit revision to capture current head once. No history/proposal records are exported.
+- `GET /api/v1/projects/{projectId}/branches/{branchId}/player-manifest?revision=N&use=private_preview`: exact saved document plus portable SVG/audio/evidence; use also accepts `public_distribution` or `commercial_pack`. `download=1` adds an attachment filename. Omit revision to capture current head once. No history/proposal records are exported.
 - [Local OpenAPI docs](http://127.0.0.1:8000/docs).
 - `GET /api/v1/projects/{projectId}/branches`: live branch summaries/lineage; `POST` accepts a separate human `forkBranch` command with source revision and new stable ID.
 - `GET /api/v1/projects/{projectId}/diff?left=branchA&right=branchB`: bounded read-only three-way comparison with captured heads and actual common base.
@@ -129,7 +150,37 @@ The web server forwards only these fixed resources and preserves conflict/error 
 
 `packages/schema/cdom.schema.json` and the original fixture remain version **0.1.0**. Version0.2 adds stage metadata; version0.3 adds optional `shot.audio.tension`. All three remain readable. `setShotTension` upgrades its copied snapshot losslessly; undo restores exact prior authored fields/version. Stage commands preserve existing0.3 metadata. Startup performs no document upgrade. AJV and Python consume the same schemas; see [the contract guide](packages/schema/README.md).
 
-`command.schema.json` remains **0.6.0**, including `setShotLayoutOverride`; derived analysis remains **0.1.0**. Task08 adds separate fork/list/diff schemas and Alembic0003 for immutable fork lineage/audit, preserving existing snapshots and histories. No document upgrade occurs. SQLite owns canonical state; React accepts only validated, revision-matched responses. Selection, drafts, playback and analyser values stay temporary. Real AI providers, semantic dialogue analysis, advanced rigs, auth and collaboration remain later work. The original fixture’s contradiction stays preserved, while saved branch repairs change its current diagnostic.
+`command.schema.json` is **0.7.0**, including human-only `setAssetEvidence`;
+derived analysis remains **0.1.0**. Task10 adds document0.4 asset provenance while
+preserving0.1–0.3. Only an accepted evidence correction upgrades its copied
+snapshot; undo restores the prior version/field presence. Task08's fork lineage
+and Task09's job side tables remain separate. SQLite owns canonical state;
+React accepts only validated, revision-matched responses. Selection, drafts,
+playback and analyser values stay temporary. Real AI providers, semantic dialogue
+analysis, advanced rigs, auth and collaboration remain later work. The original
+fixture's contradiction stays preserved, while saved repairs change its diagnostic.
+
+Task10 records creator/source/license/attribution, use permissions, optional
+provider/model lineage, voice/likeness consent and immutable text evidence against
+exact original/current media hashes. Evidence corrections use normal reviewed,
+revision-checked commands, audit and Undo/Redo. Editing an SVG retains its original
+and earlier evidence; the derivative needs a fresh review before that ledger can
+permit export. No read or startup automatically upgrades a document.
+
+Exports distinguish **Private preview**, **Public distribution** and **Commercial
+pack**. Known legacy rights allow only private preview without a ledger. Once a
+ledger exists, its denial, unknown permission, missing proof or stale binding
+governs. Broader use requires explicit recorded permission and applicable consent.
+Changing permissions neither establishes ownership nor publishes work; policy
+evaluates recorded evidence and provides no automatic legal clearance.
+
+Evidence text is embedded in portable JSON along with the full saved project and
+media. Review sensitive contents before sharing; this is a source bundle, not a
+minimal receipt. WebM does not embed the ledger. Retain its matching source and
+evidence JSON separately for records, privately if appropriate. Preserve the
+runtime `assets/` directory with SQLite backups so referenced immutable media and
+evidence remain available. See [Task10 contract details](packages/schema/README.md)
+and [API/storage behavior](apps/api/README.md).
 
 ## Selected landing and frozen references
 
@@ -158,4 +209,6 @@ Open [Afterlight v2](http://localhost:4173/). Stop its dev server before preview
 - `design_archive/`, `design_specifications/vendor/` — preserved references.
 - `aether_dom_codex_kit/`, `initial_first_plan_provided/`, `design_inspirations/` — preserved original specifications and source material.
 
-Next: **Task10 — Asset provenance and commercial-use policy**, following the ordered kit board and canonical-state boundaries. WebGPU and advanced rigs/Bezier editing remain deferred.
+Next: **Task11 — Authored skeletal rigs and forward kinematics**, following the ordered kit
+board and canonical-state boundaries. WebGPU and advanced rigs/Bezier editing
+remain deferred.

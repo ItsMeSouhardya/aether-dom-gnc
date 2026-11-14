@@ -132,6 +132,12 @@ export type CdomCommand =
         } | null;
       };
       [k: string]: unknown;
+    })
+  | (Envelope & {
+      op: 'setAssetEvidence';
+      targetId: string;
+      args: AssetEvidenceArgs;
+      [k: string]: unknown;
     });
 
 export interface Envelope {
@@ -152,4 +158,262 @@ export interface Transform {
   z?: number;
   scale?: number;
   rotationDeg?: number;
+}
+export interface AssetEvidenceArgs {
+  rights: 'project_original' | 'licensed' | 'ai_generated' | 'unknown';
+  expectedAssetUri: string;
+  expectedSourceUri: string;
+  creator: string;
+  source: string;
+  license: string;
+  attribution: string;
+  permissions: {
+    private_preview: 'allowed' | 'denied' | 'unknown';
+    public_distribution: 'allowed' | 'denied' | 'unknown';
+    commercial_pack: 'allowed' | 'denied' | 'unknown';
+  };
+  lineage: null | {
+    provider: string;
+    model: string;
+    parentSha256: string | null;
+  };
+  /**
+   * @minItems 2
+   * @maxItems 2
+   */
+  consents: [
+    {
+      kind: 'voice' | 'likeness';
+      applicability: 'not_applicable' | 'unknown' | 'required';
+      subject: string;
+      status: 'allowed' | 'denied' | 'unknown';
+      /**
+       * @maxItems 3
+       */
+      uses:
+        | []
+        | ['private_preview' | 'public_distribution' | 'commercial_pack']
+        | [
+            'private_preview' | 'public_distribution' | 'commercial_pack',
+            'private_preview' | 'public_distribution' | 'commercial_pack'
+          ]
+        | [
+            'private_preview' | 'public_distribution' | 'commercial_pack',
+            'private_preview' | 'public_distribution' | 'commercial_pack',
+            'private_preview' | 'public_distribution' | 'commercial_pack'
+          ];
+      /**
+       * @maxItems 8
+       */
+      evidenceHashes:
+        | []
+        | [string]
+        | [string, string]
+        | [string, string, string]
+        | [string, string, string, string]
+        | [string, string, string, string, string]
+        | [string, string, string, string, string, string]
+        | [string, string, string, string, string, string, string]
+        | [string, string, string, string, string, string, string, string];
+    },
+    {
+      kind: 'voice' | 'likeness';
+      applicability: 'not_applicable' | 'unknown' | 'required';
+      subject: string;
+      status: 'allowed' | 'denied' | 'unknown';
+      /**
+       * @maxItems 3
+       */
+      uses:
+        | []
+        | ['private_preview' | 'public_distribution' | 'commercial_pack']
+        | [
+            'private_preview' | 'public_distribution' | 'commercial_pack',
+            'private_preview' | 'public_distribution' | 'commercial_pack'
+          ]
+        | [
+            'private_preview' | 'public_distribution' | 'commercial_pack',
+            'private_preview' | 'public_distribution' | 'commercial_pack',
+            'private_preview' | 'public_distribution' | 'commercial_pack'
+          ];
+      /**
+       * @maxItems 8
+       */
+      evidenceHashes:
+        | []
+        | [string]
+        | [string, string]
+        | [string, string, string]
+        | [string, string, string, string]
+        | [string, string, string, string, string]
+        | [string, string, string, string, string, string]
+        | [string, string, string, string, string, string, string]
+        | [string, string, string, string, string, string, string, string];
+    }
+  ];
+  /**
+   * @maxItems 8
+   */
+  evidence:
+    | []
+    | [
+        {
+          label: string;
+          text: string;
+        }
+      ]
+    | [
+        {
+          label: string;
+          text: string;
+        },
+        {
+          label: string;
+          text: string;
+        }
+      ]
+    | [
+        {
+          label: string;
+          text: string;
+        },
+        {
+          label: string;
+          text: string;
+        },
+        {
+          label: string;
+          text: string;
+        }
+      ]
+    | [
+        {
+          label: string;
+          text: string;
+        },
+        {
+          label: string;
+          text: string;
+        },
+        {
+          label: string;
+          text: string;
+        },
+        {
+          label: string;
+          text: string;
+        }
+      ]
+    | [
+        {
+          label: string;
+          text: string;
+        },
+        {
+          label: string;
+          text: string;
+        },
+        {
+          label: string;
+          text: string;
+        },
+        {
+          label: string;
+          text: string;
+        },
+        {
+          label: string;
+          text: string;
+        }
+      ]
+    | [
+        {
+          label: string;
+          text: string;
+        },
+        {
+          label: string;
+          text: string;
+        },
+        {
+          label: string;
+          text: string;
+        },
+        {
+          label: string;
+          text: string;
+        },
+        {
+          label: string;
+          text: string;
+        },
+        {
+          label: string;
+          text: string;
+        }
+      ]
+    | [
+        {
+          label: string;
+          text: string;
+        },
+        {
+          label: string;
+          text: string;
+        },
+        {
+          label: string;
+          text: string;
+        },
+        {
+          label: string;
+          text: string;
+        },
+        {
+          label: string;
+          text: string;
+        },
+        {
+          label: string;
+          text: string;
+        },
+        {
+          label: string;
+          text: string;
+        }
+      ]
+    | [
+        {
+          label: string;
+          text: string;
+        },
+        {
+          label: string;
+          text: string;
+        },
+        {
+          label: string;
+          text: string;
+        },
+        {
+          label: string;
+          text: string;
+        },
+        {
+          label: string;
+          text: string;
+        },
+        {
+          label: string;
+          text: string;
+        },
+        {
+          label: string;
+          text: string;
+        },
+        {
+          label: string;
+          text: string;
+        }
+      ];
 }

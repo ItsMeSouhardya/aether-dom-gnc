@@ -124,6 +124,14 @@
 
 **Acceptance:** unknown or incompatible rights block the requested distribution/commercial use; rights edits are audited and undoable. Forks and exports retain the exact asset-version evidence. Changing public-use permission does not invent ownership or silently publish. Malformed/missing evidence and unsafe file paths are rejected without altering originals.
 
+### Execution redirect after Task 10
+
+**Active follow-up board:** [TASKS PT2.md](TASKS%20PT2.md). Tasks 11–29 below
+are retained unchanged as the original scope reference. For all further execution,
+follow Tasks 11–18 and optional Tasks 19–20 in that separate file, including the
+Task 12 presentation gate and the user's post-12 no-commit/checkpoint policy.
+Do not execute the historical Tasks 11–29 below as a second work queue.
+
 ## Task 11 — Authored skeletal rigs and forward kinematics
 **Depends on:** Tasks 04 and 10.
 

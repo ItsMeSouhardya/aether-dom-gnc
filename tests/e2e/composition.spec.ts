@@ -26,8 +26,11 @@ test('edits portrait overrides and fits both subjects without changing landscape
 test('exports the saved manifest and reopens embedded media with the API blocked', async ({ page, request }, testInfo) => {
   const before = await (await request.get(`${base}/document`)).json();
   await page.goto('/');
-  const downloadEvent = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Export JSON', exact: true }).click();
+  await page.getByRole('button', { name: 'Review export', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Download JSON', exact: true })).toBeVisible();
+  const downloadEvent = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Download JSON', exact: true }).click();
   const download = await downloadEvent;
   const path = testInfo.outputPath('export.cdom.json'); await download.saveAs(path);
   const fs = await import('node:fs/promises'), manifest = JSON.parse(await fs.readFile(path, 'utf8'));
@@ -90,6 +93,7 @@ test('rejects stale portrait drafts and keeps export and player failures actiona
   await expect.poll(async () => (await (await request.get(`${base}/document`)).json()).document.layers).toEqual(before.document.layers);
   await page.route('**/player-manifest*', route => route.fulfill({ status: 422, json: { detail: { message: 'A referenced media file is missing. Restore it and retry.' } } }));
   await page.getByRole('button', { name: 'Export JSON', exact: true }).click();
+  await page.getByRole('button', { name: 'Review export', exact: true }).click();
   await expect(page.getByRole('alert', { name: 'Export error' })).toContainText('Restore it and retry');
   await expect(page.getByRole('region', { name: 'Layered stage' })).toBeVisible();
   await page.goto('/player'); await expect(page.locator('#player-content').getByRole('alert')).toContainText('Restore it and retry');

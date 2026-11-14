@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { playerFixture } from './player-fixture';
+import { decisionsForUse } from '../src/features/export/asset-use';
 import { chooseWebMCodec, planWebM, webMFrame } from '../src/features/export/webm-plan';
 
 const options = { shotId: 'shot_rooftop', aspect: '16:9' as const, durationMs: 500, includeAudio: true };
@@ -58,4 +59,13 @@ describe('bounded saved composition recording plan', () => {
     manifest.document.schemaVersion = '0.2.0'; layer.visible = false;
     expect(webMFrame(planWebM(manifest, options), 0)).not.toContain('Invisible');
   });
+});
+
+it('evaluates only included media for the requested use instead of trusting the imported use', () => {
+  const manifest = playerFixture();
+  const privateDecisions = decisionsForUse(manifest, 'private_preview');
+  expect(privateDecisions.every(decision => decision.allowed)).toBe(true);
+  const publicDecisions = decisionsForUse(manifest, 'public_distribution');
+  expect(publicDecisions.some(decision => !decision.allowed)).toBe(true);
+  expect(publicDecisions.map(decision => decision.assetId)).toEqual(manifest.assets.map(asset => asset.assetId));
 });

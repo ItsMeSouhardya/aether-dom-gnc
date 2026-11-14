@@ -17,8 +17,11 @@ VALIDATOR_V2 = Draft202012Validator(SCHEMA_V2)
 SCHEMA_V3 = json.loads((SCHEMA_ROOT / "cdom.v0.3.schema.json").read_text(encoding="utf-8"))
 Draft202012Validator.check_schema(SCHEMA_V3)
 VALIDATOR_V3 = Draft202012Validator(SCHEMA_V3)
-SCHEMA_VERSION = "0.3.0"
-SUPPORTED_SCHEMA_VERSIONS = ["0.1.0", "0.2.0", "0.3.0"]
+SCHEMA_V4 = json.loads((SCHEMA_ROOT / "cdom.v0.4.schema.json").read_text(encoding="utf-8"))
+Draft202012Validator.check_schema(SCHEMA_V4)
+VALIDATOR_V4 = Draft202012Validator(SCHEMA_V4)
+SCHEMA_VERSION = "0.4.0"
+SUPPORTED_SCHEMA_VERSIONS = ["0.1.0", "0.2.0", "0.3.0", "0.4.0"]
 
 
 def _portable_issues(value: object, path: str = "") -> list[dict[str, str]]:
@@ -52,12 +55,29 @@ def _portable_issues(value: object, path: str = "") -> list[dict[str, str]]:
 def validate_document(document: object) -> list[dict[str, str]]:
     """Structural validation only; never coerce, repair, or mutate canon."""
     version = document.get("schemaVersion") if isinstance(document, dict) else None
-    validator = VALIDATOR_V3 if version == "0.3.0" else (
-        VALIDATOR_V2 if version == "0.2.0" else VALIDATOR
+    if (
+        version == "0.4.0"
+        and isinstance(document, dict)
+        and isinstance(document.get("assets"), list)
+    ):
+        from .asset_rights import validate_asset_provenance
+
+        for asset in document["assets"]:
+            if isinstance(asset, dict) and "provenance" in asset:
+                issues = validate_asset_provenance(asset["provenance"])
+                if issues:
+                    return issues
+    validator = (
+        VALIDATOR_V4
+        if version == "0.4.0"
+        else VALIDATOR_V3
+        if version == "0.3.0"
+        else (VALIDATOR_V2 if version == "0.2.0" else VALIDATOR)
     )
     return _portable_issues(document) + [
         {
-            "path": "/" + "/".join(
+            "path": "/"
+            + "/".join(
                 str(part).replace("~", "~0").replace("/", "~1") for part in error.absolute_path
             ),
             "message": error.message,

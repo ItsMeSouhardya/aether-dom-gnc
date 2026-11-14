@@ -13,6 +13,11 @@ describe('portable player loading', () => {
     expect(fetcher.mock.calls[0][0]).toBe('/api/v1/projects/proj_neon_shogun/branches/branch_main/player-manifest?revision=0');
     expect(fetcher.mock.calls[0][1]).toMatchObject({ cache: 'no-store' });
   });
+  it('requests and verifies an explicit export use', async () => {
+    const fetcher = vi.fn(async () => Response.json(playerFixture())); vi.stubGlobal('fetch', fetcher);
+    await expect(loadPlayerManifest('proj_neon_shogun', 'branch_main', 0, undefined, 'public_distribution')).rejects.toThrow(/use/i);
+    expect(String((fetcher.mock.calls as unknown as [string][])[0][0])).toContain('use=public_distribution');
+  });
   it('rejects mismatched route identity and exact revision', async () => {
     for (const mutate of [(m: ReturnType<typeof playerFixture>) => { m.document.project.revision = 1; }, (m: ReturnType<typeof playerFixture>) => { m.document.project.id = 'different'; }, (m: ReturnType<typeof playerFixture>) => { m.document.project.activeBranchId = 'different'; }]) {
       const manifest = playerFixture(); mutate(manifest);

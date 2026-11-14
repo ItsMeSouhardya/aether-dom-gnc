@@ -1,0 +1,181 @@
+{
+  "formatVersion": 1,
+  "archived": "2026-11-13",
+  "plugins": [
+    {
+      "name": "superpowers",
+      "version": "7.0.1",
+      "root": "agent_resources/plugins/superpowers/7.0.1",
+      "upstream": "https://github.com/obra/superpowers",
+      "license": "MIT",
+      "manifest": "agent_resources/plugins/superpowers/7.0.1/archive-manifest.json",
+      "skillRoot": "agent_resources/plugins/superpowers/7.0.1/skills",
+      "skillCount": 15,
+      "skills": [
+        {
+          "name": "brainstorming",
+          "path": "agent_resources/plugins/superpowers/7.0.1/skills/brainstorming/SKILL.md",
+          "description": "You MUST use this before any creative work - creating features, building components, adding functionality, modifying behavior, or planning anything new, in software or out of it (a talk, a business, a renovation)."
+        },
+        {
+          "name": "diagnosing-superpowers",
+          "path": "agent_resources/plugins/superpowers/7.0.1/skills/diagnosing-superpowers/SKILL.md",
+          "description": "Use when a superpowers session went wrong and your human partner wants to know why — repeated work, ignored plans, stumbles, poor results, a skill that didn't fire, \"it took too long\", \"why is it so expensive\", \"what is it doing\" — or wants to build a bug report for the superpowers maintainers, for the current session or a past one identified by id or path, on any harness."
+        },
+        {
+          "name": "dispatching-parallel-agents",
+          "path": "agent_resources/plugins/superpowers/7.0.1/skills/dispatching-parallel-agents/SKILL.md",
+          "description": "Use when facing 2+ independent tasks that can be worked on without shared state or sequential dependencies"
+        },
+        {
+          "name": "executing-plans",
+          "path": "agent_resources/plugins/superpowers/7.0.1/skills/executing-plans/SKILL.md",
+          "description": "Use when executing an implementation plan in the current session as the implementer yourself — your human partner chose inline execution, or no subagent tool is available"
+        },
+        {
+          "name": "finishing-a-development-branch",
+          "path": "agent_resources/plugins/superpowers/7.0.1/skills/finishing-a-development-branch/SKILL.md",
+          "description": "Use when implementation is complete, all tests pass, and you need to decide how to integrate the work"
+        },
+        {
+          "name": "receiving-code-review",
+          "path": "agent_resources/plugins/superpowers/7.0.1/skills/receiving-code-review/SKILL.md",
+          "description": "Use when receiving code review feedback, before implementing suggestions, especially if feedback seems unclear or technically questionable - requires technical rigor and verification, not performative agreement or blind implementation"
+        },
+        {
+          "name": "requesting-code-review",
+          "path": "agent_resources/plugins/superpowers/7.0.1/skills/requesting-code-review/SKILL.md",
+          "description": "Use when completing tasks, implementing major features, or before merging to verify work meets requirements"
+        },
+        {
+          "name": "subagent-driven-development",
+          "path": "agent_resources/plugins/superpowers/7.0.1/skills/subagent-driven-development/SKILL.md",
+          "description": "Use when executing implementation plans with independent tasks in the current session"
+        },
+        {
+          "name": "systematic-debugging",
+          "path": "agent_resources/plugins/superpowers/7.0.1/skills/systematic-debugging/SKILL.md",
+          "description": "Use when encountering any bug, test failure, or unexpected behavior, before proposing fixes"
+        },
+        {
+          "name": "test-driven-development",
+          "path": "agent_resources/plugins/superpowers/7.0.1/skills/test-driven-development/SKILL.md",
+          "description": "Use when implementing any feature or bugfix, before writing implementation code"
+        },
+        {
+          "name": "using-git-worktrees",
+          "path": "agent_resources/plugins/superpowers/7.0.1/skills/using-git-worktrees/SKILL.md",
+          "description": "Use when starting feature work that needs isolation from current workspace or before executing implementation plans - ensures an isolated workspace exists via native tools or git worktree fallback"
+        },
+        {
+          "name": "using-superpowers",
+          "path": "agent_resources/plugins/superpowers/7.0.1/skills/using-superpowers/SKILL.md",
+          "description": "Use when starting any conversation - establishes how to find and use skills, requiring skill invocation before ANY response including clarifying questions"
+        },
+        {
+          "name": "verification-before-completion",
+          "path": "agent_resources/plugins/superpowers/7.0.1/skills/verification-before-completion/SKILL.md",
+          "description": "Use when about to claim work is complete, fixed, or passing, before committing or creating PRs - requires running verification commands and confirming output before making any success claims; evidence before assertions always"
+        },
+        {
+          "name": "writing-plans",
+          "path": "agent_resources/plugins/superpowers/7.0.1/skills/writing-plans/SKILL.md",
+          "description": "Use when you have a spec or requirements for a multi-step task, before touching code"
+        },
+        {
+          "name": "writing-skills",
+          "path": "agent_resources/plugins/superpowers/7.0.1/skills/writing-skills/SKILL.md",
+          "description": "Use when creating new skills, editing existing skills, or verifying skills work before deployment"
+        }
+      ],
+      "auxiliarySkills": []
+    },
+    {
+      "name": "context-mode",
+      "version": "1.0.169",
+      "root": "agent_resources/plugins/context-mode/1.0.169",
+      "upstream": "https://github.com/mksglu/context-mode",
+      "license": "Elastic-2.0",
+      "manifest": "agent_resources/plugins/context-mode/1.0.169/archive-manifest.json",
+      "skillRoot": "agent_resources/plugins/context-mode/1.0.169/skills",
+      "skillCount": 8,
+      "skills": [
+        {
+          "name": "context-mode",
+          "path": "agent_resources/plugins/context-mode/1.0.169/skills/context-mode/SKILL.md",
+          "description": "Use context-mode tools (ctx_execute, ctx_execute_file) instead of Bash/cat when processing large outputs. Triggers: \"analyze logs\", \"summarize output\", \"process data\", \"parse JSON\", \"filter results\", \"extract errors\", \"check build output\", \"analyze dependencies\", \"process API response\", \"large file analysis\", \"page snapshot\", \"browser snapshot\", \"DOM structure\", \"inspect page\", \"accessibility tree\", \"Playwright snapshot\", \"run tests\", \"test output\", \"coverage report\", \"git log\", \"recent commits\", \"diff between branches\", \"list containers\", \"pod status\", \"disk usage\", \"fetch docs\", \"API reference\", \"index documentation\", \"call API\", \"check response\", \"query results\", \"find TODOs\", \"count lines\", \"codebase statistics\", \"security audit\", \"outdated packages\", \"dependency tree\", \"cloud resources\", \"CI/CD output\". Also triggers on ANY MCP tool output that may exceed 20 lines. Subagent routing is handled automatically via PreToolUse hook."
+        },
+        {
+          "name": "ctx-doctor",
+          "path": "agent_resources/plugins/context-mode/1.0.169/skills/ctx-doctor/SKILL.md",
+          "description": "Run context-mode diagnostics. Checks runtimes, hooks, FTS5, plugin registration, npm and marketplace versions. Trigger: /context-mode:ctx-doctor"
+        },
+        {
+          "name": "ctx-index",
+          "path": "agent_resources/plugins/context-mode/1.0.169/skills/ctx-index/SKILL.md",
+          "description": "Index a local file or directory into context-mode's persistent FTS5 knowledge base so future ctx_search calls can retrieve focused snippets without rereading raw files. Trigger: /context-mode:ctx-index"
+        },
+        {
+          "name": "ctx-insight",
+          "path": "agent_resources/plugins/context-mode/1.0.169/skills/ctx-insight/SKILL.md",
+          "description": "Open the context-mode Insight dashboard in your default browser. Insight is the hosted analytics layer for AI-assisted engineering teams — per-engineer productive rate, retry waste, blocker detection, role-narrowed views. Trigger: /context-mode:ctx-insight"
+        },
+        {
+          "name": "ctx-purge",
+          "path": "agent_resources/plugins/context-mode/1.0.169/skills/ctx-purge/SKILL.md",
+          "description": "Purge the context-mode knowledge base. Permanently deletes all indexed content and resets session stats. This is destructive and cannot be undone. Trigger: /context-mode:ctx-purge"
+        },
+        {
+          "name": "ctx-search",
+          "path": "agent_resources/plugins/context-mode/1.0.169/skills/ctx-search/SKILL.md",
+          "description": "Search context-mode's persistent FTS5 knowledge base for previously indexed local project content, documentation, or session memory. Trigger: /context-mode:ctx-search"
+        },
+        {
+          "name": "ctx-stats",
+          "path": "agent_resources/plugins/context-mode/1.0.169/skills/ctx-stats/SKILL.md",
+          "description": "Show how much context window context-mode saved this session. Displays token consumption, context savings ratio, and per-tool breakdown. Read-only — shows stats only, no reset capability. To wipe the knowledge base entirely, use ctx_purge instead. Trigger: /context-mode:ctx-stats"
+        },
+        {
+          "name": "ctx-upgrade",
+          "path": "agent_resources/plugins/context-mode/1.0.169/skills/ctx-upgrade/SKILL.md",
+          "description": "Update context-mode from GitHub and fix hooks/settings. Pulls latest, builds, installs, updates npm global, configures hooks. Trigger: /context-mode:ctx-upgrade"
+        }
+      ],
+      "auxiliarySkills": [
+        {
+          "name": "context-mode-ops",
+          "path": "agent_resources/plugins/context-mode/1.0.169/.claude/skills/context-mode-ops/SKILL.md",
+          "description": "Manage context-mode GitHub issues, PRs, releases, and marketing with parallel subagent army. Orchestrates 10-20 dynamic agents per task. Use when triaging issues, reviewing PRs, releasing versions, writing LinkedIn posts, announcing releases, fixing bugs, merging contributions, validating ENV vars, testing adapters, or syncing branches."
+        },
+        {
+          "name": "context-mode",
+          "path": "agent_resources/plugins/context-mode/1.0.169/configs/antigravity-cli/skills/context-mode/SKILL.md",
+          "description": "Mandatory routing rules for Antigravity CLI. Invoke when exploring a codebase, reading files for analysis, listing context-mode tools, searching, parsing, counting, comparing, summarizing, fetching web content, or running data-heavy commands."
+        },
+        {
+          "name": "context-mode",
+          "path": "agent_resources/plugins/context-mode/1.0.169/configs/copilot-cli/skills/context-mode/SKILL.md",
+          "description": "MANDATORY routing rules for context-mode. Invoke whenever you analyze, count, filter, compare, search, parse, or transform data; fetch a URL; or run a data-heavy command — so raw bytes stay out of the context window."
+        }
+      ]
+    },
+    {
+      "name": "impeccable",
+      "version": "4.3.1",
+      "root": "design_specifications/vendor/impeccable",
+      "upstream": "https://github.com/pbakaus/impeccable",
+      "license": "Apache-2.0",
+      "manifest": "design_specifications/vendor/impeccable/archive-manifest.json",
+      "skillRoot": "design_specifications/vendor/impeccable/skills",
+      "skillCount": 1,
+      "skills": [
+        {
+          "name": "impeccable",
+          "path": "design_specifications/vendor/impeccable/skills/impeccable/SKILL.md",
+          "description": "Use when the user wants to design, redesign, shape, critique, audit, polish, clarify, distill, harden, optimize, adapt, animate, colorize, extract, or otherwise improve a frontend interface. Covers websites, landing pages, dashboards, product UI, app shells, components, forms, settings, onboarding, and empty states. Handles UX review, visual hierarchy, information architecture, cognitive load, accessibility, performance, responsive behavior, theming, anti-patterns, typography, fonts, spacing, layout, alignment, color, motion, micro-interactions, UX copy, error states, edge cases, i18n, and reusable design systems or tokens. Also use for bland designs that need to become bolder or more delightful, loud designs that should become quieter, live browser iteration on UI elements, or ambitious visual effects that should feel technically extraordinary. Not for backend-only or non-UI tasks."
+        }
+      ],
+      "auxiliarySkills": []
+    }
+  ]
+}

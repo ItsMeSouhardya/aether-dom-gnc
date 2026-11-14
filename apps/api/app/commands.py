@@ -25,7 +25,9 @@ class CommandError(Exception):
 
 def validate_command(value: object) -> dict[str, Any]:
     """Reject malformed/non-finite commands without coercing or repairing input."""
-    if _portable_issues(value) or not COMMAND_VALIDATOR.is_valid(value):
+    from app.asset_rights import portable_json_within
+    if (not portable_json_within(value, 512 * 1024) or _portable_issues(value)
+            or not COMMAND_VALIDATOR.is_valid(value)):
         raise CommandError(422, "INVALID_COMMAND", "Command violates the shared command schema")
     return cast(dict[str, Any], value)
 
@@ -84,6 +86,9 @@ def apply_operation(
 ) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any], list[str]]:
     """Apply typed edits and stored inverses, including Task 02 transform records."""
     op = operation.get("op", "setLayerTransform")
+    if op == "setAssetEvidence":
+        from app.asset_commands import apply_asset_operation
+        return apply_asset_operation(document, operation, asset_store)
     if op == "restoreStageSnapshot":
         result = copy.deepcopy(operation["args"]["document"])
         ensure_valid_document(result)

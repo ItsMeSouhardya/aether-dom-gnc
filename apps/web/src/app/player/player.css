@@ -75,3 +75,9 @@
   .player-export-controls { gap: 8px 16px; }
   .player-export-controls > label:first-child { flex-basis: 100%; }
 }
+
+.player-export-use { display: flex; flex-direction: column; gap: 6px; max-width: 320px; margin-bottom: 16px; color: var(--muted); font-size: .8125rem; }
+.player-export-use select { width: 100%; min-height: 44px; padding: 8px; border: 1px solid var(--line); border-radius: 4px; color: var(--fg); background: var(--surface); font: inherit; }
+
+.player-export-companion { display: grid; justify-items: start; gap: 12px; margin-top: 16px; }
+.player-export-companion p { max-width: 80ch; margin: 0; overflow-wrap: anywhere; }

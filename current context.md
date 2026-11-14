@@ -1,8 +1,209 @@
 # Current context — AETHER-DOM
 
-Last updated: 13 November 2026 (Asia/Calcutta).
+Git follow-up: active checkout is now `feat/task-10-asset-rights`. The suggested
+`feat/task-10-asset-provenance` already exists in the separate Antigravity
+`implement_task_eleven` worktree and was preserved. Created the new local branch
+from the existing checkout with all uncommitted changes retained; no commit or
+push. `.superpowers/` is ignored so internal review/checkpoint files are not staged.
+Earlier branch names below describe implementation history.
 
-## Active phase — Task09 complete
+Last updated: 14 November 2026 (Asia/Calcutta).
+
+## Active phase — Task10 complete; Task11 planned
+
+Task10 is complete on14November2026. Final evidence:
+`docs/tasks/task-10-verification.md`; completed plan:
+`docs/superpowers/plans/2026-11-13-task-10-asset-rights.md`. Delivered document0.4/
+command0.7 provenance, immutable text evidence, exact media bindings, audited
+reviewed rights commands, readonly3-use decisions/reasons/attribution, safe draft
+recovery, use-gated portable1.1/offlineWebMcompanion. Policy evaluates recorded
+claims; it is not automatic legal clearance or publication.
+
+Final checks:1067passed (619API/225schema/223web),5hostskips;17generatedcontracts/
+strictTS/mypy30,lint and finalproductionbuild pass. Production132distinctcases
+verified acrossruns: fullattempt130pass/2strictlocatorfail, then precisealert
+selector correction and2/2affecteddesktop/mobileproductionpasses22.3s. Final
+development9cases pass40.0s with clean output. No falseclaim that the original
+132-case attempt wasgreen. Freshwhole-change review's2Important findings (removed
+target draft and missing effective decisions) are addressed/scopedapproved;
+behavioraloldcomponentRED+exactSHArestore anddesktop/mobileGREEN prove recovery,
+Reloadcompletion andBranches/Exportopen. M1fixturelabel/M4reviewidentitiesfixed;
+M2unusedargument/M3source-density remain nonblocking maintenance only.
+
+Once-onlydetector[]; bounded visualtwofixes scoredresolved/ship; freshdocumenter
+reconciled source/briefs. AlluserDB/media and806protectedreferencehashes are
+preserved;approved178preservationchecks/sharedresources755files27entries pass.
+No Task11+ code, staging, commit, push, merge or PR. Existingbranch remains
+`feat/task-09-durable-jobs` at3330d8f until the user's commit. Keep ignored Task10
+reports/checkpoints whileuncommitted; noGit history yet contains that evidence.
+
+Next separately requested implementation isTask11 from
+`aether_dom_codex_kit/TASKS PT2.md`. Its first Task10-closeout gate is checked.
+Follow the user's Task11/12 commit handoffs andpost12no-commit/checkpoint policy.
+Earlier implementation checkpoints below are historical, not open work.
+
+## Previous planning phase — Presentation-focused roadmap
+
+The user requested a planning change on14November2026 before further numbered
+task implementation. New active board: `aether_dom_codex_kit/TASKS PT2.md`.
+Tasks11–12 target the first selection in a day or two: one original articulated
+character rig, then interactive lore hotspots and a verified selected landing →
+real studio → saved player/export integration. Tasks13–18 form the final workflow
+(creation/dialogue/speech, reviewed visual/audio generation, canon memory/attention,
+bounded collaboration, immutable interactive release/feedback/packs). Tasks19–20
+are optional; every original11–29 epic is mapped or explicitly deferred. The
+final presentation date is unspecified. No Task11+ product code starts from this
+planning request, and demonstration scripting/rehearsal is for a later request.
+
+Task11 and12 handoffs remain user-committed milestones. From13 through18 and
+optional19/20, create successive local task branches while carrying cumulative
+uncommitted changes; no automatic staging/commit/push/stash/reset/clean. Branch
+names alone retain no separate dirty state. Task12 must supply source checkpoints
+including untracked files, baseSHA/hashes/checks and safe DB/media backup; preserve
+its runnable fallback. User makes the combined final commit before the final day.
+
+CODEX_TASKS.md retains all original content with one redirect immediately after
+Task10. Removing that exact note reproduces the prior file byte-for-byte. Its
+single preservation-manifest hash is updated for this authorized annotation; all
+other177 entries remain unchanged. Original board SHA256:
+`bd3d0653aad5d419a153666bceb872f1d498a1eddb34ef510fcf7f53e426b9e2`.
+Annotated board SHA256:
+`fc76344898cee88bec2d196e4ae337ecc8058fb678fb004e60f0fbb27f490295`.
+Fresh builder check found nothing important left unanswered before task-specific
+implementation planning. Verification confirms8core tasks11–18, optional19/20,
+all19original epics mapped, no broken roadmap links, exact original-board recovery
+after removing the note, only its authorized checksum entry changed,178preservation
+checks and git diff --check pass. Application tests were not rerun for this
+documentation-only reprioritization; Task10 evidence above/below remains scoped. Pending Task10 and shared-resource work is preserved.
+Earlier next-task/resume paragraphs below are historical; this board now controls
+future scheduling. Read the task-specific plan and actual evidence before acting.
+
+## Task10 visual correction milestone
+
+The requested single visual-review correction batch is complete: evidence review comparisons are spaced into labelled groups, and the player companion action is separated from its retention explanation. Busy-save fieldset and interactions remain intact. The four source files are frozen with hashes in `.superpowers/sdd/2026-11-13-task-10-asset-rights/visual-fix-report.md`. Web typecheck, lint, 221 web tests and ten isolated Edge desktop/mobile flow cases passed; eight raw captures were refreshed in one run. No detector rerun. Production build and final whole-change review remain pending under the parent task.
+
+## Historical checkpoint — Task10 before final closeout
+
+Superseded by the completed status and final evidence above.
+
+Design approved earlier; recovery maps remain
+`docs/superpowers/plans/2026-11-13-task-10-asset-rights.md` and
+`.superpowers/sdd/2026-11-13-task-10-asset-rights/progress.md`. Shared contracts
+and storage/commands/exports are independently approved. UI is implemented with
+desktop/mobile coverage for evidence save/cancel/conflict/unknown recovery, stale
+derivative repair, attributed public/commercial downloads and offline WebM proof
+companion validation. Full unit/API suite1065 passed (619API/225schema/221web),
+5host skips;17generated contracts/strictTS/mypy30, productionbuild and128production
+browser cases passed before the final save-race correction. Detector ran once: [].
+
+Fresh UI review found that typing during a slow successful save could lose newer
+draft edits. Original implementer reproduced it with a delayed real committed
+response, then disabled all draft controls while busy. Six focused desktop/mobile
+lock/conflict/unknown-recovery cases pass after that fix; lint rerun passes. The
+scoped re-review attempt hit an agent usage limit. Visual review requested only a
+better desktop review capture; it was replaced unedited at1440×2000, with normal
+1440×1000 acceptance retained. Full visual/scoped/whole-change closeout is pending;
+do not claim those gates passed. Preserve reports and reconcile closeout before
+Task11; no feature reimplementation or another plan approval is needed.
+
+All test writes used isolated roots. Regular project remains one branch atrev28,
+28commands, unchanged snapshot hash and8media files; no commit/push was performed.
+
+
+14Nov host-runtime update removed the base Python behind `.venv-task04`. Verified
+the current bundled interpreter is the same3.12.14, backed up pyvenv.cfg in the
+ignored plan workspace and changed only its home/executable pointers. Existing
+API packages import through the original project interpreter again. No package,
+version, global configuration or security-policy change. Current pnpm entry is
+under CodexPrimaryRuntime.v26-1112-737-0; old absolute runtime paths in historical
+reports are evidence of those earlier runs, not current setup instructions.
+
+Fresh user-project baseline is one branch, revision28/history28, sorted Python
+JSON SHA256 `0e6acce2a50cb24f8f14527fddb3667e45d45f4f032f6729a9578bf132fcdbc6`.
+All8 existing asset-directory files and1234 current source files are hashed in the ignored
+plan workspace. Preserve the pending shared-resource-library work. Initial schema
+162/web215 tests pass. Approved API baseline:518 passed,1 existing host skip;
+**895 baseline tests pass**. API default sandbox temporary allocation failed; contained
+`--basetemp` corrected that but sandbox TestClient stalled. Approved-process health
+probe and full unchanged API suite pass with approved process permissions. This
+is environment handling, not a product fix; policy is unchanged.
+
+### Task10 discovery and approved design
+
+The user requested implementation of Task10 and the execution instructions after
+Task08/before Task09. Read the board/rules, kit AGENTS/master plan, product/design
+and studio/player briefs, API/schema documentation, relevant Task04/07/08/09
+evidence and current asset/command/export code. The current checkout remains
+`feat/task-09-durable-jobs` at user commit `3330d8f`; preserve all pending shared
+agent-resource-library changes below. Task1 now adds document0.4/command0.7 and
+shared policy contracts. Task2 is now extending storage/API/export behavior in
+isolated tests. No canonical user DB/media, dependency or UI changes at this stage.
+
+Proposed design: `docs/superpowers/specs/2026-11-13-task-10-asset-rights-design.md`.
+It recommends revision-owned typed asset evidence with immutable local text
+evidence, explicit 0.4 migration on accepted rights edits, an Assets inspector and
+separate private/public/commercial export decisions. Older documents/bundles stay
+readable, with no startup upgrade or automatic legal-clearance claim. Public or
+commercial use requires explicit recorded permission and applicable consent.
+
+Fresh Superpowers builder check raised one implementation question: legacy
+private-preview precedence. Resolved in the design: fallback applies only with no
+ledger; an existing ledger's denial/unknown/stale binding always governs. Other
+implementation details remain assigned to the builder. The user subsequently
+approved the concrete design; the implementation plan above now fixes exact
+interfaces, failing tests and verification commands.
+
+Impeccable context ran once successfully against the studio. It did not discover
+the root selected design or surface brief automatically; both were read directly.
+Retain the existing Operate/Experience styling. Before UI edits read craft-floor;
+after completion use the bounded desktop/mobile inspection and one detector run.
+RTK remains blocked by Windows Application Control; security policy is unchanged.
+
+## Previous phase — Shared agent resource library
+
+The user requested separate, reusable project copies of all Superpowers and
+context-mode skills, plus a check of existing Impeccable. Started from the clean
+user commit `3330d8f` (Task09). No product task or runtime behavior changed.
+
+Start at `agent_resources/README.md`; each plugin has its own skill index and
+version directory. Preserved installed Superpowers **7.0.1** (15 skills, 106
+source files, MIT) and context-mode **1.0.169** (8 plugin skills plus 3 upstream
+harness/maintenance variants, 590 source files, Elastic-2.0). Copied all supporting
+references/scripts and licenses. These are installed-version snapshots, not a
+claim to latest upstream releases. No additional optional package was needed.
+
+Impeccable **4.3.1** already exists in `design_specifications/vendor/impeccable/`
+and remains untouched. Its 59 recorded source files pass the existing manifest;
+all 62 files in that archive remain identical to the starting tracked snapshot.
+The shared catalog links its umbrella skill and existing playbooks.
+
+Each new snapshot has SHA256/size/source provenance. Upstream Git ignore/attribute
+files are retained under `_archive_metadata/` with original paths recorded, so
+they cannot hide bundled files or alter checkout bytes. Local node_modules, Git
+internals and runtime statistics are excluded. Archive ignore/attribute rules
+retain the snapshots in Git and preserve bytes. ESLint skips third-party archives.
+Root AGENTS/README point to the library; AGENTS now reaches a byte-identical local
+RTK rule mirror. `agent_resources/examples/task-brief.md` is the cross-agent
+handoff template. Read skills on demand and adapt to tools actually available;
+copying Markdown does not configure MCP, hooks or another agent's tool access.
+
+Verification: all **755** recorded source files across the three packages pass
+`node tools/verify-agent-resources.mjs` (27 skill entries/variants plus RTK
+provenance). All 696 newly copied source files also match the installed sources.
+The checker rejects a deliberate temporary corruption probe; the file was
+restored. All 40 guide links resolve, every manifest path is Git-includable, and
+Git attributes preserve new snapshot bytes. ESLint, Node syntax checks, original
+178-file preservation and diff checks pass. Application tests were not rerun for
+this reference/documentation change; Task09 evidence below remains historical.
+
+Windows Application Control blocked the RTK launcher during this request. Policy
+was left unchanged; bounded Node file APIs and direct verification processes
+completed the work. No global installation, PATH, host/plugin configuration,
+runtime dependencies, database, media or original reference archive was changed.
+Changes are uncommitted; user handles integration. Next product task remains
+Task10, only when requested separately.
+
+## Previous implementation — Task09 complete
 
 PowerShell follow-up: the user's regular shell cannot resolve `pnpm`; inspection
 confirmed it exists only on Codex's injected runtime PATH, not persisted user/
@@ -217,3 +418,9 @@ Read this file and the kit's ordered board/master plan before changes; for visua
 - Inspected desktop/mobile diagnostics and recovery forms in a bounded batch and confirmed the correction. CUA observed the restored seed's injury evidence and Kael dependency sources/shot consumer without sending commands. Screenshots: docs/tasks/task-03-desktop.png, task-03-mobile.png, task-03-recovery-mobile.png. Existing user database remained revision 0 with matching direct-API SHA-256 before/after restart; all command tests used isolated databases.
 - Final retained preview: http://127.0.0.1:3000/ (production web session 11421), API http://127.0.0.1:8000/ (session 98743). Both load final sources; health/document return 200. Earlier Task 02/temporary preview sessions and all e2e-owned services were stopped. No fixture/source media/landing/archive changes. CI has not run remotely.
 - RTK remains blocked by Windows Application Control; direct tooling used. Impeccable engine cache remains unavailable; existing selected design/Operate/craft guidance read directly. Existing pure-Python SQLAlchemy workaround retained. Approved verification ran outside restrictive sandbox workers. No unresolved approval or environment blocker remains. Next ordered task is Task 04; persistent dialogue editing, full renderer, audio evaluation, AI/auth remain outside this task.
+
+## Task10 final-review fix wave (controller closeout pending)
+
+The final-review I1/I2 source correction is frozen for controller checks. Missing-target drafts retain their captured asset and proof text for copying until explicit Cancel; read-only inspection displays shared policy decisions with observed media integrity guards. M1 and M4 addressed; M2 and M3 deferred. Focused web 223, schema 225, API 61, web typecheck and isolated Edge desktop/mobile recovery 2 passed. The browser regression was added after implementation and its Reload click was not asserted to complete; see `.superpowers/sdd/2026-11-13-task-10-asset-rights/final-fix-report.md` for exact evidence, limitations and earlier run failures. Controller owns final checks and scoped review. No Task11 work or commit/push.
+
+Follow-up verification supersedes the browser limitations in the preceding milestone: guarded prior-source desktop execution produced a behavioral RED on the missing Creator draft after the Undo revision rendered, then restored the frozen AssetPanel byte-for-byte. The strengthened isolated desktop/mobile GREEN verifies Reload response and rendered revision and opens Branches and Export after Cancel. Full hashes and logs are in the final-fix report. Controller final checks remain pending.

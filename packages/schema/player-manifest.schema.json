@@ -123,7 +123,24 @@
   },
   "properties": {
     "manifestVersion": {
-      "const": "1.0.0"
+      "enum": ["1.0.0", "1.1.0"]
+    },
+    "exportUse": {
+      "enum": ["private_preview", "public_distribution", "commercial_pack"]
+    },
+    "evidence": {
+      "type": "array",
+      "maxItems": 512,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["uri", "sha256", "text"],
+        "properties": {
+          "uri": {"type":"string", "pattern":"^assets/evidence/[a-f0-9]{64}\\.txt$(?![\\s\\S])"},
+          "sha256": {"type":"string", "pattern":"^[a-f0-9]{64}$(?![\\s\\S])"},
+          "text": {"type":"string", "minLength":1, "maxLength":65536}
+        }
+      }
     },
     "document": {
       "type": "object",
@@ -187,5 +204,12 @@
         ]
       }
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {"properties":{"manifestVersion":{"const":"1.1.0"}}},
+      "then": {"properties":{"exportUse":{},"evidence":{}},"required":["exportUse","evidence"]},
+      "else": {"not":{"anyOf":[{"properties":{"exportUse":{}},"required":["exportUse"]},{"properties":{"evidence":{}},"required":["evidence"]}]}}
+    }
+  ]
 }

@@ -4,6 +4,7 @@ node_modules/
 .venv-task04/
 assets/imported/
 assets/originals/
+assets/evidence/
 __pycache__/
 .pytest_cache/
 .mypy_cache/
@@ -13,6 +14,8 @@ __pycache__/
 dist/
 playwright-report/
 test-results/
+.impeccable/review/
+.superpowers/
 .env
 .env.local
 .env.*.local
