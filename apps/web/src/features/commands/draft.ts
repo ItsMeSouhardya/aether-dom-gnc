@@ -20,6 +20,8 @@ export type CommandOperation = { op: 'setLayerTransform'; targetId: string; args
   | { op: 'setRigBonePose'; targetId: string; args: Extract<CdomCommand, { op: 'setRigBonePose' }>['args'] }
   | { op: 'setRigBoneKeyframe'; targetId: string; args: Extract<CdomCommand, { op: 'setRigBoneKeyframe' }>['args'] }
   | { op: 'deleteRigBoneKeyframe'; targetId: string; args: Extract<CdomCommand, { op: 'deleteRigBoneKeyframe' }>['args'] }
+  | { op: 'setLoreHotspot'; targetId: string; args: Extract<CdomCommand, { op: 'setLoreHotspot' }>['args'] }
+  | { op: 'deleteLoreHotspot'; targetId: string; args: Extract<CdomCommand, { op: 'deleteLoreHotspot' }>['args'] }
   | { op: 'undo' | 'redo' };
 
 export function parseTransformDraft(draft: TransformDraft):

@@ -57,3 +57,8 @@ describe('API snapshot boundary', () => {
     await expect(loadSnapshot()).rejects.toThrow('unavailable');
   });
 });
+
+it('accepts a v6 service that supports the original fixture', async () => {
+  respond(fixture, 200, { ...health, schemaVersion: '0.6.0', supportedSchemaVersions: ['0.1.0', '0.6.0'] });
+  expect((await loadSnapshot()).schemaVersion).toBe('0.1.0');
+});

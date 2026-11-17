@@ -15,7 +15,8 @@ def apply_rig_operation(
     document: dict[str, Any], operation: dict[str, Any], asset_store: "SvgAssetStore | None"
 ) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any], list[str]]:
     result = copy.deepcopy(document)
-    result["schemaVersion"] = "0.5.0"
+    if result["schemaVersion"] != "0.6.0":
+        result["schemaVersion"] = "0.5.0"
     op, target, args = operation["op"], operation["targetId"], operation["args"]
     changed = [target]
     if op == "importRigLayer":

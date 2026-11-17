@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 const base = '/api/v1/projects/proj_neon_shogun/branches/branch_main';
 test('edits portrait overrides and fits both subjects without changing landscape canon', async ({ page, request }, testInfo) => {
   const before = await (await request.get(`${base}/document`)).json();
-  await page.goto('/');
+  await page.goto('/studio');
   await page.getByRole('button', { name: 'Preview 9:16', exact: true }).click();
   await expect(page.getByRole('region', { name: 'Portrait composition' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Save portrait layout', exact: true })).toBeVisible();
@@ -25,7 +25,7 @@ test('edits portrait overrides and fits both subjects without changing landscape
 
 test('exports the saved manifest and reopens embedded media with the API blocked', async ({ page, request }, testInfo) => {
   const before = await (await request.get(`${base}/document`)).json();
-  await page.goto('/');
+  await page.goto('/studio');
   await page.getByRole('button', { name: 'Export JSON', exact: true }).click();
   await page.getByRole('button', { name: 'Review export', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Download JSON', exact: true })).toBeVisible();
@@ -61,7 +61,7 @@ test('exports the saved manifest and reopens embedded media with the API blocked
 
 test('nudges only the portrait transform and keeps a clean portrait inspector current', async ({ page, request }) => {
   const before = await (await request.get(`${base}/document`)).json();
-  await page.goto('/'); await page.getByRole('button', { name: 'Preview 9:16', exact: true }).click();
+  await page.goto('/studio'); await page.getByRole('button', { name: 'Preview 9:16', exact: true }).click();
   const kael = page.getByRole('button', { name: 'Select stage layer Kael', exact: true });
   await kael.focus(); await page.keyboard.press('ArrowRight');
   await expect.poll(async () => (await (await request.get(`${base}/document`)).json()).document.project.revision).toBe(before.document.project.revision + 1);
@@ -80,7 +80,7 @@ test('nudges only the portrait transform and keeps a clean portrait inspector cu
 
 test('rejects stale portrait drafts and keeps export and player failures actionable', async ({ page, request }) => {
   const before = await (await request.get(`${base}/document`)).json();
-  await page.goto('/'); await page.getByRole('button', { name: 'Preview 9:16', exact: true }).click();
+  await page.goto('/studio'); await page.getByRole('button', { name: 'Preview 9:16', exact: true }).click();
   await page.getByRole('navigation', { name: 'Layer navigator' }).getByRole('button', { name: 'Select layer Kael', exact: true }).click();
   await page.getByLabel('Edit portrait X', { exact: true }).fill('-0.4');
   const external = await request.post(`${base}/commands`, { data: { commandId: crypto.randomUUID(), projectId: before.document.project.id, branchId: before.document.project.activeBranchId, expectedRevision: before.document.project.revision, actor: { kind: 'human', id: 'other_editor' }, op: 'setLayerTransform', targetId: 'layer_vance', args: { x: .4 }, reason: 'Test conflicting edit' } });
@@ -105,7 +105,7 @@ test('rejects stale portrait drafts and keeps export and player failures actiona
 });
 
 test('keeps portrait editing spacious and the header contained at narrow widths', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/studio');
   await expect(page.getByRole('button', { name: 'Preview 9:16', exact: true })).toBeVisible();
   for (const width of [1024, 720, 360]) {
     await page.setViewportSize({ width, height: 900 });

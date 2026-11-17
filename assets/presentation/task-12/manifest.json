@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "workspace": "task12-presentation-final",
+  "revision": 17,
+  "exportUse": "public_distribution",
+  "sourceSha256": "c28382a8f4e0a667775e0c15a34403c80eb28ebfa81fb918c0966e2c1b5fc94d",
+  "files": {
+    "ATTRIBUTION.txt": {
+      "sha256": "805e35566500a48b7fa0d5eae12cb268b06071a90e4edd1f06eff4920de34e2c",
+      "size": 191
+    },
+    "README.md": {
+      "sha256": "e37e2799f97ff3a401c7d5c25a5657e13315995ec65d9b8125d7846ec0c68d34",
+      "size": 318
+    },
+    "landscape.webm": {
+      "sha256": "03c0df9794658325140943b7c7ff06dc45f9d7b9c2dd05596356f11321b78bb7",
+      "size": 225636
+    },
+    "portrait.webm": {
+      "sha256": "bc580029b4d1191a28c0d9735e7d7cdf4c58afd199828df20f830715d9a24529",
+      "size": 325310
+    },
+    "presentation.cdom.json": {
+      "sha256": "c28382a8f4e0a667775e0c15a34403c80eb28ebfa81fb918c0966e2c1b5fc94d",
+      "size": 1463673
+    }
+  },
+  "recordings": {
+    "landscape": {
+      "width": 1280,
+      "height": 720,
+      "changedPixels": 252,
+      "audioDuration": 1.9995,
+      "amplitude": 0.10671252757310867
+    },
+    "portrait": {
+      "width": 720,
+      "height": 1280,
+      "changedPixels": 1564,
+      "audioDuration": 1.9995,
+      "amplitude": 0.10672174394130707
+    }
+  }
+}

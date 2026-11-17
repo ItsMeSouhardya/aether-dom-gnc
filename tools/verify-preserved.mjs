@@ -2,7 +2,9 @@ import { readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 
 const root = new URL('../', import.meta.url);
-const manifest = JSON.parse(await readFile(new URL('docs/tasks/task-00-preserved.json', root), 'utf8'));
+// Public CI checks frozen assets/contracts without requiring private planning files.
+// The original full Task 00 inventory remains in the local-only docs/tasks folder.
+const manifest = JSON.parse(await readFile(new URL('tools/preserved-public-files.json', root), 'utf8'));
 const failures = [];
 for (const [path, expected] of Object.entries(manifest)) {
   const actual = await readFile(new URL(path, root)).then(data => createHash('sha256').update(data).digest('hex')).catch(() => null);

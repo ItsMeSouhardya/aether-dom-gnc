@@ -4,7 +4,7 @@ const openMixer = async (page: Page) => { await page.getByRole('button', { name:
 
 test('requires an explicit audio gesture and previews tension without writing canon', async ({ page, request }) => {
   const before = await (await request.get(`${base}/document`)).json();
-  await page.goto('/'); await openMixer(page);
+  await page.goto('/studio'); await openMixer(page);
   await expect(page.getByRole('button', { name: 'Enable audio', exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Play preview', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Enable audio', exact: true })).toBeVisible();
@@ -21,7 +21,7 @@ test('requires an explicit audio gesture and previews tension without writing ca
 
 test('saves and reloads editorial tension with exact undo', async ({ page, request }) => {
   const before = await (await request.get(`${base}/document`)).json();
-  await page.goto('/'); await openMixer(page);
+  await page.goto('/studio'); await openMixer(page);
   await page.getByLabel('Tension', { exact: true }).fill('0.9');
   await page.getByRole('button', { name: 'Save tension', exact: true }).click();
   await expect(page.getByRole('status', { name: 'Save status' })).toContainText('Saved locally');
@@ -39,7 +39,7 @@ test('saves and reloads editorial tension with exact undo', async ({ page, reque
 
 test('recovers from a missing audio asset and stays usable through repeated seeks', async ({ page }) => {
   await page.route('**/audio/asset_ambient?*', route => route.fulfill({ status: 404, json: { detail: { message: 'Audio file is missing.' } } }));
-  await page.goto('/'); await openMixer(page);
+  await page.goto('/studio'); await openMixer(page);
   await page.getByRole('button', { name: 'Enable audio', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Retry audio', exact: true })).toBeVisible();
   await page.unroute('**/audio/asset_ambient?*');
@@ -63,7 +63,7 @@ test('recovers from a missing audio asset and stays usable through repeated seek
 });
 
 test('renders the checked-in Foley into distinct stereo channels and repeats seek offsets exactly', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/studio');
   const result = await page.evaluate(async (url) => {
     const data = await (await fetch(url)).arrayBuffer();
     async function render(pan: number, offset: number) {
@@ -85,7 +85,7 @@ test('renders the checked-in Foley into distinct stereo channels and repeats see
 });
 
 test('pans the bound prop and draws analyser glow during a cancellable live drag', async ({ page, request }) => {
-  await page.goto('/');
+  await page.goto('/studio');
   await page.getByRole('navigation', { name: 'Layer navigator' }).getByRole('button', { name: 'Select layer Sign', exact: true }).click();
   await page.getByRole('button', { name: 'Bring forward', exact: true }).click();
   await expect(page.getByRole('status', { name: 'Save status' })).toContainText('Saved locally');
@@ -115,8 +115,8 @@ test('pans the bound prop and draws analyser glow during a cancellable live drag
 
 test('rejects a stale tension draft and preserves the first editor save', async ({ page, context, request }) => {
   const before = await (await request.get(`${base}/document`)).json();
-  await page.goto('/'); await openMixer(page);
-  const other = await context.newPage(); await other.goto('/'); await openMixer(other);
+  await page.goto('/studio'); await openMixer(page);
+  const other = await context.newPage(); await other.goto('/studio'); await openMixer(other);
   await page.getByLabel('Tension', { exact: true }).fill('0.25');
   await other.getByLabel('Tension', { exact: true }).fill('0.85');
   await page.getByRole('button', { name: 'Save tension', exact: true }).click();
@@ -131,7 +131,7 @@ test('rejects a stale tension draft and preserves the first editor save', async 
 
 test('respects reduced motion until glow is explicitly enabled', async ({ page }, testInfo) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.goto('/'); await openMixer(page);
+  await page.goto('/studio'); await openMixer(page);
   await expect(page.getByLabel('Reactive glow', { exact: true })).not.toBeChecked();
   await page.getByRole('button', { name: 'Enable audio', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Disable audio', exact: true })).toBeEnabled();

@@ -10,7 +10,7 @@ async function fork(request: APIRequestContext, id: string) {
 test('imports, previews, saves and animates a rig', async ({ page, request }, info) => {
   test.setTimeout(90000);
   const branch = `rig_flow_${info.project.name}`, base = await fork(request, branch);
-  await page.goto(`/?projectId=proj_neon_shogun&branchId=${branch}`);
+  await page.goto(`/studio?projectId=proj_neon_shogun&branchId=${branch}`);
   await page.getByRole('button', { name: 'Add original rig' }).click();
   await expect(page.getByRole('status', { name: 'Save status' })).toContainText('Saved locally');
   const snapshot = await (await request.get(`${base}/document`)).json();
@@ -109,7 +109,7 @@ test('clears a legacy transform draft when selection changes without writing eit
   const target = before.document.layers.find((layer: { id: string }) => layer.id === 'layer_vance');
   let writes = 0;
   page.on('request', request => { if (request.method() === 'POST' && request.url().endsWith('/commands')) writes++; });
-  await page.goto(`/?projectId=proj_neon_shogun&branchId=${branch}`);
+  await page.goto(`/studio?projectId=proj_neon_shogun&branchId=${branch}`);
   const navigator = page.getByRole('navigation', { name: 'Layer navigator' });
   await navigator.getByRole('button', { name: 'Select layer Kael', exact: true }).click();
   await page.getByRole('button', { name: 'Edit transform', exact: true }).click();
@@ -127,7 +127,7 @@ test('clears a legacy transform draft when selection changes without writing eit
 
 test('keeps captured draft when the rig is removed by undo', async ({ page, request }, info) => {
   const branch = `rig_removed_${info.project.name}`, base = await fork(request, branch);
-  await page.goto(`/?projectId=proj_neon_shogun&branchId=${branch}`);
+  await page.goto(`/studio?projectId=proj_neon_shogun&branchId=${branch}`);
   await page.getByRole('button', { name: 'Add original rig' }).click();
   await expect(page.getByRole('status', { name: 'Save status' })).toContainText('Saved locally');
   const snapshot = await (await request.get(`${base}/document`)).json();
@@ -145,7 +145,7 @@ test('keeps captured draft when the rig is removed by undo', async ({ page, requ
 test('freezes a slow save and retains a stale draft', async ({ page, request }, info) => {
   test.setTimeout(60000);
   const branch = `rig_stale_${info.project.name}`, base = await fork(request, branch);
-  await page.goto(`/?projectId=proj_neon_shogun&branchId=${branch}`);
+  await page.goto(`/studio?projectId=proj_neon_shogun&branchId=${branch}`);
   await page.getByRole('button', { name: 'Add original rig' }).click();
   await expect(page.getByRole('status', { name: 'Save status' })).toContainText('Saved locally');
   let snapshot = await (await request.get(`${base}/document`)).json();

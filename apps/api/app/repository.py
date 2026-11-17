@@ -47,6 +47,8 @@ class Repository:
         )
         if not self.asset_root.is_absolute():
             self.asset_root = ROOT / self.asset_root
+        from app.presentation_workspace import configured_owner
+        self.presentation_gate = configured_owner(self.path, self.asset_root)
         self.asset_store = SvgAssetStore(self.asset_root)
         self.proposal_provider = proposal_provider if proposal_provider is not None else (
             MockProposalProvider()
@@ -81,6 +83,8 @@ class Repository:
 
     def close(self) -> None:
         self.engine.dispose()
+        if self.presentation_gate is not None:
+            self.presentation_gate.__exit__(None, None, None)
 
     def _branch(self, connection: Connection, project_id: str, branch_id: str) -> RowMapping:
         branch = connection.execute(select(branches).where(

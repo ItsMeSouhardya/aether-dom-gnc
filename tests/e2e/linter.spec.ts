@@ -12,7 +12,7 @@ function authored(document: Record<string, unknown>) {
 }
 
 test('explains the injured-arm conflict with evidence and inspectable dependencies', async ({ page }, testInfo) => {
-  await page.goto('/');
+  await page.goto('/studio');
   await selectKael(page);
   await page.getByRole('button', { name: 'Diagnostics', exact: true }).click();
   await expect(conflict(page)).toContainText('event_injury');
@@ -30,7 +30,7 @@ test('explains the injured-arm conflict with evidence and inspectable dependenci
 
 test('repairs a pose, keeps it after reload and restores the conflict on undo', async ({ page, request }) => {
   const before = await (await request.get(`${base}/document`)).json();
-  await page.goto('/'); await selectKael(page);
+  await page.goto('/studio'); await selectKael(page);
   await page.getByRole('button', { name: 'Edit pose', exact: true }).click();
   await page.getByLabel('Draft pose', { exact: true }).selectOption('lifting_with_right_arm');
   await page.getByRole('button', { name: 'Save pose', exact: true }).click();
@@ -47,7 +47,7 @@ test('repairs a pose, keeps it after reload and restores the conflict on undo', 
 
 test('reviews and records recovery as an exact reversible story event', async ({ page, request }, testInfo) => {
   const before = await (await request.get(`${base}/document`)).json();
-  await page.goto('/'); await selectKael(page);
+  await page.goto('/studio'); await selectKael(page);
   await page.getByRole('button', { name: 'Review recovery', exact: true }).click();
   await page.getByLabel('Recovery description', { exact: true }).fill('Kael recovers after treatment before the rooftop scene.');
   await expect(page.getByRole('form', { name: 'Record constraint recovery' })).toContainText('before this scene');
@@ -71,14 +71,14 @@ test('omits navigation that cannot select an orphan layer', async ({ page, reque
   const snapshot = await (await request.get(`${base}/document`)).json();
   snapshot.document.shots[0].layerIds = snapshot.document.shots[0].layerIds.filter((id: string) => id !== 'layer_kael');
   await page.route(`**${base}/document`, route => route.fulfill({ json: snapshot }));
-  await page.goto('/'); await page.getByRole('button', { name: 'Diagnostics', exact: true }).click();
+  await page.goto('/studio'); await page.getByRole('button', { name: 'Diagnostics', exact: true }).click();
   await expect(conflict(page)).toBeVisible();
   await expect(conflict(page).getByRole('button', { name: 'Select affected layer', exact: true })).toHaveCount(0);
 });
 
 test('checks dialect continuously in an unsaved draft without changing canon', async ({ page, request }) => {
   const before = await (await request.get(`${base}/document`)).json();
-  await page.goto('/'); await selectKael(page);
+  await page.goto('/studio'); await selectKael(page);
   await page.getByLabel('Dialect draft text', { exact: true }).fill('KINDLY leave, your excellency.');
   const checker = page.getByRole('region', { name: 'Dialect draft check' });
   await expect(checker).toContainText('kindly');
@@ -93,7 +93,7 @@ test('checks dialect continuously in an unsaved draft without changing canon', a
 
 test('rejects a stale pose review without silently rebasing it', async ({ page, context, request }) => {
   const other = await context.newPage();
-  await page.goto('/'); await other.goto('/'); await selectKael(page); await selectKael(other);
+  await page.goto('/studio'); await other.goto('/studio'); await selectKael(page); await selectKael(other);
   await other.getByRole('button', { name: 'Edit pose', exact: true }).click();
   await other.getByLabel('Draft pose', { exact: true }).selectOption('lifting_with_right_arm');
   await page.getByRole('button', { name: 'Edit pose', exact: true }).click();

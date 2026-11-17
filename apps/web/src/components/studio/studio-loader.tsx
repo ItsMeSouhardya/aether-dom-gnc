@@ -54,8 +54,8 @@ export default function StudioLoader({ projectId = 'proj_neon_shogun', branchId 
   }
   if (state.kind === 'ready') return <StudioShell document={state.snapshot.document} history={state.snapshot.history} analysis={state.snapshot.analysis} reload={reload} busy={busy} requiresReload={requiresReload} feedback={feedback} run={run} />;
   return <main id="studio" className="studio studio-connection">
-    <header className="studio-header"><div className="studio-wordmark"><Icon name="brand" /><span>AETHER-DOM</span></div><span>Local studio</span></header>
-    <section className="studio-connection-message" aria-busy={state.kind === 'loading'}><h1>{state.kind === 'loading' ? 'Opening studio…' : 'Studio unavailable'}</h1><p role={state.kind === 'error' ? 'alert' : 'status'}>{state.kind === 'loading' ? 'Loading the local document and checking its contract.' : state.message}</p>{initialError ? <Link className="studio-button" href="/">Studio home</Link> : <button className="studio-button" disabled={state.kind === 'loading'} onClick={reload}>{state.kind === 'loading' ? 'Loading document…' : 'Try again'}</button>}</section>
+    <header className="studio-header"><a className="studio-wordmark" href="/welcome" aria-label="AETHER-DOM home"><Icon name="brand" /><span>AETHER-DOM</span></a><span>Local studio</span></header>
+    <section className="studio-connection-message" aria-busy={state.kind === 'loading'}><h1>{state.kind === 'loading' ? 'Opening studio…' : 'Studio unavailable'}</h1><p role={state.kind === 'error' ? 'alert' : 'status'}>{state.kind === 'loading' ? 'Loading the local document and checking its contract.' : state.message}</p>{initialError ? <Link className="studio-button" href="/studio">Studio home</Link> : <button className="studio-button" disabled={state.kind === 'loading'} onClick={reload}>{state.kind === 'loading' ? 'Loading document…' : 'Try again'}</button>}</section>
     {state.kind === 'loading' ? <div className="studio-skeleton" aria-hidden="true"><div /><div /><div /></div> : null}
   </main>;
 }

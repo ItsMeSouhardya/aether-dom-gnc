@@ -9,7 +9,7 @@ const openBranches = async (page: import('@playwright/test').Page) => {
 
 test('forks and switches isolated saved histories without editing the source', async ({ page, request }, testInfo) => {
   const before = await read(request), name = `Alternate ${testInfo.project.name} ${Date.now()}`;
-  await page.goto('/'); await openBranches(page);
+  await page.goto('/studio'); await openBranches(page);
   await page.getByLabel('Fork name', { exact: true }).fill(name);
   await page.getByRole('button', { name: 'Create fork', exact: true }).click();
   await expect(page.getByRole('region', { name: 'Branches', exact: true })).toContainText('Fork created');
@@ -39,7 +39,7 @@ test('shows a true three-way conflict without applying either branch', async ({ 
   try {
     expect((await edit(childId, .3)).ok()).toBe(true);
     const left = await read(request), right = await read(request, childId);
-    await page.goto('/'); await openBranches(page); await page.getByLabel('Compare branch', { exact: true }).selectOption(childId);
+    await page.goto('/studio'); await openBranches(page); await page.getByLabel('Compare branch', { exact: true }).selectOption(childId);
     await page.getByRole('button', { name: 'Compare branches', exact: true }).click();
     await expect(page.getByRole('region', { name: 'Three-way diff' })).toContainText('1 conflict');
     await expect(page.getByRole('region', { name: 'Three-way diff' })).toContainText('layer_kael/transform/x');
@@ -53,7 +53,7 @@ test('shows a true three-way conflict without applying either branch', async ({ 
 });
 
 test('retries an unknown fork outcome with the original command identity', async ({ page, request }) => {
-  await page.goto('/'); await openBranches(page);
+  await page.goto('/studio'); await openBranches(page);
   const name = `Retry ${Date.now()}`; let commandId = '', childId = '';
   await page.route(`**/api/v1/projects/${project}/branches`, async route => {
     if (route.request().method() !== 'POST') { await route.continue(); return; }

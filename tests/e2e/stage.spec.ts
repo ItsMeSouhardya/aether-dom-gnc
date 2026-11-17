@@ -6,7 +6,7 @@ const svg = '<svg xmlns="http://www.w3.org/2000/svg" id="import_root" viewBox="0
 const read = async (request: import('@playwright/test').APIRequestContext) => (await request.get(`${base}/document`)).json();
 
 test('shows editable stage controls and a real local SVG scene', async ({ page }, testInfo) => {
-  await page.goto('/');
+  await page.goto('/studio');
   await expect(page.getByRole('button', { name: 'Import SVG', exact: true })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Layout mode', exact: true })).toHaveAttribute('aria-pressed', 'true');
   await expect(page.getByRole('button', { name: 'Animation mode', exact: true })).toBeVisible();
@@ -20,7 +20,7 @@ test('shows editable stage controls and a real local SVG scene', async ({ page }
 
 test('moves only one layer with a single drag command and persists exact values', async ({ page, request }) => {
   const before = await read(request);
-  await page.goto('/'); await selectKael(page);
+  await page.goto('/studio'); await selectKael(page);
   const target = page.getByRole('button', { name: 'Select stage layer Kael', exact: true });
   await target.scrollIntoViewIfNeeded();
   const bounds = await target.boundingBox(); expect(bounds).toBeTruthy();
@@ -41,7 +41,7 @@ test('moves only one layer with a single drag command and persists exact values'
 
 test('cancels a drag without a canonical write and reorders only its target depth', async ({ page, request }) => {
   const before = await read(request);
-  await page.goto('/'); await selectKael(page);
+  await page.goto('/studio'); await selectKael(page);
   await page.getByRole('button', { name: 'Select stage layer Kael', exact: true }).scrollIntoViewIfNeeded();
   const bounds = await page.getByRole('button', { name: 'Select stage layer Kael', exact: true }).boundingBox();
   await page.mouse.move(bounds!.x + bounds!.width / 2, bounds!.y + bounds!.height / 2); await page.mouse.down();
@@ -57,7 +57,7 @@ test('cancels a drag without a canonical write and reorders only its target dept
 });
 
 test('preserves imported asset and SVG element IDs through editing and reload', async ({ page, request }) => {
-  await page.goto('/'); await page.getByRole('button', { name: 'Import SVG', exact: true }).click();
+  await page.goto('/studio'); await page.getByRole('button', { name: 'Import SVG', exact: true }).click();
   await page.getByLabel('Import SVG file', { exact: true }).setInputFiles({ name: 'prop.svg', mimeType: 'image/svg+xml', buffer: Buffer.from(svg) });
   await page.getByRole('button', { name: 'Import SVG layer', exact: true }).click();
   await expect(page.getByRole('status', { name: 'Save status' })).toContainText('Saved locally');
@@ -87,7 +87,7 @@ test('preserves imported asset and SVG element IDs through editing and reload', 
 
 test('saves camera settings and an interpolated keyframe while preserving the base transform', async ({ page, request }) => {
   const before = await read(request);
-  await page.goto('/'); await selectKael(page);
+  await page.goto('/studio'); await selectKael(page);
   await page.getByRole('button', { name: 'Camera', exact: true }).click();
   await page.getByLabel('Camera X', { exact: true }).fill('0.25');
   await page.getByRole('button', { name: 'Save camera', exact: true }).click();
@@ -117,7 +117,7 @@ test('saves camera settings and an interpolated keyframe while preserving the ba
 
 test('retains native SVG editing when WebGL2 is unavailable', async ({ page }) => {
   await page.addInitScript(() => { const original = HTMLCanvasElement.prototype.getContext; HTMLCanvasElement.prototype.getContext = function (type: string, ...args: unknown[]) { if (type === 'webgl2') return null; return original.apply(this, [type, ...args] as Parameters<typeof original>); } as typeof original; });
-  await page.goto('/'); await selectKael(page);
+  await page.goto('/studio'); await selectKael(page);
   await expect(page.getByRole('region', { name: 'Layered stage' })).toContainText('SVG fallback');
   await expect(page.getByRole('button', { name: 'Select stage layer Kael', exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Edit transform', exact: true }).click();
@@ -125,7 +125,7 @@ test('retains native SVG editing when WebGL2 is unavailable', async ({ page }) =
 });
 
 test('keeps playback usable after mounting and effect replay', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/studio');
   await page.getByRole('button', { name: 'Play preview', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Pause preview', exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Pause preview', exact: true }).click();

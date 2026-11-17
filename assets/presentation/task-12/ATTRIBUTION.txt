@@ -1,0 +1,2 @@
+AETHER-DOM original fixtures and Kael-inspired articulated drawing
+Original fixture source evidence is embedded in presentation.cdom.json. No commercial grant or legal clearance is asserted.

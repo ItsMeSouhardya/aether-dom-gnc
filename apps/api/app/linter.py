@@ -126,6 +126,8 @@ class _Rules:
         for entity_id, kind, entity, _ in self.records:
             for field, target_kind, nullable in scalar.get(kind, []):
                 self.ref(entity_id, "/" + field, entity.get(field), target_kind, nullable=nullable)
+            if kind == "hotspot":
+                self.ref(entity_id, "/targetId", entity.get("targetId"), str(entity["targetKind"]))
             if kind == "binding":
                 for side in ("source", "target"):
                     target = entity.get(side, {}).get("entityId")

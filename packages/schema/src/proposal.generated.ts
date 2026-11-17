@@ -106,8 +106,8 @@ export interface Proposal {
     beforePresent: boolean;
     afterPresent: boolean;
   }[];
-  schemaVersionBefore: '0.1.0' | '0.2.0' | '0.3.0';
-  schemaVersionAfter: '0.1.0' | '0.2.0' | '0.3.0';
+  schemaVersionBefore: '0.1.0' | '0.2.0' | '0.3.0' | '0.4.0' | '0.5.0' | '0.6.0';
+  schemaVersionAfter: '0.1.0' | '0.2.0' | '0.3.0' | '0.4.0' | '0.5.0' | '0.6.0';
   provider: 'local_mock';
   modelVersion: string;
   estimatedCost: {

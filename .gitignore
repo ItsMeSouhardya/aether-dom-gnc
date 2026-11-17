@@ -21,3 +21,37 @@ test-results/
 .env.*.local
 !.env.example
 data/
+
+# Private project context and agent instructions (at any directory depth).
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+[Cc][Oo][Nn][Tt][Ee][Xx][Tt].md
+[Cc]urrent [Cc]ontext.md
+[Cc]urrent-context.md
+[Cc]urrent_context.md
+/PRODUCT.md
+
+# Internal plans, design briefs, task reports, screenshots and handoff resources.
+/docs/superpowers/
+/docs/tasks/
+/docs/design/
+/agent_resources/
+/initial_first_plan_provided/
+/design_specifications/
+/design_inspirations/
+/aether_dom_codex_kit/*.md
+/design_archive/DESIGN-AT-SELECTION.md
+
+# Local agent/editor configuration and the private resource verification helper.
+/.impeccable/
+/.vscode/
+/.codex/
+/.agents/
+/.claude/
+/tools/verify-agent-resources.mjs
+
+# Keep public READMEs, the presentation runbook, source code, schemas, fixtures,
+# asset licenses/provenance and frozen design assets versioned. Do not ignore *.md.
+# Existing tracked matches must also be removed from the index with git rm --cached.
+# Ignore rules do not remove files from earlier commits or GitHub history.

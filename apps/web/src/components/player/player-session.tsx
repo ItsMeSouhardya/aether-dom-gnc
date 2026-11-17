@@ -14,6 +14,8 @@ import { GpuStage } from '../stage/gpu-stage';
 import { SvgContent } from '../stage/svg-content';
 import { AudioGlow } from '../audio/audio-glow';
 import { WebMExport } from './webm-export';
+import { LoreMarkers } from './lore-markers';
+import { LoreDetails } from './lore-details';
 
 type Shot = CdomDocument['shots'][number];
 const timeLabel = (timeMs: number) => `${(timeMs / 1000).toFixed(1)}s`;
@@ -30,12 +32,12 @@ export function PlayerSession({ manifest, source }: { manifest: PlayerManifest; 
         {document.shots.map(item => <option key={item.id} value={item.id}>{document.scenes.find(scene => scene.id === item.sceneId)?.title ?? item.id} · {item.id}</option>)}
       </select></label><label>Aspect<select aria-label="Player aspect ratio" value={aspect} onChange={event => setAspect(event.target.value as Aspect)}><option value="16:9">16:9</option><option value="9:16">9:16</option>{shot.camera.aspectRatio === '1:1' ? <option value="1:1">1:1</option> : null}</select></label></div> : null}
     </div>
-    {shot ? <ShotPlayer key={`${shot.id}:${aspect}`} manifest={manifest} shot={shot} aspect={aspect} />
+    {shot ? <ShotPlayer key={`${shot.id}:${aspect}`} manifest={manifest} shot={shot} aspect={aspect} source={source} />
       : <section className="player-message"><h2>No shots to play</h2><p>This saved document has no shots. Choose another exported JSON file or return to the studio.</p></section>}
   </>;
 }
 
-function ShotPlayer({ manifest, shot, aspect }: { manifest: PlayerManifest; shot: Shot; aspect: Aspect }) {
+function ShotPlayer({ manifest, shot, aspect, source }: { manifest: PlayerManifest; shot: Shot; aspect: Aspect; source: string }) {
   const document = useMemo(() => ({ ...manifest.document, layers: composeLayers(manifest.document.layers, shot, aspect) }), [manifest, shot, aspect]);
   const camera = useMemo(() => compositionCamera(shot, aspect), [shot, aspect]);
   const assets = useMemo(() => embeddedSvgAssets(manifest), [manifest]);
@@ -52,6 +54,10 @@ function ShotPlayer({ manifest, shot, aspect }: { manifest: PlayerManifest; shot
   const [renderer, setRenderer] = useState<'webgl2' | 'svg'>('svg');
   const [size, setSize] = useState({ width: 0, height: 0 });
   const frame = useRef<HTMLDivElement>(null);
+  const marker = useRef<HTMLButtonElement | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const selected = shot.hotspots?.find(item => item.id === selectedId);
+  const closeLore = () => { setSelectedId(null); marker.current?.focus(); };
   useEffect(() => {
     const element = frame.current;
     if (!element) return;
@@ -67,7 +73,7 @@ function ShotPlayer({ manifest, shot, aspect }: { manifest: PlayerManifest; shot
   const ratio = { '16:9': 16 / 9, '9:16': 9 / 16, '1:1': 1 }[aspect];
   const togglePlayback = () => preview.playing ? playback.pause() : playback.play();
   return <section className="player-session" aria-label="Saved composition player">
-    <div className="player-workspace"><div ref={frame} className="player-frame" style={{ aspectRatio: ratio, width: `min(100cqw, calc(100cqh * ${ratio}))` }} tabIndex={0} role="group" aria-label="Player stage" aria-describedby="player-keyboard" onKeyDown={event => {
+    <div className={`player-scene${selected ? ' has-lore' : ''}`}><div className="player-workspace"><div ref={frame} className="player-frame" style={{ aspectRatio: ratio, width: `min(100cqw, calc(100cqh * ${ratio}))` }} tabIndex={0} role="group" aria-label="Player stage" aria-describedby="player-keyboard" onKeyDown={event => {
       if (event.target !== event.currentTarget) return;
       if (event.key === ' ') { event.preventDefault(); togglePlayback(); }
       if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); playback.seek(preview.timeMs + (event.key === 'ArrowRight' ? 1000 : -1000)); }
@@ -86,7 +92,8 @@ function ShotPlayer({ manifest, shot, aspect }: { manifest: PlayerManifest; shot
         })}
       </svg>
       {layers.length === 0 ? <div className="player-frame-empty"><h2>No layers in this shot</h2><p>Select another shot to continue.</p></div> : null}
-    </div></div>
+      {aspect !== '1:1' ? <LoreMarkers hotspots={shot.hotspots ?? []} aspect={aspect} size={size} selectedId={selectedId} select={(hotspot, button) => { playback.pause(); marker.current = button; setSelectedId(hotspot.id); }} /> : null}
+    </div></div>{selected ? <LoreDetails document={manifest.document} hotspot={selected} close={closeLore} localFile={source !== 'Saved project'} /> : null}</div>
     <div className="player-transport"><button className="player-button player-play" disabled={!layers.length} onClick={togglePlayback}>{preview.playing ? 'Pause' : 'Play'}</button>
       <label className="player-seek"><span className="sr-only">Seek player</span><input aria-label="Seek player" type="range" min={0} max={shot.durationMs} step={1} value={preview.timeMs} onChange={event => playback.seek(Number(event.target.value))} /></label>
       <output className="player-time" aria-live="off" aria-label="Player time">{timeLabel(preview.timeMs)} / {timeLabel(shot.durationMs)}</output>

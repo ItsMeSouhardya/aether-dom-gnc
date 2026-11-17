@@ -72,7 +72,7 @@ export function WebMExport({ manifest, shotId, aspect, onStart }: { manifest: Pl
     <div className="player-export-heading"><h2>WebM preview</h2><p>Encode this saved {aspect} shot from the start in this browser.</p></div>
     <label className="player-export-use">Export use <select value={use} disabled={busy} onChange={event => { clearResult(); setUse(event.target.value as ExportUse); }}><option value="private_preview">Private preview</option><option value="public_distribution">Public distribution</option><option value="commercial_pack">Commercial pack</option></select></label>
     {decisions.filter(decision => !decision.allowed).map(decision => <p role="alert" key={decision.assetId}>Asset {decision.assetId}: {decision.reasons.join('; ')}. Review asset evidence in the studio or open a corrected file.</p>)}
-    {decisions.flatMap(decision => decision.attribution.map(text => <p key={`${decision.assetId}:${text}`}>Attribution: {text}</p>))}
+    {[...new Set(decisions.flatMap(decision => decision.attribution))].map(text => <p key={text}>Attribution: {text}</p>)}
     <div className="player-export-controls">
       <label>Clip duration <span className="player-export-unit">(seconds)</span><input aria-label="WebM clip duration" type="number" inputMode="decimal" min={.001} max={maxMs / 1000} step={.001} value={duration} disabled={busy} aria-invalid={!valid} aria-describedby={helpId} onChange={event => { clearResult(); setDuration(event.target.value); }} /></label>
       <label className="player-export-audio"><input type="checkbox" checked={includeAudio} disabled={busy} onChange={event => { clearResult(); setIncludeAudio(event.target.checked); }} />Include audio</label>

@@ -90,6 +90,9 @@ def apply_operation(
 ) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any], list[str]]:
     """Apply typed edits and stored inverses, including Task 02 transform records."""
     op = operation.get("op", "setLayerTransform")
+    if op in {"setLoreHotspot", "deleteLoreHotspot"}:
+        from app.hotspot_commands import apply_hotspot_operation
+        return apply_hotspot_operation(document, operation)
     if op == "setAssetEvidence":
         from app.asset_commands import apply_asset_operation
         return apply_asset_operation(document, operation, asset_store)

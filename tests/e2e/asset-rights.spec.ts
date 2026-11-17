@@ -11,7 +11,7 @@ test('reviews and saves asset evidence, then recovers from blocked export', asyn
   const branch = `rights_review_${testInfo.project.name}`, base = await fork(request, branch);
   const before = await (await request.get(`${base}/document`)).json();
   const asset = before.document.assets[0];
-  await page.goto(`/?projectId=proj_neon_shogun&branchId=${branch}`);
+  await page.goto(`/studio?projectId=proj_neon_shogun&branchId=${branch}`);
   await page.getByText('Asset references', { exact: false }).click();
   await page.getByRole('button', { name: /Review evidence/ }).first().click();
   const panel = page.getByRole('region', { name: 'Asset evidence inspector' });
@@ -52,7 +52,7 @@ test('reviews and saves asset evidence, then recovers from blocked export', asyn
 test('cancel does not write and a conflicting save retains recoverable draft text', async ({ page, request }, testInfo) => {
   const branch = `rights_stale_${testInfo.project.name}`, base = await fork(request, branch);
   const before = await (await request.get(`${base}/document`)).json(), revision = before.document.project.revision;
-  await page.goto(`/?projectId=proj_neon_shogun&branchId=${branch}`); await page.getByText('Asset references', { exact: false }).click();
+  await page.goto(`/studio?projectId=proj_neon_shogun&branchId=${branch}`); await page.getByText('Asset references', { exact: false }).click();
   await page.getByRole('button', { name: /Review evidence/ }).first().click();
   const panel = page.getByRole('region', { name: 'Asset evidence inspector' });
   await panel.getByRole('button', { name: 'Edit evidence' }).click();
@@ -76,7 +76,7 @@ test('cancel does not write and a conflicting save retains recoverable draft tex
 test('an unknown save outcome retains text and requires reload after cancellation', async ({ page, request }, testInfo) => {
   const branch = `rights_unknown_${testInfo.project.name}`, base = await fork(request, branch);
   const before = await (await request.get(`${base}/document`)).json();
-  await page.goto(`/?projectId=proj_neon_shogun&branchId=${branch}`);
+  await page.goto(`/studio?projectId=proj_neon_shogun&branchId=${branch}`);
   await page.getByText('Asset references', { exact: false }).click(); await page.getByRole('button', { name: /Review evidence/ }).first().click();
   const panel = page.getByRole('region', { name: 'Asset evidence inspector' });
   await panel.getByRole('button', { name: 'Edit evidence' }).click();
@@ -104,7 +104,7 @@ test('repairs a stale derivative then exports attributed public and commercial b
   const derivative = { commandId: `derive_${testInfo.project.name}`, projectId: 'proj_neon_shogun', branchId: branch, expectedRevision: snapshot.document.project.revision, actor: { kind: 'human', id: 'test' }, reason: 'Edit drawing', op: 'editSvgElement', targetId: originalAsset.id, args: { elementId: 'night_sky', attributes: { fill: '#202020' } } };
   const edited = await request.post(`${base}/commands`, { data: derivative }); expect(edited.ok(), await edited.text()).toBe(true); snapshot = await edited.json();
   const blocked = await request.get(`${base}/player-manifest?use=public_distribution`); expect(blocked.status()).toBe(422);
-  await page.goto(`/?projectId=proj_neon_shogun&branchId=${branch}`); await page.getByRole('button', { name: 'Export JSON', exact: true }).click();
+  await page.goto(`/studio?projectId=proj_neon_shogun&branchId=${branch}`); await page.getByRole('button', { name: 'Export JSON', exact: true }).click();
   const exportPanel = page.getByRole('complementary', { name: 'Export JSON inspector' });
   await exportPanel.getByLabel('Export use').selectOption('public_distribution'); await exportPanel.getByRole('button', { name: 'Review export' }).click();
   await expect(exportPanel.getByRole('button', { name: `Review asset evidence: ${originalAsset.id}` })).toBeVisible();
@@ -134,7 +134,7 @@ test('repairs a stale derivative then exports attributed public and commercial b
 test('freezes all evidence draft controls until a delayed successful save returns', async ({ page, request }, testInfo) => {
   const branch = `rights_delayed_${testInfo.project.name}`, base = await fork(request, branch);
   const before = await (await request.get(`${base}/document`)).json();
-  await page.goto(`/?projectId=proj_neon_shogun&branchId=${branch}`);
+  await page.goto(`/studio?projectId=proj_neon_shogun&branchId=${branch}`);
   await page.getByText('Asset references', { exact: false }).click();
   await page.getByRole('button', { name: /Review evidence/ }).first().click();
   const panel = page.getByRole('region', { name: 'Asset evidence inspector' });
@@ -166,7 +166,7 @@ test('freezes all evidence draft controls until a delayed successful save return
 
 test('retains an imported asset draft after undo and unlocks navigation on cancel', async ({ page, request }, testInfo) => {
   const branch = `rights_removed_${testInfo.project.name}`, base = await fork(request, branch);
-  await page.goto(`/?projectId=proj_neon_shogun&branchId=${branch}`);
+  await page.goto(`/studio?projectId=proj_neon_shogun&branchId=${branch}`);
   await page.getByRole('button', { name: 'Import SVG', exact: true }).click();
   await page.getByLabel('Import SVG file', { exact: true }).setInputFiles({ name: 'recovery.svg', mimeType: 'image/svg+xml', buffer: Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><rect id="shape" width="20" height="20"/></svg>') });
   await page.getByRole('button', { name: 'Import SVG layer', exact: true }).click();

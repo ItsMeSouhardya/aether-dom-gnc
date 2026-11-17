@@ -1,4 +1,5 @@
 'use client';
+import { useEffect, useRef } from 'react';
 import type { CdomDocument, RigBone } from '@aether-dom/schema';
 import type { CommandOperation } from '@/features/commands/draft';
 import type { Playback } from '@/features/stage/playback';
@@ -9,7 +10,12 @@ type Props = { draft: RigDraft; setDraft: (value: RigDraft) => void; document: C
 export function RigPoseEditor({ draft, setDraft, document, targetValid, busy, blocked, playback, run, changeAngle, cancel, setError }: Props) {
   const layer = document.layers.find(item => item.id === draft.layerId);
   const duration = document.shots.find(item => item.id === layer?.shotId)?.durationMs ?? 0;
-  return <form className="lore-editor" aria-label="Rig draft" onSubmit={async event => {
+  const form = useRef<HTMLFormElement>(null);
+  useEffect(() => {
+    form.current?.querySelector<HTMLInputElement>('input:not(:disabled)')?.focus({ preventScroll: true });
+    form.current?.scrollIntoView({ block: 'nearest' });
+  }, [draft.layerId, draft.bone.id, draft.frameId, draft.mode]);
+  return <form ref={form} className="lore-editor" aria-label="Rig draft" onSubmit={async event => {
     event.preventDefault(); if (busy || blocked || !targetValid) return;
     const angle = parseRigAngle(draft.angle), time = parseRigTime(draft.time, duration);
     if (angle === null || (draft.mode !== 'pose' && time === null) || Array.from(draft.action.trim()).length > 80) { setError('Use an angle from −360° to 360°, a whole time within the shot, and an action of at most 80 characters.'); return; }

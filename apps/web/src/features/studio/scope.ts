@@ -6,4 +6,4 @@ export function studioScope(query: Record<string, string | string[] | undefined>
   }
   return { projectId: query.projectId, branchId: query.branchId };
 }
-export const studioHref = (projectId: string, branchId: string) => `/?${new URLSearchParams({ projectId, branchId })}`;
+export const studioHref = (projectId: string, branchId: string) => `/studio?${new URLSearchParams({ projectId, branchId })}`;

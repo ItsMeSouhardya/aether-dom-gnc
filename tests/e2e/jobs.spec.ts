@@ -9,7 +9,7 @@ const read = async (request: APIRequestContext, id: string) => (await request.ge
 async function fixture(page: Page, request: APIRequestContext) {
   const before = await read(request, 'branch_main'), branchId = `branch_job_${crypto.randomUUID()}`;
   expect((await request.post(`/api/v1/projects/${projectId}/branches`, { data: { commandId: crypto.randomUUID(), op: 'forkBranch', projectId, sourceBranchId: 'branch_main', expectedRevision: before.document.project.revision, newBranchId: branchId, name: 'Job test', actor: { kind: 'human', id: 'test' }, reason: 'Isolated job flow' } })).ok()).toBe(true);
-  await page.goto(`/?projectId=${projectId}&branchId=${branchId}`);
+  await page.goto(`/studio?projectId=${projectId}&branchId=${branchId}`);
   await page.getByRole('navigation', { name: 'Layer navigator' }).getByRole('button', { name: 'Select layer Kael', exact: true }).click();
   await page.getByRole('button', { name: 'Jobs', exact: true }).click();
   await expect(page.getByRole('region', { name: 'Jobs', exact: true })).toBeVisible();

@@ -215,3 +215,7 @@ Bounds are1–32 bones,1–32 attachments and 128 bone frames **total per rig**,
 Command **0.8.0** retains existing operations and adds human-only `importRigLayer`, `setRigBonePose`, `setRigBoneKeyframe` and `deleteRigBoneKeyframe`; see the [API operation table](../../apps/api/README.md#task11--articulated-rig-commands). Providers gain no permission. Explicit arm `lift` semantics reuse injury/recovery diagnostics; angles alone make no semantic claim. Unknown limb/action strings remain valid authored values with coverage warnings.
 
 The original four-bone/four-slot fixture uses one source and one rights status for all parts. Existing private-preview and broader-use evidence rules apply. Portable wrapper1.0/1.1 remain compatible; validators check each rig against its embedded SVG rather than trusting cached evaluation. Studio/player use native SVG for rig scenes, and WebM serializes the evaluated SVG each frame through the existing export path. No IK, skinning, new renderer or dependency is part of this contract.
+
+## Saved lore hotspots
+
+Document version 0.6 supports up to eight labelled character or event hotspots per shot with authored positions for both aspects. Command version 0.9 provides reviewed changes. Portable player details resolve from the saved document and evidence, without viewer writes or live lore requests. Older documents remain readable without a startup migration.

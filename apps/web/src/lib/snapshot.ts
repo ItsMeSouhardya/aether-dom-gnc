@@ -23,7 +23,7 @@ export async function loadSnapshot(): Promise<CdomDocument> {
   if (typeof health !== 'object' || health === null || !('status' in health) || health.status !== 'ok'
     || !('service' in health) || health.service !== 'aether-dom-api'
     || !('schemaVersion' in health) || !(health.schemaVersion === '0.1.0'
-      || ['0.2.0', '0.3.0', '0.4.0', '0.5.0'].includes(String(health.schemaVersion)) && 'supportedSchemaVersions' in health && Array.isArray(health.supportedSchemaVersions) && health.supportedSchemaVersions.includes('0.1.0'))) {
+      || ['0.2.0', '0.3.0', '0.4.0', '0.5.0', '0.6.0'].includes(String(health.schemaVersion)) && 'supportedSchemaVersions' in health && Array.isArray(health.supportedSchemaVersions) && health.supportedSchemaVersions.includes('0.1.0'))) {
     throw new Error('The API health response is incompatible. Check that the local API supports the original seed version.');
   }
   const result = validateCdom(fixture);
