@@ -1,11 +1,11 @@
 'use client';
 
-import Link from 'next/link';
 import { useEffect, useRef, useState, type ChangeEvent } from 'react';
 import type { PlayerManifest } from '@aether-dom/schema';
 import { loadPlayerManifest, readPlayerFile } from '../../lib/player-api';
 import { Icon } from '../studio/icons';
 import { PlayerSession } from './player-session';
+import { savedStudioHref, welcomeHref } from '../../lib/welcome-navigation';
 
 type State = { kind: 'loading'; message: string } | { kind: 'error'; message: string } | { kind: 'ready'; manifest: PlayerManifest; source: string; session: number };
 
@@ -43,11 +43,14 @@ export function PlayerLoader({ projectId = 'proj_neon_shogun', branchId = 'branc
     setState({ kind: 'loading', message: 'Loading the saved composition and its embedded sources.' });
     setAttempt(value => value + 1);
   }
+  const savedProject = state.kind === 'ready' && state.source === 'Saved project' ? state.manifest.document.project : undefined;
+  const studioReturn = savedStudioHref(savedProject?.id, savedProject?.activeBranchId);
+  const welcomeReturn = welcomeHref(savedProject?.id, savedProject?.activeBranchId);
   return <main className="player" id="player">
     <a className="skip-link" href="#player-content">Skip to player</a>
-    <header className="player-header"><Link className="studio-wordmark" href="/" aria-label="AETHER-DOM studio"><Icon name="brand" /><span>AETHER-DOM</span></Link>
+    <header className="player-header"><a className="studio-wordmark" href={studioReturn} aria-label="AETHER-DOM studio"><Icon name="brand" /><span>AETHER-DOM</span></a>
       <span className="player-header-label">Player</span>
-      <nav aria-label="Player actions"><label className="player-file">Open JSON<input type="file" accept=".json,application/json" aria-label="Open local player JSON" onChange={event => { void openFile(event); }} /></label><Link className="player-button" href="/">Back to studio</Link></nav>
+      <nav aria-label="Player actions"><label className="player-file">Open JSON<input type="file" accept=".json,application/json" aria-label="Open local player JSON" onChange={event => { void openFile(event); }} /></label><a className="player-button" href={studioReturn}>Back to studio</a><a className="player-button" href={welcomeReturn}>Welcome</a></nav>
     </header>
     <div id="player-content" tabIndex={-1} className="player-content">
       {state.kind === 'ready' ? <PlayerSession key={state.session} manifest={state.manifest} source={state.source} />

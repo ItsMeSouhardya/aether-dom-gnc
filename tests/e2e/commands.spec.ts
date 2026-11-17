@@ -12,7 +12,7 @@ async function editX(page: Page, value: number) {
 test('saves, reloads, undoes and redoes an exact authored transform', async ({ page, request }, testInfo) => {
   const before = await (await request.get(`${base}/document`)).json();
   const original = before.document.layers.find((layer: { id: string }) => layer.id === 'layer_kael').transform.x as number;
-  await page.goto('/'); await selectKael(page);
+  await page.goto('/studio'); await selectKael(page);
   await expect(page.getByRole('button', { name: 'Edit transform', exact: true })).toBeVisible();
   await editX(page, original + 0.4);
   await page.getByRole('button', { name: 'Save transform', exact: true }).click();
@@ -36,7 +36,7 @@ test('rejects a stale second editor without overwriting the first save', async (
   const before = await (await request.get(`${base}/document`)).json();
   const original = before.document.layers[1].transform.x as number;
   const other = await context.newPage();
-  await page.goto('/'); await other.goto('/'); await selectKael(page); await selectKael(other);
+  await page.goto('/studio'); await other.goto('/studio'); await selectKael(page); await selectKael(other);
   await editX(page, original + 0.1); await editX(other, original + 0.2);
   await page.getByRole('button', { name: 'Save transform', exact: true }).click();
   await expect(page.getByRole('region', { name: 'Inspector' }).getByLabel('X position', { exact: true })).toHaveText(String(original + 0.1));
@@ -53,7 +53,7 @@ test('rejects a stale second editor without overwriting the first save', async (
 test('rejects invalid drafts before sending a command', async ({ page }, testInfo) => {
   let writes = 0;
   page.on('request', request => { if (request.method() === 'POST' && request.url().endsWith('/commands')) writes++; });
-  await page.goto('/'); await selectKael(page);
+  await page.goto('/studio'); await selectKael(page);
   await page.getByRole('button', { name: 'Edit transform', exact: true }).click();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   await page.screenshot({ path: testInfo.outputPath('transform-draft.png'), fullPage: true, scale: 'css' });
@@ -67,7 +67,7 @@ test('rejects invalid drafts before sending a command', async ({ page }, testInf
 test('keeps an open draft bound to its original revision after undo', async ({ page, request }) => {
   const before = await (await request.get(`${base}/document`)).json();
   const original = before.document.layers[1].transform.x as number;
-  await page.goto('/'); await selectKael(page); await editX(page, original + 0.2);
+  await page.goto('/studio'); await selectKael(page); await editX(page, original + 0.2);
   await page.getByRole('button', { name: 'Save transform', exact: true }).click();
   await expect(page.getByRole('region', { name: 'Inspector' }).getByLabel('X position', { exact: true })).toHaveText(String(original + 0.2));
   await editX(page, original + 0.4);
@@ -84,7 +84,7 @@ test('keeps an open draft bound to its original revision after undo', async ({ p
 test('recovers a committed save with a lost response by reloading', async ({ page, request }) => {
   const before = await (await request.get(`${base}/document`)).json();
   const original = before.document.layers[1].transform.x as number;
-  await page.goto('/'); await selectKael(page); await editX(page, original + 0.3);
+  await page.goto('/studio'); await selectKael(page); await editX(page, original + 0.3);
   await page.route('**/commands', async route => { await route.fetch(); await route.abort('failed'); });
   await page.getByRole('button', { name: 'Save transform', exact: true }).click();
   await expect(page.getByRole('alert', { name: 'Save status' })).toContainText('unknown');

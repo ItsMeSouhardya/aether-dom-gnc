@@ -179,6 +179,37 @@ export type CdomCommand =
         keyframeId: string;
       };
       [k: string]: unknown;
+    })
+  | (Envelope & {
+      op: 'setLoreHotspot';
+      targetId: string;
+      args: {
+        hotspot: {
+          id: string;
+          label: string;
+          targetKind: 'character' | 'event';
+          targetId: string;
+          positions: {
+            '16:9': {
+              x: number;
+              y: number;
+            };
+            '9:16': {
+              x: number;
+              y: number;
+            };
+          };
+        };
+      };
+      [k: string]: unknown;
+    })
+  | (Envelope & {
+      op: 'deleteLoreHotspot';
+      targetId: string;
+      args: {
+        hotspotId: string;
+      };
+      [k: string]: unknown;
     });
 
 export interface Envelope {

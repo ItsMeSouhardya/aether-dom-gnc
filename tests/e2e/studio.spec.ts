@@ -10,7 +10,7 @@ test('selects layers through the navigator and stage and inspects exact canon va
   const errors: string[] = [];
   page.on('pageerror', error => errors.push(error.message));
   page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
-  await page.goto('/');
+  await page.goto('/studio');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(sample.project.title);
   const navigator = page.getByRole('navigation', { name: 'Layer navigator' });
   const inspector = page.getByRole('region', { name: 'Inspector', exact: true });
@@ -35,7 +35,7 @@ test('selects layers through the navigator and stage and inspects exact canon va
 });
 
 test('selects an empty scene and returns to a shot with no stale inspector', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/studio');
   const navigator = page.getByRole('navigation', { name: 'Layer navigator' });
   await navigator.getByRole('button', { name: 'Select layer Kael', exact: true }).click();
   await page.getByRole('button', { name: 'Select scene The Escape', exact: true }).click();
@@ -51,7 +51,7 @@ test('selects an empty scene and returns to a shot with no stale inspector', asy
 
 test('retains failure/retry and empty project states in the studio', async ({ page }) => {
   await page.route(documentRoute, route => route.fulfill({ status: 503, json: { error: 'offline' } }));
-  await page.goto('/');
+  await page.goto('/studio');
   await expect(page.getByRole('main').getByRole('alert')).toContainText('unavailable');
   await page.unroute(documentRoute);
   await page.getByRole('button', { name: 'Try again' }).click();
@@ -63,7 +63,7 @@ test('retains failure/retry and empty project states in the studio', async ({ pa
 });
 
 test('allows keyboard selection, resets on reload and supports narrow reflow', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/studio');
   const kael = page.getByRole('navigation', { name: 'Layer navigator' }).getByRole('button', { name: 'Select layer Kael', exact: true });
   await kael.press('Enter');
   await expect(page.getByRole('region', { name: 'Inspector', exact: true }).getByLabel('X position')).toHaveText('-0.65');
@@ -80,7 +80,7 @@ test('allows keyboard selection, resets on reload and supports narrow reflow', a
 
 test('gives the stage useful space on a fullscreen desktop with scaled browser UI', async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 1536, height: 730 });
-  await page.goto('/');
+  await page.goto('/studio');
   await expect(page.getByRole('button', { name: 'Import SVG', exact: true })).toBeVisible();
   const frame = page.locator('.stage-canvas');
   const geometry = await page.locator('.stage-workspace').evaluate(element => {
@@ -106,7 +106,7 @@ test('gives the stage useful space on a fullscreen desktop with scaled browser U
 
 test('fits the stage frame when diagnostics reduce the available height', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 800 });
-  await page.goto('/');
+  await page.goto('/studio');
   await expect(page.getByRole('navigation', { name: 'Layer navigator' }).getByRole('button', { name: 'Select layer Kael', exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Diagnostics' }).click();
   const geometry = await page.locator('.stage-workspace').evaluate(element => {
@@ -125,7 +125,7 @@ test('distinguishes multiple shots in the same scene by accessible name', async 
   document.shots.push({ ...structuredClone(document.shots[0]), id: 'shot_second', layerIds: [] });
   document.scenes[1].shotIds.push('shot_second');
   await page.route(documentRoute, route => route.fulfill({ json: snapshot(document) }));
-  await page.goto('/');
+  await page.goto('/studio');
   const first = page.getByRole('button', { name: 'Select shot Rooftop Confrontation (shot_rooftop)', exact: true });
   const second = page.getByRole('button', { name: 'Select shot Rooftop Confrontation (shot_second)', exact: true });
   await expect(first).toBeVisible();
@@ -144,7 +144,7 @@ test('wraps long document titles and branch names on narrow screens', async ({ p
   document.scenes[1].title = 'Z'.repeat(200);
   await page.route(documentRoute, route => route.fulfill({ json: snapshot(document) }));
   await page.setViewportSize({ width: 360, height: 900 });
-  await page.goto('/');
+  await page.goto('/studio');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(document.project.title);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
 });

@@ -33,6 +33,9 @@ def entity_records(document: dict[str, Any]) -> list[tuple[str, str, dict[str, A
             path = f"/{collection}/{index}"
             if entity.get("id"):
                 result.append((entity["id"], kind, entity, path))
+            if kind == "shot":
+                for offset, hotspot in enumerate(entity.get("hotspots", [])):
+                    result.append((hotspot["id"], "hotspot", hotspot, f"{path}/hotspots/{offset}"))
             if kind == "layer":
                 for offset, keyframe in enumerate(entity.get("keyframes", [])):
                     if keyframe.get("id"):
@@ -227,6 +230,8 @@ def build_graph(document: dict[str, Any]) -> DependencyGraph:
             edge(entity_id, entity.get("sceneId"), "aggregates")
             for event_id in scene_events.get(entity.get("sceneId", ""), set()):
                 edge(event_id, entity_id, "chronology")
+            for hotspot in entity.get("hotspots", []):
+                edge(hotspot["id"], entity_id, "aggregates")
             for child in entity.get("layerIds", []) + entity.get("audioTrackIds", []):
                 edge(child, entity_id, "aggregates")
         elif kind in {"layer", "audio_track"}:
@@ -252,6 +257,10 @@ def build_graph(document: dict[str, Any]) -> DependencyGraph:
                 for scene_id in shot_scenes.get(entity.get("shotId", ""), set()):
                     for event_id in scene_events.get(scene_id, set()):
                         edge(event_id, entity_id, "chronology")
+        elif kind == "hotspot":
+            target = entity.get("targetId")
+            if target in nodes and nodes[target]["kind"] == entity.get("targetKind"):
+                edge(target, entity_id, "lore_target")
         elif kind == "binding":
             edge(entity.get("source", {}).get("entityId"), entity_id, "binding_input")
             edge(entity_id, entity.get("target", {}).get("entityId"), "binding_output")

@@ -4,8 +4,11 @@ import schemaV2 from '../cdom.v0.2.schema.json';
 import schemaV3 from '../cdom.v0.3.schema.json';
 import schemaV4 from '../cdom.v0.4.schema.json';
 import schemaV5 from '../cdom.v0.5.schema.json';
+import schemaV6 from '../cdom.v0.6.schema.json';
+import { validateDocumentHotspots } from './hotspots';
 import { validateDocumentRigs } from './rig-document';
 import { validateAssetProvenance } from './asset-rights';
+import type { CdomDocumentV6 } from './cdom-v6.generated';
 import type { CdomDocumentV5 } from './cdom-v5.generated';
 import { hasNonScalarText } from './portable';
 
@@ -14,8 +17,12 @@ export type { CdomDocumentV2 } from './cdom-v2.generated';
 export type { CdomDocumentV3 } from './cdom-v3.generated';
 export type { CdomDocumentV4 } from './cdom-v4.generated';
 export type { CdomDocumentV5 } from './cdom-v5.generated';
-export type CdomDocument = Omit<CdomDocumentV5, 'schemaVersion'> & {
-  schemaVersion: '0.1.0' | '0.2.0' | '0.3.0' | '0.4.0' | '0.5.0';
+export type { CdomDocumentV6 } from './cdom-v6.generated';
+export type { LoreHotspot } from './hotspot.generated';
+export { validateLoreHotspot, resolveHotspot } from './hotspots';
+export type { HotspotDetail, HotspotSection } from './hotspots';
+export type CdomDocument = Omit<CdomDocumentV6, 'schemaVersion'> & {
+  schemaVersion: '0.1.0' | '0.2.0' | '0.3.0' | '0.4.0' | '0.5.0' | '0.6.0';
 };
 export { evaluateAssetUse, validateAssetProvenance } from './asset-rights';
 export type {
@@ -67,12 +74,15 @@ const validateV3 = ajv.compile<CdomDocument>(schemaV3);
 
 const validateV4 = ajv.compile<CdomDocument>(schemaV4);
 const validateV5 = ajv.compile<CdomDocument>(schemaV5);
+const validateV6 = ajv.compile<CdomDocument>(schemaV6);
 
 export function validateCdom(value: unknown): ValidationResult {
   const version =
     typeof value === 'object' && value !== null && 'schemaVersion' in value ? value.schemaVersion : null;
   const selected =
-    version === '0.5.0'
+    version === '0.6.0'
+      ? validateV6
+      : version === '0.5.0'
       ? validateV5
       : version === '0.4.0'
       ? validateV4
@@ -82,7 +92,7 @@ export function validateCdom(value: unknown): ValidationResult {
           ? validateV2
           : validate;
   if (
-    (version === '0.4.0' || version === '0.5.0') &&
+    (version === '0.4.0' || version === '0.5.0' || version === '0.6.0') &&
     typeof value === 'object' &&
     value !== null &&
     'assets' in value &&
@@ -96,7 +106,8 @@ export function validateCdom(value: unknown): ValidationResult {
     }
   }
   if (selected(value)) {
-    if (version === '0.5.0') { const issues = validateDocumentRigs(value as CdomDocumentV5); if (issues.length) return { valid:false, issues }; }
+    if (version === '0.5.0' || version === '0.6.0') { const issues = validateDocumentRigs(value as CdomDocumentV5); if (issues.length) return { valid:false, issues }; }
+    if (version === '0.6.0') { const issues = validateDocumentHotspots(value); if (issues.length) return { valid: false, issues }; }
     if (hasNonScalarText(value))
       return { valid: false, issues: [{ path: '/', message: 'Text must contain Unicode scalar values' }] };
     return { valid: true, document: value };

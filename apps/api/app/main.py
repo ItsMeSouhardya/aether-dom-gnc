@@ -1,4 +1,5 @@
 import json
+import os
 import re
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
@@ -27,6 +28,8 @@ class Health(BaseModel):
     service: Literal["aether-dom-api"] = "aether-dom-api"
     schemaVersion: str = SCHEMA_VERSION
     supportedSchemaVersions: list[str] = SUPPORTED_SCHEMA_VERSIONS
+    presentationWorkspace: str | None = None
+    presentationInstance: str | None = None
 
 
 def create_app(
@@ -80,10 +83,11 @@ def create_app(
             "code": "INVALID_COMMAND", "message": "A valid JSON command body is required",
         }}, headers={"Cache-Control": "no-store"})
 
-    @app.get("/api/v1/health", response_model=Health)
+    @app.get("/api/v1/health", response_model=Health, response_model_exclude_none=True)
     def health(response: Response) -> Health:
         response.headers["Cache-Control"] = "no-store"
-        return Health()
+        return Health(presentationWorkspace=os.environ.get("AETHER_PRESENTATION_WORKSPACE"),
+                      presentationInstance=os.environ.get("AETHER_PRESENTATION_INSTANCE"))
 
     @app.get("/api/v1/fixtures/neon-shogun")
     def fixture(response: Response) -> dict[str, Any]:

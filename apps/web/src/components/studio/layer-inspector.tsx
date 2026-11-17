@@ -2,7 +2,7 @@ import type { CdomDocument } from '@aether-dom/schema';
 import type { StudioSelection } from '@/features/studio/selection';
 import { getShotLayers, kindLabel, layerName } from '@/features/studio/view-model';
 import { Icon } from './icons';
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import type { CommandOperation, Transform } from '@/features/commands/draft';
 import { TransformEditor } from './transform-editor';
 import { CharacterCanon } from './character-canon';
@@ -12,20 +12,23 @@ import type { Playback } from '@/features/stage/playback';
 import type { StageMode } from './layer-stage';
 import { RigPanel } from '../rig/rig-panel';
 import type { RigPreview } from '@/features/stage/render-plan';
+import { HotspotPanel } from '../hotspots/hotspot-panel';
 
-type Props = { document: CdomDocument; selection: StudioSelection; clear: () => void; busy: boolean; blocked: boolean; save: (targetId: string, transform: Transform, expectedRevision: number) => Promise<boolean>; run: (operation: CommandOperation, reason: string, revision?: number) => Promise<boolean>; assets: Record<string, AssetState>; mode: StageMode; selectedElement: string | null; selectElement: (id: string) => void; playback: Playback; onRigPreview: (preview: (RigPreview & { revision: number }) | null) => void; onRigDirty: (dirty: boolean) => void };
+type Props = { document: CdomDocument; selection: StudioSelection; clear: () => void; busy: boolean; blocked: boolean; save: (targetId: string, transform: Transform, expectedRevision: number) => Promise<boolean>; run: (operation: CommandOperation, reason: string, revision?: number) => Promise<boolean>; assets: Record<string, AssetState>; mode: StageMode; selectedElement: string | null; selectElement: (id: string) => void; playback: Playback; onRigPreview: (preview: (RigPreview & { revision: number }) | null) => void; onRigDirty: (dirty: boolean) => void; onLoreDirty: (dirty: boolean) => void; layout: ReactNode };
 
-export function LayerInspector(props: Props) {
+export function LayerInspector(props: Props & { hidden?: boolean }) {
   const { document, selection, busy, blocked, run, playback, onRigPreview, onRigDirty } = props;
   const layer = getShotLayers(document, selection.shotId).find(layer => layer.id === selection.layerId);
-  return <section className="studio-inspector" aria-label="Inspector">
+  return <section className={props.hidden ? undefined : 'studio-inspector'} aria-label="Inspector" hidden={props.hidden}>
     <div className="panel-heading"><h2>Inspector</h2><Icon name="inspect" /></div>
+    <div className="inspector-content"><HotspotPanel document={document} shotId={selection.shotId} busy={busy} blocked={blocked} run={run} onDirty={props.onLoreDirty} pause={playback.pause} /></div>
+    {props.layout ? <aside aria-label="Layout inspector">{props.layout}</aside> : null}
     <div className="inspector-content"><RigPanel document={document} layer={layer} shotId={selection.shotId} playback={playback} busy={busy} blocked={blocked} run={run} onPreview={onRigPreview} onDirty={onRigDirty} /></div>
     {layer ? <LegacyLayerEditor key={layer.id} {...props} layer={layer} /> : <div className="inspector-empty"><Icon name="inspect" /><h3>Select a layer</h3><p>Choose a layer on the stage or in the navigator to inspect its transform and source references.</p><p>Selection is temporary. Your document stays unchanged.</p></div>}
   </section>;
 }
 
-type LegacyProps = Omit<Props, 'selection' | 'onRigPreview' | 'onRigDirty'> & { layer: CdomDocument['layers'][number] };
+type LegacyProps = Omit<Props, 'selection' | 'onRigPreview' | 'onRigDirty' | 'onLoreDirty'> & { layer: CdomDocument['layers'][number] };
 
 function LegacyLayerEditor({ document, layer, clear, busy, blocked, save, run, assets, mode, selectedElement, selectElement, playback }: LegacyProps) {
   const [editing, setEditing] = useState(false);

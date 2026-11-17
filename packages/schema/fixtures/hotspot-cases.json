@@ -1,0 +1,10 @@
+{
+  "hotspot": {"id":"spot","label":"Lore","targetKind":"event","targetId":"event_injury","positions":{"16:9":{"x":0,"y":1},"9:16":{"x":1,"y":0}}},
+  "cases": [
+    {"field":"label","value":"\ufeff\u0085","valid":false},
+    {"field":"id","value":"constructor","valid":false},
+    {"field":"id","value":"spot\n","valid":false},
+    {"field":"targetKind","value":"unknown","valid":false},
+    {"field":"label","value":"𐀀","valid":true}
+  ]
+}

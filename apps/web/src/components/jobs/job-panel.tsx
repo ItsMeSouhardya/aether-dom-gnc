@@ -6,6 +6,7 @@ import type { CommandOperation } from '../../features/commands/draft';
 import { cancelJob, enqueueJob, getJob, JobRequestError, loadJobResult, loadJobs, retryJob } from '../../lib/job-api';
 import { rejectProposal } from '../../lib/proposal-api';
 import { ProposalReview } from '../proposals/proposal-panel';
+import { usePresentationWorkspace } from '../presentation-context';
 
 type Props = { document: CdomDocument; layerId: string | null; shotId: string | null; busy: boolean; blocked: boolean; run: (operation: CommandOperation, reason: string, revision?: number) => Promise<boolean>; onClose: () => void };
 const pendingMemory = new Map<string, JobRequest>();
@@ -17,6 +18,7 @@ export function JobPanel(props: Props) {
   return <Panel key={`${props.document.project.id}:${props.document.project.activeBranchId}`} {...props} />;
 }
 function Panel({ document, layerId, shotId, busy, blocked, run, onClose }: Props) {
+  const workspace = usePresentationWorkspace();
   const layer = document.layers.find(item => item.id === layerId), shot = document.shots.find(item => item.id === shotId);
   const [intent, setIntent] = useState<JobRequest['intent']>(layer ? 'move_right' : 'set_tension');
   const scopeId = intent === 'set_tension' ? shot?.id : layer?.id;
@@ -150,7 +152,7 @@ function Panel({ document, layerId, shotId, busy, blocked, run, onClose }: Props
       <p className="panel-note" role="status">{selected.status} · Attempt {selected.attempt} of {selected.maxAttempts} · {selected.progress}% complete</p>
       <progress aria-label="Job progress" value={selected.progress} max={100} />
       <p className="panel-note">Captured revision {selected.baseRevision} · Current revision {document.project.revision}</p>
-      {selected.status === 'queued' ? <p className="panel-note">Waiting for the local worker. Start <code>pnpm jobs:worker</code> in a separate terminal. Refresh jobs to check progress.</p> : null}
+      {selected.status === 'queued' ? <p className="panel-note">Waiting for the local worker. Start <code>{workspace ? `node tools/presentation.mjs worker --workspace ${workspace} --once` : 'pnpm jobs:worker'}</code> in a separate terminal. {workspace ? 'The worker may claim any eligible queued job in this disposable workspace database.' : 'The worker may claim any eligible queued job in the selected database.'} Refresh jobs to check progress.</p> : null}
       {selected.nextAttemptAt ? <p className="panel-note">Automatic retry is eligible at {selected.nextAttemptAt}. Cancel job stops the scheduled work.</p> : null}
       {selected.status === 'stale' || selected.baseRevision !== document.project.revision ? <p className="panel-note">The saved branch advanced. Queue a new job from the latest revision; this captured result cannot be approved.</p> : null}
       {selected.error ? <p className="transform-validation">{selected.error.message}{selected.error.retryable ? ' Retry is available while attempts remain.' : ''}</p> : null}

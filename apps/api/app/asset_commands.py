@@ -75,7 +75,7 @@ def apply_asset_operation(
     result = copy.deepcopy(document)
     updated = next(item for item in result["assets"] if item["id"] == target)
     updated.update(rights=args["rights"], provenance=provenance)
-    if result["schemaVersion"] != "0.5.0":
+    if result["schemaVersion"] not in {"0.5.0", "0.6.0"}:
         result["schemaVersion"] = "0.4.0"
     ensure_valid_document(result)
     for blob in blobs:

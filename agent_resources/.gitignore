@@ -1,5 +1,0 @@
-# Keep complete versioned snapshots even where project-wide ignores are broad.
-!plugins/
-!plugins/**
-plugins/**/node_modules/
-plugins/**/.git/

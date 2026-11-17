@@ -15,7 +15,7 @@ const record = (value: unknown): value is Record<string, unknown> => typeof valu
 function receipt(value: unknown): value is CommandReceipt {
   return record(value) && typeof value.commandId === 'string' && value.commandId.length > 0
     && typeof value.revision === 'number' && Number.isSafeInteger(value.revision) && value.revision > 0
-    && ['setLayerTransform', 'setLayerPose', 'recordConstraintRecovery', 'setShotCamera', 'setShotTension', 'setShotLayoutOverride', 'setLayerAppearance', 'importSvgLayer', 'editSvgElement', 'setLayerKeyframe', 'deleteLayerKeyframe', 'importRigLayer', 'setRigBonePose', 'setRigBoneKeyframe', 'deleteRigBoneKeyframe', 'approveProposal', 'setAssetEvidence', 'undo', 'redo'].includes(String(value.op)) && (value.targetId === null || typeof value.targetId === 'string')
+    && ['setLayerTransform', 'setLayerPose', 'recordConstraintRecovery', 'setShotCamera', 'setShotTension', 'setShotLayoutOverride', 'setLayerAppearance', 'importSvgLayer', 'editSvgElement', 'setLayerKeyframe', 'deleteLayerKeyframe', 'importRigLayer', 'setRigBonePose', 'setRigBoneKeyframe', 'deleteRigBoneKeyframe', 'approveProposal', 'setAssetEvidence', 'setLoreHotspot', 'deleteLoreHotspot', 'undo', 'redo'].includes(String(value.op)) && (value.targetId === null || typeof value.targetId === 'string')
     && typeof value.reason === 'string' && typeof value.createdAt === 'string' && Number.isFinite(Date.parse(value.createdAt))
     && (value.op !== 'approveProposal' || typeof value.proposalId === 'string' && value.proposalId === value.targetId && value.provider === 'local_mock'
       && typeof value.modelVersion === 'string' && value.modelVersion.length > 0 && typeof value.approvedBy === 'string' && value.approvedBy.length > 0)
@@ -34,7 +34,7 @@ export function parseProjectSnapshot(value: unknown): ProjectSnapshot {
   const analysis = validateAnalysis(value.analysis);
   const canon = document.document;
   const rigs = canon.layers.flatMap(layer => layer.rig ? [layer.rig] : []);
-  const ids = new Set([canon.project, ...canon.branches, ...canon.characters, ...canon.characters.flatMap(character => character.constraints), ...canon.events, ...canon.scenes, ...canon.shots, ...canon.layers, ...canon.layers.flatMap(layer => layer.keyframes ?? []), ...rigs, ...rigs.flatMap(rig => rig.bones), ...rigs.flatMap(rig => rig.attachments), ...rigs.flatMap(rig => rig.bones.flatMap(bone => bone.keyframes ?? [])), ...canon.assets, ...canon.audioTracks, ...canon.bindings].map(entity => entity.id));
+  const ids = new Set([canon.project, ...canon.branches, ...canon.characters, ...canon.characters.flatMap(character => character.constraints), ...canon.events, ...canon.scenes, ...canon.shots, ...canon.shots.flatMap(shot => shot.hotspots ?? []), ...canon.layers, ...canon.layers.flatMap(layer => layer.keyframes ?? []), ...rigs, ...rigs.flatMap(rig => rig.bones), ...rigs.flatMap(rig => rig.attachments), ...rigs.flatMap(rig => rig.bones.flatMap(bone => bone.keyframes ?? [])), ...canon.assets, ...canon.audioTracks, ...canon.bindings].map(entity => entity.id));
   if (!analysis.valid || analysis.analysis.revision !== canon.project.revision
     || analysis.analysis.graph.nodes.length !== ids.size || analysis.analysis.graph.nodes.some(node => !ids.has(node.id))) throw new Error('The response does not match the analysis contract.');
   return { document: canon, history: { canUndo: history.canUndo, canRedo: history.canRedo, entries: history.entries }, analysis: analysis.analysis };

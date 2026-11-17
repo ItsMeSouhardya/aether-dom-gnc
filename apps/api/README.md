@@ -260,3 +260,7 @@ Validation requires a character-sprite layer, valid shot/character ownership, on
 Dependencies register rig/bone/slot/frame IDs and invalidate descendants and output consumers without marking unrelated sibling bones. Explicit `lift` on `left_arm`/`right_arm` uses the layer's character and existing injury/recovery chronology, with bone/constraint/event/scene evidence. Rotation alone implies no action; unknown semantics disclose limited coverage. These remain soft diagnostics.
 
 The shared pure FK evaluator drives native SVG rig scenes and per-frame WebM SVG evaluation in the existing compositor. Portable documents retain authored rigs and unchanged embedded source bytes; evaluated matrices never enter canon or replace source evidence. Both aspects and offline playback use the same saved motion. This slice provides rigid FK only, without IK, skinning or deformation.
+
+## Presentation workspace
+
+`node tools/presentation.mjs setup`, `start`, `worker`, `backup`, `restore` and `verify` select an isolated named workspace. Start does not run a worker; the explicit worker processes the selected workspace queue, not just one branch. Stop all writers before backing up. See [the presentation runbook](../../docs/presentation-runbook.md) for commands, recovery boundaries and the retained offline fallback.

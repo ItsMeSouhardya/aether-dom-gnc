@@ -23,8 +23,11 @@ VALIDATOR_V4 = Draft202012Validator(SCHEMA_V4)
 SCHEMA_V5 = json.loads((SCHEMA_ROOT / "cdom.v0.5.schema.json").read_text(encoding="utf-8"))
 Draft202012Validator.check_schema(SCHEMA_V5)
 VALIDATOR_V5 = Draft202012Validator(SCHEMA_V5)
-SCHEMA_VERSION = "0.5.0"
-SUPPORTED_SCHEMA_VERSIONS = ["0.1.0", "0.2.0", "0.3.0", "0.4.0", "0.5.0"]
+SCHEMA_V6 = json.loads((SCHEMA_ROOT / "cdom.v0.6.schema.json").read_text(encoding="utf-8"))
+Draft202012Validator.check_schema(SCHEMA_V6)
+VALIDATOR_V6 = Draft202012Validator(SCHEMA_V6)
+SCHEMA_VERSION = "0.6.0"
+SUPPORTED_SCHEMA_VERSIONS = ["0.1.0", "0.2.0", "0.3.0", "0.4.0", "0.5.0", "0.6.0"]
 
 
 def _portable_issues(value: object, path: str = "") -> list[dict[str, str]]:
@@ -59,7 +62,7 @@ def validate_document(document: object) -> list[dict[str, str]]:
     """Structural validation only; never coerce, repair, or mutate canon."""
     version = document.get("schemaVersion") if isinstance(document, dict) else None
     if (
-        version in ("0.4.0", "0.5.0")
+        version in ("0.4.0", "0.5.0", "0.6.0")
         and isinstance(document, dict)
         and isinstance(document.get("assets"), list)
     ):
@@ -71,7 +74,9 @@ def validate_document(document: object) -> list[dict[str, str]]:
                 if issues:
                     return issues
     validator = (
-        VALIDATOR_V5
+        VALIDATOR_V6
+        if version == "0.6.0"
+        else VALIDATOR_V5
         if version == "0.5.0"
         else VALIDATOR_V4
         if version == "0.4.0"
@@ -89,9 +94,12 @@ def validate_document(document: object) -> list[dict[str, str]]:
         }
         for error in validator.iter_errors(document)
     ]
-    if not issues and version == "0.5.0":
+    if not issues and version in ("0.5.0", "0.6.0"):
         from .rigs import validate_document_rigs
         issues += validate_document_rigs(cast(dict[str, Any], document))
+    if not issues and version == "0.6.0":
+        from .hotspots import validate_document_hotspots
+        issues += validate_document_hotspots(cast(dict[str, Any], document))
     return issues
 
 

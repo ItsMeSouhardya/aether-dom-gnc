@@ -7,6 +7,8 @@ for (const [source, target, title] of [
   ['cdom.v0.3.schema.json', 'cdom-v3.generated.ts', 'CdomDocumentV3'],
   ['cdom.v0.4.schema.json', 'cdom-v4.generated.ts', 'CdomDocumentV4'],
   ['cdom.v0.5.schema.json', 'cdom-v5.generated.ts', 'CdomDocumentV5'],
+  ['cdom.v0.6.schema.json', 'cdom-v6.generated.ts', 'CdomDocumentV6'],
+  ['hotspot.schema.json', 'hotspot.generated.ts', 'LoreHotspot'],
   ['rig.schema.json', 'rig.generated.ts', 'Rig'],
   ['asset-provenance.schema.json', 'asset-provenance.generated.ts', 'AssetProvenance'],
   ['svg.schema.json', 'svg.generated.ts', 'SvgAsset'],
@@ -27,7 +29,7 @@ for (const [source, target, title] of [
   const compiled = await compile({ ...schema, title }, title, {
     bannerComment: `/* Generated from ${source}. Run pnpm --filter @aether-dom/schema types:generate. */`,
     style: { singleQuote: true, semi: true },
-    ...(source.startsWith('asset-provenance') || source.startsWith('cdom.v0.4') || source.startsWith('cdom.v0.5') || source.startsWith('rig.schema') || source.startsWith('job') || source.startsWith('proposal') || source.startsWith('player-manifest') || source.startsWith('branch-') ? { ignoreMinAndMaxItems: true } : {}),
+    ...(source.startsWith('asset-provenance') || source.startsWith('cdom.v0.4') || source.startsWith('cdom.v0.5') || source.startsWith('cdom.v0.6') || source.startsWith('rig.schema') || source.startsWith('job') || source.startsWith('proposal') || source.startsWith('player-manifest') || source.startsWith('branch-') ? { ignoreMinAndMaxItems: true } : {}),
   });
   // The generator's `{}` means any non-nullish value in TypeScript, whereas
   // approveProposal requires an object with no keys. Keep this correction local

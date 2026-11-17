@@ -1,217 +1,212 @@
+<div align="center">
+
 # AETHER-DOM
 
-A local-first creative IDE for semantic, cross-modal storytelling. **Task11 — Articulated rigs** adds an original Kael-inspired character with reviewed bone poses and keyframe motion across studio, player and WebM. Asset evidence, durable local jobs, isolated branches and three-way comparison remain available. The selected Afterlight v2 landing page stays separate.
+### One creative document. A connected story, scene and sound.
 
-## Shared agent skills
+**A local-first creative workspace for motion comics, animatics and episodic storytelling.**
 
-The [agent resource library](agent_resources/README.md) contains separate versioned
-Superpowers and context-mode snapshots, skill indexes, licenses and a reusable
-task brief. It also links the existing Impeccable archive. Other agents can read
-these references directly; MCP runtime setup remains host-specific.
+[The idea](#the-idea) · [Features](#features) · [Try the demo](#try-the-demo) · [Architecture](#architecture) · [Roadmap](#roadmap)
 
-## Local setup — Windows PowerShell
+**Working local prototype · Tasks 00–12 complete · AI provider is a deterministic mock**
 
-Prerequisites: Node **22.13+**, pnpm **11.25.0**, Python **3.12+**. Task04 verified locally with Node22.23.3 and Python3.12.14. Install pnpm with `npm install --global pnpm@11.25.0` if needed. Open PowerShell at this project root; paths with spaces are supported.
+</div>
+
+![Afterlight concept artwork: a figure approaching a luminous ring](landing-page/assets/afterlight-world.png)
+
+<sub>Original Afterlight v2 concept artwork. The landing-page preview widget is illustrative; **Open studio** opens the actual application.</sub>
+
+## The idea
+
+A story is more than the video or image exported at the end. It has characters, events, visual layers, motion, sound and relationships that creators may want to change later. When those pieces are scattered across tools or flattened into an output, a small change can be difficult to trace and repair.
+
+AETHER-DOM explores a different workflow: a versioned **Creative Document Object Model** (`.cdom`) connects authored story and scene data. The studio edits that saved document through validated, reversible commands; derived diagnostics and dependencies explain consequences; the player and exports use the same saved composition.
+
+> **The current build is a working foundation, not the complete original vision.** It demonstrates editable scenes, continuity checks, reactive audio, reviewed mock proposals, branching, portable playback and lore inspection. Live generative AI, general dialogue authoring, collaboration and publishing are future work.
+
+### Why this is interesting
+
+- **Story context meets the scene.** Kael's explicit injured-arm constraint links to an event and can produce a traceable diagnostic when a supported action conflicts with it.
+- **Changes stay inspectable.** Revisions, expected-revision checks, command history and undo/redo keep saved work distinct from temporary selections, drafts and playback.
+- **One scene reaches multiple views.** Author a 16:9 scene and a separate 9:16 composition; play a saved revision, reopen a portable bundle offline, or record a WebM preview.
+- **The creator retains control.** Proposals are scoped, reviewed and explicitly approved. The included provider is a predictable local mock, not a live AI model.
+- **Evidence travels with the work.** Asset provenance, recorded use permissions and attribution inform export decisions; a portable bundle can carry evidence for offline inspection.
+
+## Features
+
+| Area | Current capabilities |
+| --- | --- |
+| **Local account** | First-use account creation, email/password login and logout. Server-checked sessions gate the editor and its web project API; account data stays separate from the creative document. |
+| **Project and canon** | Seeded Neon Shogun project, scenes/shots, characters, events and constraints in a versioned `.cdom` model. SQLite retains saved branch snapshots, command history and undo/redo. |
+| **Studio and stage** | Layer navigator, selection, drag and keyboard nudges, exact transforms, depth order, camera controls, safe static SVG import and source-element editing. Three.js/WebGL2 rendering has a native SVG fallback. |
+| **Motion and rigs** | Layer keyframes interpolate on the shared clock. An original Kael-inspired rigid SVG rig supports four bones/attachments, reviewed pose changes, bone keyframes and explicit limb-action diagnostics. |
+| **Continuity and dependencies** | Evidence-linked injury/recovery checks, a derived dependency graph, affected-node invalidation, and an unsaved forbidden-dialect phrase checker. Diagnostics are explainable warnings; they do not rewrite the story. |
+| **Sound** | Local ambient, tension and Foley WAV fixtures; a gesture-enabled Web Audio mixer; tension-driven bindings, spatial/stereo panning and reactive glow. Saving tension is explicit; preview controls stay temporary. |
+| **Proposals and jobs** | Three deterministic mock scenarios, captured scope and operation permissions, a reviewable before/after diff, approval/rejection, durable job history, an explicit worker, cancellation, bounded retry and recovery. |
+| **Branches** | Fork a saved revision, switch between isolated branch histories and inspect a read-only three-way comparison against the common ancestor. There is no automatic merge. |
+| **Portrait composition** | Author and review 9:16 overrides independently of landscape. **Fit subjects** proposes a draft using time-zero sprite bounds and safe guides; it is not a general layout optimizer. |
+| **Lore hotspots** | Add up to eight reviewed character/event markers per shot, with authored positions for both aspects. The player displays text and evidence from the exact saved document, with keyboard operation and recoverable missing targets. |
+| **Player and exports** | Play/seek saved shots with shared composition and audio behavior; export revision-bound portable JSON with supported media and evidence; reopen it while the API is unavailable; record bounded browser WebM previews. |
+| **Provenance and rights** | Inspect original/current asset hashes and revision-owned evidence, review permission/attribution corrections, and evaluate private preview, public distribution or commercial-pack use before export. |
+| **Presentation and recovery** | `/welcome` serves the selected Afterlight landing and leads to the real studio. A separate disposable workspace, explicit worker, source checkpoints, SQLite/media backup and fresh-tree restore support a repeatable local demo. |
+
+The prepared fixture is intentionally small: it is an original local demonstration scene, not a generated film or an autonomous production pipeline. See [current limits](#current-limits) and the [presentation runbook](docs/presentation-runbook.md) for supported workflows.
+
+![AETHER-DOM player with the saved scene and character lore details](docs/images/task-12-player.png)
+
+<sub>The local player showing a saved Neon Shogun scene, lore markers and character evidence. This capture uses an isolated demonstration workspace.</sub>
+
+## Try the demo
+
+### Requirements
+
+- Node.js **22.13 or newer**, pnpm **11.25.0**, and Python **3.12 or newer**.
+- A modern browser. WebM recording depends on browser codec/audio support; portable JSON and the included fallback remain available.
+- Internet access to install dependencies. Once installed, the seeded prototype and deterministic mock require no cloud account, API key, Docker or paid model call.
+
+The following creates a **new, isolated** presentation workspace. Its database and media are local runtime data under ignored `data/`; they are not included in a GitHub clone. Choose another workspace name if `demo` already exists.
+The commands below use Python 3.12; substitute your Python 3.12+ executable if its name differs.
+
+### Windows · PowerShell
 
 ```powershell
+# From the repository root
 pnpm install --frozen-lockfile
-py -m venv .venv
+py -3.12 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r apps/api/requirements-dev.txt
+
+# Prepare once, then start the local presentation
+node tools/presentation.mjs build
+node tools/presentation.mjs setup --workspace demo
+node tools/presentation.mjs start --workspace demo
 ```
 
-If `py` is unavailable, use your installed Python executable. The API launcher optionally reads root `.env.api.local`; set `AETHER_PYTHON=.venv-task04/Scripts/python.exe` there to select an alternate environment. This host uses that separate Python3.12 environment because Windows Application Control blocks a native extension in the older `.venv`; both environments remain intact. No environment activation, cloud keys, Docker, database server, accounts, or model calls are needed. Package installation needs internet; the installed scaffold uses local files and services.
+### macOS / Linux
 
-Start the API in one terminal, then the web app in another:
+```bash
+pnpm install --frozen-lockfile
+python3.12 -m venv .venv
+.venv/bin/python -m pip install -r apps/api/requirements-dev.txt
+
+node tools/presentation.mjs build
+node tools/presentation.mjs setup --workspace demo
+node tools/presentation.mjs start --workspace demo
+```
+
+Open **http://127.0.0.1:3300/** to arrive at the landing page, then choose **Log in** or **Open studio**. On first use, create your local account; later visits use email/password login. The editor lives at `/studio`, and **Log out** returns to the landing page. The launcher uses the configured Python environment and a prepared production build, checks ports and readiness, and stops its own processes on Ctrl+C. It does not start the worker. The presentation API defaults to loopback port `8300`.
+
+The account belongs to this local workspace. Password hashes and revocable12-hour sessions are stored in a separate `local-auth.sqlite3` beside its creative database; `AETHER_AUTH_PATH` can select another local account store. Source checkpoints, portable exports and creative-data backups exclude credentials. A restored workspace can create a new local account without changing its restored project. This is local browser access control; the trusted loopback FastAPI/worker/CLI interfaces remain local tools, and projects are not isolated among multiple users.
+
+If using another Python environment, set `AETHER_PYTHON` in the process environment or root `.env.api.local`; see the [presentation runbook](docs/presentation-runbook.md). **pnpm is needed to install dependencies, but starting a prepared build and running its worker use Node directly.**
+
+On the machine where Task 12 was prepared, `task12-presentation-final` may already exist. Start it with `node tools/presentation.mjs start --workspace task12-presentation-final`; a fresh clone must run setup for its own new workspace instead.
+
+### Walk through the product
+
+1. **Welcome → login → studio.** Open `/` and select **Open studio**. Create your account on first use or log in to open Neon Shogun in `/studio`; the landing interaction remains clearly labelled illustrative.
+2. **Inspect a story consequence.** Open **Diagnostics** and follow Kael's injured-arm warning to its layer, constraint and event evidence. This is a supported explicit-rule check, not a claim that the app understands arbitrary scenes.
+3. **Edit and recover.** Select Kael, choose **Edit transform**, change X and **Save transform**. Reload, reselect the layer and use **Undo**. The saved revision changes only when a command is accepted.
+4. **Pose and animate.** Select the original Kael-inspired rig layer, choose a bone, preview an angle/action, review and save; add or inspect bone frames in **Animate**. An explicit arm `lift` can be checked against the authored injury; an angle alone makes no story claim.
+5. **Hear the connection.** Open **Audio**, choose **Enable audio**, play the scene and preview tension or move the sign to hear the supported gain/pan behavior. Save tension only when you want to persist it.
+6. **Review a mock proposal.** Open **Jobs**, select a scenario and **Queue mock job**. In a second terminal run the explicit worker below, then **Refresh jobs → Review result → Approve proposal**. Approval is the step that changes canon.
+7. **Reframe and inspect lore.** Choose **9:16** to see the authored portrait composition. Open **Player**, select a lore marker and inspect the saved character/event details and evidence; Close or Escape returns focus to the marker.
+8. **Export and reopen.** Review an intended use in **Export JSON**, download the saved bundle, and open it through **Open JSON** in the player. The bundle works without the API once the player is running. Record a WebM preview if the browser supports it.
+
+Run the worker in a **second terminal**, using the same workspace name as the running app:
 
 ```powershell
-pnpm dev:api
+node tools/presentation.mjs worker --workspace demo --once
+```
+
+The worker claims eligible jobs across that entire disposable workspace, not just the selected branch. `--once` attempts at most one eligible job and exits; omit it to keep the worker running. No worker starts automatically. The optional setup flag `--with-reviewed-job` prepares an already reviewed **mock fixture**; it does not connect a real provider.
+
+### Regular development
+
+For the regular local project, run the API and web development servers in separate
+terminals:
+
+```powershell
+node tools/api.mjs dev
 ```
 
 ```powershell
 pnpm dev
 ```
 
-For durable mock proposals, start a third terminal at the project root:
+Open `http://127.0.0.1:3000/welcome`; the studio is at `/`, the player at
+`/player`, and the seed overview at `/document`. The development API defaults
+to `127.0.0.1:8000`. The regular project's database defaults to
+`data/aether-dom.sqlite3` and is separate from the presentation workspace. Its
+worker can be started with `node tools/api.mjs worker --once`; use the presentation
+worker command above for a presentation workspace instead. See the
+[API guide](apps/api/README.md) for configuration and persistence details.
 
-```powershell
-pnpm jobs:worker
+## Architecture
+
+```mermaid
+flowchart LR
+    A["Creator: studio"] --> B["Typed human command"]
+    B --> C["Validate revision and permissions"]
+    C --> D["SQLite: document snapshots + history"]
+    D --> E["Derived dependencies + diagnostics"]
+    D --> F["Shared scene, motion + audio evaluation"]
+    F --> G["Player: saved or portable document"]
+    G --> H["Portable JSON / WebM preview"]
+    P["Scoped mock proposal or job"] --> Q["Review / approve / reject"]
+    Q -->|"Only approval writes"| B
+    D --> P
 ```
 
-If PowerShell cannot find `pnpm`, run the worker directly with Node from the same
-project root: `node .\tools\api.mjs worker`. It uses the same Python/database
-configuration and needs no package-manager command. This host's pnpm is bundled
-with Codex and is absent from ordinary PowerShell PATH; Node is on that PATH.
-The worker normally waits quietly for queued jobs; Ctrl+C stops it.
+A `.cdom` document is the canonical authored state. UI selection, draft previews, render matrices, analyser values and player navigation are temporary. A saved command validates its target and expected revision, applies the edit, updates derived dependencies and records audit/undo information. A stale or uncertain save enters a recovery state rather than silently overwriting a newer revision.
 
-Choose a layer or shot, open **Jobs**, choose a scenario and **Queue mock job**.
-The separate worker captures no browser drafts and calls no remote provider.
-Without a worker, queued jobs remain saved and waiting. **Refresh jobs** checks
-history; **Cancel job** stops queued/running/retryable work. After a worker
-restart, expired leases become explicit retryable failures while attempts remain.
-Use **Retry job** to recover; each job permits at most three claimed attempts.
+The current authored document version is **0.6.0** and the command contract is **0.9.0**. Previous supported document versions remain readable, and startup does not silently upgrade authored documents. TypeScript and Python validate shared versioned contracts. See [schema documentation](packages/schema/README.md) and [API and persistence details](apps/api/README.md).
 
-On success, choose **Review result** for the captured scope and exact field diff.
-**Approve proposal** is the existing revision-checked human command; queuing,
-progress, completion, cancellation and rejection never change creative canon.
-Stale work cannot apply. The zero-cost mock supports the same three deterministic
-scenarios as Proposals; freeform messages remain inert. Existing synchronous
-Proposals still work without a worker. Stop the worker with Ctrl+C. For one pass,
-run `pnpm jobs:worker --once`; polling/lease bounds are documented in the API README.
+## Rights, portability and recovery
 
-Open [the local studio](http://127.0.0.1:3000/). The API seeds Neon Shogun once, then loads its saved branch. Choose a scene/shot in **Project**, then select Kael, Vance or another layer in **Layers** or on the stage. The inspector shows authored X/Y/Z, scale, rotation, pose and source references. Choose **Edit transform**, change values, then **Save transform** to commit them locally; **Cancel** discards the draft. **Undo**, **Redo** and **Change history** use the persisted command history. Reload resets temporary selection and reads the saved branch. The [seed overview](http://127.0.0.1:3000/document) remains a read-only reference to the original revision-0 fixture.
+Asset evidence records creator/source/license details, immutable media hashes, attribution, use permissions and applicable consent. Export policy evaluates **recorded assertions**; it does not establish ownership or legal clearance. Unknown, missing, stale or incompatible evidence can block the selected use. The prepared original fixture has recorded presentation evidence; it does not grant blanket commercial permission.
 
-Every saved command checks its base revision and commits a new snapshot. Undo restores authored values exactly while creating a new revision. A stale draft receives HTTP 409 and cannot overwrite newer work. If a response is lost, the app blocks further writes until **Reload latest** confirms what was saved. Drafts are temporary and are discarded on selection changes or reload. Selection and drafts never write directly into canon.
+Portable JSON contains the saved document, supported sanitized SVG/PCM media and referenced text evidence. Review its contents before sharing. The app/player must be available to open it; only the API may be offline. WebM is a noninteractive recording and does not embed the rights ledger: retain its matching source/evidence JSON and attribution. Current WebM previews are bounded to 30 seconds, 24 fps, up to 1280×720 or 720×1280 and 64 MiB, subject to browser support.
 
-Open **Diagnostics** to see Kael’s injured-arm conflict, the authored pose, constraint and injury event that support it. **Select affected layer** opens the navigable layer in the inspector. Choose **Edit pose** and save a right-arm pose, or **Review recovery** to explicitly record a described recovery event. Both paths are persisted and reversible. The scene’s shots are evaluated after its referenced events, using their maximum order; a recovery clears an injury only from its later event order. Unknown poses or ambiguous timing receive coverage warnings.
+The repository includes a [revision-17 fallback](assets/presentation/task-12/README.md): an attributed portable JSON and two **two-second** landscape/portrait WebMs from the same saved scene. Keep the files together. Hotspots remain interactive in JSON; they are not interactive in the videos.
 
-**Dependencies** shows the selected layer’s sources/dependents and the latest command’s affected nodes in evaluation order. Additions and removals use both adjacent revision graphs. Analysis is recomputed from saved canon; bindings do not rewrite transforms or audio values. **Dialect draft check** continuously checks text against the selected character’s forbidden words/phrases. This text is unsaved: the supplied document format has no attributed dialogue field. Matching preserves Unicode word marks and avoids substring matches.
+Source checkpoints capture tracked and untracked source, binary content and verification metadata. They exclude secrets, dependency caches, Git internals and runtime data. SQLite/media backups are separate and require stopped writers; restore and checkpoint previews use new destinations. These tools assume a trusted, quiescent local filesystem. The [runbook](docs/presentation-runbook.md) contains commands and local Task 12 recovery locations.
 
-The database defaults to `data/aether-dom.sqlite3` and is excluded from Git. Startup runs the checked-in Alembic migration and seeds only an absent branch. To choose another file, set `$env:AETHER_DATABASE_PATH='data/my-project.sqlite3'` in the API terminal before starting it; relative paths resolve against this workspace. Explicit migration: `node tools/api.mjs migrate`. For a backup, stop the API and copy the database file; keep your backup outside Git. Do not delete the database to apply code updates. See [API persistence details](apps/api/README.md).
+## Current limits
 
-The desktop shell uses side panels and a bottom timeline. Narrow screens stack the panels. **Layout** renders the four original local SVG fixtures through Three.js WebGL2, with native SVG fallback. Drag a layer to submit one transform command; Escape cancels. Arrow keys nudge focused layers; the inspector edits exact values, including offscreen layers. **Bring forward / Send backward** changes only the selected layer’s Z. **Camera** edits pan, dolly, FOV and aspect, with a16:9 reset. No canonical transform clamping occurs.
-
-**Import SVG** accepts bounded static UTF-8 SVG shapes/groups/text and records source rights. Scripts, links, styles, external references and unsupported content are rejected. Supplied element IDs and the asset ID survive **Edit SVG** changes; the dropdown and native overlay select source elements. Save edits geometry/presentation attributes; all instances sharing that asset use the new immutable version. Safe original files and edited versions live in ignored `assets/originals/` and `assets/imported/`; back these up together with the database.
-
-The **Rig** section is in the normal layer inspector. Choose a shot in **16:9**, close any competing inspector, choose **Character** (Kael by default), then **Add original rig**. This saves a separate original layer and asset; existing Kael/Vance drawings stay fixed. Select the new layer in **Layers**. Its four bones and four attachment slots are **Body**, **Head**, **Left arm** and **Right arm**; choosing an **Attachment** selects its owning **Bone** without saving.
-
-Choose **Edit bone pose**, enter **Angle (°)** and an optional **Action**, then **Review rig change**. The angle previews locally; the review names the saved and proposed angle/action. **Save rig change** commits against the captured revision; **Cancel rig draft** restores saved rendering. Controls freeze while saving. A changed revision, removed target or uncertain save retains draft text for recovery; use Cancel or **Reload latest** before continuing. An angle alone makes no injury claim. Explicit action `lift` on a left/right arm checks the selected character's injury/recovery chronology and exposes evidence in **Diagnostics**; unknown semantics warn about limited coverage.
-
-Use **Add bone frame**, **Edit frame** or **Delete frame**, review, then save explicitly. Frame buttons seek without writing. Angles are bounded to −360°–360°; frame times are whole milliseconds within the shot. A rig supports up to 32 bones, 32 attachment slots and 128 bone frames **in total across the rig**. **Layout** shows the saved base pose; **Animate**, player and WebM interpolate saved angles on the shared clock. Native SVG renders rig scenes; WebM evaluates the rig SVG for every frame. Both aspects and portable JSON retain the saved rig. All parts share one SVG source and its rights: the original fixture supports private preview without a ledger, while public/commercial use requires the existing asset-evidence review. No IK, skinning or new runtime dependency is added.
-
-**Animate** enables keyframe authoring in the inspector. Seek in milliseconds, add/update/delete a frame and save explicitly. Playback linearly interpolates X/Y/Z, scale and rotation without changing base transforms or writing preview frames. Layout always edits the base transform. GPU denial/context loss preserves native editing. On desktop, opening a drawer collapses the timeline body to preserve stage space. Stop services with Ctrl+C; an unavailable API offers **Try again**.
-
-Choose **Audio** in the timeline to open the mixer, then **Enable audio** and **Play**. The checked-in ambient/tension/Foley clips work locally; playback stays silent until that explicit enable gesture. Raise **Tension** to preview supported gain bindings and the ambient fade. **Save tension** persists an editorial shot override through a revision-checked command; **Cancel tension** restores the saved mix. Without an override, supported narrative bindings supply the tension signal. Volume, mute, output mode and glow are temporary preview controls.
-
-While playing, choose **Layout**, select the sign and drag it left/right to audition its pan. Escape cancels; releasing submits one transform command and the accepted save pauses preview. Headphones mode uses stereo pan; Spatial uses an equal-power panner with stereo fallback. **Reactive glow** follows the mix analyser on linked Foley props through direct presentation updates; reduced motion disables it unless explicitly enabled. Seeking restarts tracks together at the same clip-relative offset; sources also stop at shot end independently of rendering frames. No audio samples or glow values enter canon or React sample-rate state.
-
-The three8-second WAVs are original project-owned synthesis, not provider-generated stems. Their stdlib generator and byte-check instructions are in [the fixture guide](assets/fixtures/README.md). This task provides the seeded mixer, not arbitrary audio import, speech generation, reverb design or a DAW.
-
-Select a layer, then choose **Proposals** in the header. Choose the selected layer or shot, a mock scenario and explicit operation permissions, then **Generate proposal**. The offline mock offers right-arm pose repair, X movement by +0.25 or shot tension of0.8. It does not interpret the request message or call a language model. The review shows the captured revision, exact authored field diff, permitted scope, read context and provider provenance. Pose changes metadata; it does not redraw a sprite.
-
-Generating or rejecting a proposal leaves canon and undo history unchanged. **Approve proposal** applies only the stored, revalidated operations in one revision and one undo entry. A stale proposal cannot overwrite newer work; reload and generate a fresh proposal. Saved proposal decisions survive reload/restart, and Undo restores canon while retaining the historical approval. Proposal records live in a separate SQLite table added by migration0002; existing documents are not upgraded. Provider JSON, context and records are bounded and validated, with no import, raw restore, recovery or arbitrary batch permission.
-
-Choose **9:16** above the stage to preview the saved portrait override. The **Portrait composition** inspector edits the selected layer's alternate transform; dragging, arrow nudges and depth controls also target only portrait. **Fit subjects** creates an unsaved draft that packs visible character sprites within the5% side/10% top-and-bottom guides. Review it, then **Save portrait layout** or **Cancel layout**. **Use base transforms in portrait** drafts removal of the alternate map and still requires Save. Base transforms, other aspect settings and document schema stay unchanged. Undo restores the exact previous override. Safe-area labels describe sprite bounds at time zero, not every animated frame; backgrounds may crop. Existing keyframe movement is rebased on the alternate composition.
-
-Choose **Player** in the header to open the current saved revision at `/player`. Choose a shot/aspect, use Play/Pause or seek, and explicitly **Enable audio** to hear its embedded local mix. Focus the frame for Space/arrow/Home/End keyboard controls. Changing shot/aspect resets playback and audio. This read-only route uses the same composition, renderer, playback clock and audio engine as the studio.
-
-Choose **Export JSON**, select the intended use, then **Review export**. Review
-attribution and download the prepared portable `.cdom.json` bundle containing the
-exact saved document, sanitized SVG trees, PCM WAV media and any referenced text
-evidence. Unsaved drafts are excluded. A blocker offers **Review asset evidence**;
-you can also open an asset from the navigator's **Asset references**. Choose
-**Edit evidence**, complete its records, **Review changes**, then **Save evidence**.
-Cancel makes no write; Undo/Redo retains exact earlier evidence and media bindings.
-
-Open a downloaded bundle through **Open JSON** in the player; playback then works
-with the API offline. The app must still be installed/running: JSON is data for
-this player. Limits remain32MiB total,64 referenced assets and8MiB per WAV.
-Missing, unsupported, unsafe or incompatible-rights media blocks the requested
-export with recovery guidance. Files stay local; no publication or canonical
-write occurs. Original media references inside the document remain intact.
-
-Choose **Branches** to fork the current saved revision. Enter a name, choose **Create fork**, then **Open branch**. A fork retains the source revision as its base and starts with an empty edit/undo history. Saved edits, undo and proposals are isolated per branch; immutable asset versions may be shared. The source stays unchanged. Branch creation has a separate human command/audit record and cannot be undone as a source edit. Switching discards unsaved drafts and stops preview; the chosen branch lives in the studio URL and survives refresh. A busy save blocks switching. Unknown fork outcomes can safely retry the same command or refresh the branch list.
-
-**Compare branches** shows authored field changes against the actual common ancestor revision. It distinguishes one-sided changes, matching changes and conflicts, including absent fields and additions/deletions. Arrays are compared as whole fields. Revision/active-branch metadata is excluded from creative differences. This is a read-only comparison prototype with no merge or overwrite action.
-
-In **Player**, use **WebM preview** to encode the selected saved/local shot and aspect from time zero. Choose a clip duration and whether to include its saved stereo mix, then **Record WebM**. Download is offered only after encoding succeeds; Cancel saves no partial file. Limits are30seconds,24fps, up to1280×720/720×1280 and64MiB. Native recording runs in real time; a bounded WebCodecs VP8/Opus fallback handles browsers that return empty native recordings. Keep the tab visible. No microphone, screen capture, network media or public upload is used. Runtime reactive glow is excluded; custom/inherited SVG fonts require text converted to paths or an explicit generic font. Browser codec support varies; portable JSON remains available. MP4/FFmpeg and automatic branch merging are deferred.
-
-On macOS/Linux use `python3 -m venv .venv` and `.venv/bin/python -m pip install -r apps/api/requirements-dev.txt`; pnpm commands are identical.
-
-## Shared checks
-
-```powershell
-pnpm lint
-pnpm typecheck
-pnpm test
-pnpm verify:preserved
-pnpm build
-pnpm exec playwright install chromium
-pnpm test:e2e
-```
-
-`lint` runs ESLint, Ruff and the existing landing syntax checks. `typecheck` checks generated-contract drift, TypeScript and strict Python typing. `test` runs Vitest and Pytest, including revision conflicts, rollback, restart durability, idempotency, exact inverse transforms and UI boundaries. `verify:preserved` checks 178 original files and exact kit/schema/fixture copies. Browser tests cover editing, recovery, selection, empty/error states, keyboard use, narrow reflow and the seed overview. Build first; tests start fresh services on web port 3100/API 8100 with a unique ignored database, so they never mutate your regular project database. Those ports must be free.
-
-Production preview: start `pnpm dev:api`, then `pnpm --filter web start`. Stop the web development server first. If Windows application control blocks mypy's compiled extension, see [the pure-Python workaround](apps/api/README.md).
-
-On this Windows host the bundled Playwright Chromium failed to launch. Local browser checks use the installed Edge channel: set `$env:AETHER_E2E_CHANNEL='msedge'` before `pnpm test:e2e`; omit it for standard Chromium/CI. To exercise development effect replay, audio and proposals, also set `$env:AETHER_E2E_DEV='1'` and run `pnpm exec playwright test --project desktop --grep 'effect replay|explicit audio gesture|scoped mock preview'`.
-
-## Local endpoints and contracts
-
-- [GET /api/v1/health](http://127.0.0.1:8000/api/v1/health): service and schema version.
-- [GET /api/v1/fixtures/neon-shogun](http://127.0.0.1:8000/api/v1/fixtures/neon-shogun): unchanged validated fixture, revision 0.
-- `GET /api/v1/fixtures/articulated-rig`: read-only original SVG/rig template; importing requires the explicit Add original rig command.
-- `GET /api/v1/projects/{projectId}/branches/{branchId}/document`: saved document, recent history and revision-bound analysis.
-- `GET /api/v1/projects/{projectId}/branches/{branchId}/diagnostics`: derived issues, graph and invalidation metadata.
-- `POST /api/v1/projects/{projectId}/branches/{branchId}/commands`: validated transform/pose/recovery, camera, appearance, SVG import/edit, layer/bone keyframe, rig import/pose and undo/redo commands; requires `expectedRevision`, command ID, stable identities, human actor and reason.
-- `GET /api/v1/projects/{projectId}/branches/{branchId}/assets/{assetId}?revision=N`: validated SVG tree for an asset referenced by that immutable saved revision; no arbitrary file access.
-- `GET /api/v1/projects/{projectId}/branches/{branchId}/assets/{assetId}/ledger?revision=N`: exact saved-revision media bindings and referenced text evidence, with recoverable inspection errors. Revision is required.
-- `GET /api/v1/projects/{projectId}/branches/{branchId}/audio/{assetId}?revision=N`: bounded PCM16 WAV bytes for a referenced audio asset at that saved revision. Traversal, network paths, redirected links and invalid/oversized files are rejected.
-- `GET/POST /api/v1/projects/{projectId}/branches/{branchId}/agent-proposals`: list the latest20 review records or generate a scoped proposal against `expectedRevision`.
-- `POST /api/v1/projects/{projectId}/branches/{branchId}/agent-proposals/{proposalId}/reject`: persist rejection with an empty JSON object; approval uses the existing commands endpoint.
-- `GET /api/v1/projects/{projectId}/branches/{branchId}/player-manifest?revision=N&use=private_preview`: exact saved document plus portable SVG/audio/evidence; use also accepts `public_distribution` or `commercial_pack`. `download=1` adds an attachment filename. Omit revision to capture current head once. No history/proposal records are exported.
-- [Local OpenAPI docs](http://127.0.0.1:8000/docs).
-- `GET /api/v1/projects/{projectId}/branches`: live branch summaries/lineage; `POST` accepts a separate human `forkBranch` command with source revision and new stable ID.
-- `GET /api/v1/projects/{projectId}/diff?left=branchA&right=branchB`: bounded read-only three-way comparison with captured heads and actual common base.
-
-The web server forwards only these fixed resources and preserves conflict/error status. Browser writes require same-origin JSON requests. Server-only `AETHER_API_ORIGIN` defaults to `http://127.0.0.1:8000`; copy `.env.example` to `apps/web/.env.local` only if changing it. Never use a `NEXT_PUBLIC_` variable for server configuration or secrets. Keep the API bound to loopback; this local task does not add authentication or a public service.
-
-`packages/schema/cdom.schema.json` and the original fixture remain version **0.1.0**. Version0.2 adds stage metadata; version0.3 adds optional `shot.audio.tension`,0.4 adds asset evidence and0.5 adds rigs. Versions0.1–0.5 remain readable. `setShotTension` upgrades its copied snapshot losslessly; undo restores exact prior authored fields/version. Stage commands preserve existing0.3 metadata. Startup performs no document upgrade. AJV and Python consume the same schemas; see [the contract guide](packages/schema/README.md).
-
-`command.schema.json` is **0.8.0**, retaining `setAssetEvidence` and adding human-only rig import, bone pose and bone frame operations;
-derived analysis remains **0.1.0**. Document0.4 adds asset provenance; document0.5 adds optional layer rigs while preserving0.1–0.4 readability. Accepted rig commands upgrade only a copied snapshot; undo restores the exact prior version/field presence. Evidence/audio edits preserve0.5. Task08's fork lineage
-and Task09's job side tables remain separate. SQLite owns canonical state;
-React accepts only validated, revision-matched responses. Selection, drafts,
-playback and analyser values stay temporary. Real AI providers, semantic dialogue
-analysis, IK/skinning, auth and collaboration remain later work. The original
-fixture's contradiction stays preserved, while saved repairs change its diagnostic.
-
-Task10 records creator/source/license/attribution, use permissions, optional
-provider/model lineage, voice/likeness consent and immutable text evidence against
-exact original/current media hashes. Evidence corrections use normal reviewed,
-revision-checked commands, audit and Undo/Redo. Editing an SVG retains its original
-and earlier evidence; the derivative needs a fresh review before that ledger can
-permit export. No read or startup automatically upgrades a document.
-
-Exports distinguish **Private preview**, **Public distribution** and **Commercial
-pack**. Known legacy rights allow only private preview without a ledger. Once a
-ledger exists, its denial, unknown permission, missing proof or stale binding
-governs. Broader use requires explicit recorded permission and applicable consent.
-Changing permissions neither establishes ownership nor publishes work; policy
-evaluates recorded evidence and provides no automatic legal clearance.
-
-Evidence text is embedded in portable JSON along with the full saved project and
-media. Review sensitive contents before sharing; this is a source bundle, not a
-minimal receipt. WebM does not embed the ledger. Retain its matching source and
-evidence JSON separately for records, privately if appropriate. Preserve the
-runtime `assets/` directory with SQLite backups so referenced immutable media and
-evidence remain available. See [Task10 contract details](packages/schema/README.md)
-and [API/storage behavior](apps/api/README.md).
-
-## Selected landing and frozen references
-
-The landing remains dependency-free HTML/CSS/JavaScript. Root `dev`/`build` now target Next; use these explicit commands for the existing site:
-
-```powershell
-npm run landing:dev
-npm run check
-npm run landing:build
-npm run landing:preview
-```
-
-Open [Afterlight v2](http://localhost:4173/). Stop its dev server before previewing the static build. `npm run preview` remains a landing-preview alias. The build emits only the selected page in `dist/`.
-
-`npm run archive:afterlight` serves the frozen original on 4181; `npm run archive:signal` serves Signal on 4182. The [design archive](design_archive/README.md) remains untouched and excluded from the main landing build.
+- **No live AI provider or generated media:** the Director/proposal path uses deterministic local fixtures; its text prompt is not interpreted by a language model.
+- **No general story/dialogue editor, speech generation or lip sync yet.** The dialect checker evaluates an unsaved draft against forbidden phrases; it does not author canon dialogue.
+- **No arbitrary audio import, AI music/Foley generation, DAW or general reverb authoring.** The mixer uses the supported checked-in clips and bindings.
+- **Rigid SVG rigs only:** no inverse kinematics, skin deformation, diffusion-based character generation or general raster editing.
+- **No automatic branch merge, real-time collaboration, hosted accounts or public publishing.** The account and browser workflows are local to this workspace.
+- **No MP4 or standalone HTML release.** WebM support varies by browser; the portable file is data for the running player.
+- **No universal automatic continuity guarantee, audience telemetry or predictive attention/CTR system.** Diagnostics cover the explicit implemented rules and report evidence or limited coverage.
 
 ## Project map
 
-- `apps/web/` — Next.js 16 App Router; studio at `/`, document overview at `/document`, Afterlight palette and self-hosted Manrope. `src/components/studio/` contains panels; `src/features/studio/` contains pure selection/projection and UI-only store.
-- `apps/api/` — FastAPI, typed command boundary, SQLite repository and Alembic migrations.
-- `packages/schema/` — canonical contract, generated types, fixture and invalid cases.
-- `tests/e2e/` and `.github/workflows/ci.yml` — integration checks and complete verification workflow.
-- `landing-page/` — active Afterlight v2 marketing page.
-- `current context.md` — active phase, decisions, evidence and next steps.
-- `PRODUCT.md`, `design_specifications/design.md` — product truth and selected visual authority.
-- `design_archive/`, `design_specifications/vendor/` — preserved references.
-- `aether_dom_codex_kit/`, `initial_first_plan_provided/`, `design_inspirations/` — preserved original specifications and source material.
+```text
+apps/web/                     Next.js studio, player and application routes
+apps/api/                     FastAPI, commands, persistence, jobs and migrations
+packages/schema/              Versioned schemas, generated types and validators
+landing-page/                 Selected Afterlight v2 HTML/CSS/JS source
+assets/fixtures/              Original rig, SVG and local audio fixtures
+assets/presentation/          Retained portable and video fallback
+tests/e2e/                    Browser workflows and acceptance checks
+tools/                        API launcher, presentation and checkpoint tools
+docs/                         Public presentation runbook and product images
+design_archive/               Frozen prior design references
+```
 
-The active scope is **Task11 — Articulated character posing and canon-aware motion**; final acceptance is recorded separately in task evidence. Next in the [presentation-focused board](aether_dom_codex_kit/TASKS%20PT2.md) is **Task12 — Integrated presentation build and interactive lore inspection**. WebGPU, IK/skinning and Bezier editing remain deferred.
+## Verification
+
+From a configured development checkout:
+
+```bash
+pnpm lint
+pnpm typecheck
+pnpm test
+pnpm build
+pnpm verify:preserved
+pnpm test:e2e
+```
+
+Production browser tests require a built web app, an installed Playwright browser and free loopback ports `3100` and `8100`; they use isolated test data. On a host with Microsoft Edge available, set `AETHER_E2E_CHANNEL=msedge` for that run. Run the checks below for fresh results on your machine.
